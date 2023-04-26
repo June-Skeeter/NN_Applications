@@ -182,6 +182,7 @@ plt.tight_layout()
 plt.show()
 
 Data.describe().round(1)
+Data.to_csv()
 ```
 
 
