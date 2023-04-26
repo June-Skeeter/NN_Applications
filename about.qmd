@@ -160,13 +160,19 @@ dbNames = {
     'RH_1_1_1':'RH'
 }
 
-Data = ReadDB.get_Traces('BB',['TA_1_1_1','RH_1_1_1'])
-Data = Data.dropna(axis=0)
+try:
+    Data = ReadDB.get_Traces('BB',['TA_1_1_1','RH_1_1_1'])
+    Data = Data.dropna(axis=0)
+    Data = Data.rename(columns=dbNames)
+    Data.to_csv('temp/BB1_VPD.csv')
 
-Data = Data.rename(columns=dbNames)
+except:
+    Data = pd.read_csv('temp/BB1_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')
+    pass
+
 
 Data['VPD'] = MiscFuncs.Calc_VPD(Data['Ta'],Data['RH'])
-
+    
 fig,axes=plt.subplots(1,3,figsize=(7,4))
 Data.hist(column='Ta',ax=axes[0],bins=20,edgecolor='k')
 axes[0].set_xlabel(units['Ta'])
@@ -179,10 +185,7 @@ axes[2].set_xlabel(units['VPD'])
 
 plt.tight_layout()
 
-plt.show()
-
 Data.describe().round(1)
-Data.to_csv()
 ```
 
 

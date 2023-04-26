@@ -26,5 +26,6 @@ def get_Traces(Site,Traces,sub_dir='Clean/SecondStage/'):
                 df = pd.DataFrame(index=Time,data=D_trace)
                 Data = pd.concat([Data,df])
     Data = Data.dropna(axis=0, how='all')
+    Data.index.name='TimeStamp'
     return(Data)
 
