@@ -2,18 +2,19 @@ import os
 import numpy as np
 import pandas as pd
 
-def get_Traces(Site,Traces,sub_dir='Clean/SecondStage/'):
+def get_Traces(Site,Traces,Dir = '/mnt/w/',sub_dir='Clean/SecondStage/'):
     ## Read a set of traces from the micromet database and add them to a dataframe
     ## Assumees the micromet Database folder is mapped to /mnt/w/
     ## Defaults to searching Clean/SecondStage/, can be altered as needed
 
     Data = pd.DataFrame()
-    Dir = '/mnt/w/'
     Time_Trace = 'clean_tv'
 
     for year in range (2015,2024):
+        print(f'{Dir}{str(year)}/{Site}/')
         if os.path.exists(f'{Dir}{str(year)}/{Site}/'):
             filename = f'{Dir}{str(year)}/{Site}/{sub_dir}{Time_Trace}'
+            print(filename)
             with open(filename, mode='rb') as file:
                 Time = np.fromfile(file, 'float64')
                 Time = pd.to_datetime(Time-719529,unit='D').round('T')

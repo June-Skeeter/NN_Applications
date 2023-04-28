@@ -1,5 +1,5 @@
 import numpy as np
-from matplotlib.colors import Normalize
+from matplotlib.colors import Normalize, TwoSlopeNorm
 
 def CI_Plot(ax,df,y,ci='CI95',linecolor='r',facecolor='#1356c240',edgecolor='#1356c2'):
     # Plot a line and shade its 95% Confidence interval
@@ -13,6 +13,8 @@ def Contour_Plot(fig,ax,grid_x1,grid_x2,grid_y,cmap='bwr',norm=None,unit='',bins
     # Plot a colormesh grid with contours
     if norm is None:
         norm = Normalize(vmin=grid_y.min(), vmax=grid_y.max(), clip=False)
+    elif len(norm)==3:
+        norm = TwoSlopeNorm(vmin=norm[0], vcenter=norm[1], vmax=norm[2])
     else:
         norm = Normalize(vmin=norm[0], vmax=norm[1], clip=False)
 

@@ -1,5 +1,4 @@
 # Miscellaneous functions to keep the presentation code cleaner 
-
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -8,6 +7,8 @@ def Calc_VPD(X,Y = None):
     # Calculate vapour pressure (hPa)
     # From TA (in celsius) and RH %
     # Can accept tensorflow tensor or numpy arrys, or pandas sereis
+    # Generally woudn't use tensors for something like this, but setup as an example
+    # Using tensors allows us to caclate the partial derivatives of the function
     if not tf.is_tensor(X):
         if Y is None:
             TA,RH = X[:,0],X[:,1]
@@ -60,6 +61,9 @@ def byInterval(df,x,y,bins=None,agg='mean'):
     return(Set[[y,'std','c','CI95']],x,y)
 
 def makeGap(df,Y=None,Mask=None,dropOut=.33):
+    # Add Random or Systematic gaps to the dataset
+    # If no mask - drop randomly using dropOut rate
+    # If Mask, drop values within bound(s) of mask(s)
     if Mask is None:
         Masked = df.sample(frac=dropOut)
         Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
