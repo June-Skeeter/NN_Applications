@@ -1,5 +1,8 @@
 import os
 import json
+import numpy as np
+import pandas as pd
+from scipy import stats
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import model_from_json
@@ -62,11 +65,10 @@ def train_model(x,y,dirname='SHL_NN_Model',Sub_Models=1,epochs = 250,batch_size 
         tf.keras.backend.clear_session()
 
         
-def predict_Model(x,dirname='SHL_NN_Model'):
+def predict_Model(x,target=None,dirname='SHL_NN_Model'):
 
     with open(f"{dirname}/model_architecture.json", 'r') as json_file:
         architecture = json.load(json_file)
-    
     pred = []
     deriv = []
     for (_, _, filenames) in os.walk(dirname):
@@ -75,7 +77,6 @@ def predict_Model(x,dirname='SHL_NN_Model'):
                 loaded_model = model_from_json(json.dumps(architecture))
                 loaded_model.load_weights(f"{dirname}/{f}")
                 loaded_model.compile(loss='mean_squared_error', optimizer='adam')
-
                 if not tf.is_tensor(x):
                     x = tf.convert_to_tensor(x)
                 with tf.GradientTape(persistent=True) as tape:
@@ -83,5 +84,39 @@ def predict_Model(x,dirname='SHL_NN_Model'):
                     est = loaded_model(x)
                 pred.append(est)
                 deriv.append(tape.gradient(est,x))
+    if target is None:
+        return(pred,deriv)
+    else:
+        y = []
+        dy_dx = []
+        for i in range(len(pred)):
+            y.append(pred[i].numpy())
+            dy_dx.append(deriv[i].numpy())
+            
+        y = np.array(y)
+        dy_dx = np.array(dy_dx)
 
-    return(pred,deriv)
+        N = y.shape[0]
+
+        out = pd.DataFrame(data = {
+            'target':target,
+            'y_bar':y.mean(axis=0).flatten(),
+            'y_CI95':y.std(axis=0).flatten()/(N)**.5*stats.t.ppf(0.95,N)
+        })
+
+        SSD = ((dy_dx)**2).sum(axis=1).mean(axis=0)
+        SSD_CI = ((dy_dx)**2).sum(axis=1).std(axis=0)/(N)**.5*stats.t.ppf(0.95,N)
+        RI = pd.DataFrame(data = {
+            'RI':SSD/SSD.sum(),
+            'RI_95':SSD_CI/SSD.sum()
+        })
+
+        print(dy_dx.shape)
+        
+        for i in range(x.shape[-1]):
+            out[f'x{i}']=x[:,i]
+            out[f'dy_dx{i}']=dy_dx.mean(axis=0)[:,i]
+            out[f'dy_dx{i}_CI95']=dy_dx.std(axis=0)[:,i]/(N)**.5*stats.t.ppf(0.95,N)
+        
+        return (RI,out)
+
