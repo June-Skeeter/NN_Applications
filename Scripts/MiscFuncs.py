@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from scipy import stats
 
 def Calc_VPD(X,Y = None):
     # Calculate vapour pressure (hPa)
@@ -37,43 +38,57 @@ def Create_Grid(x1,x2,func=None):
     return(flat_X,grid_x1,grid_x2,grid_y)
 
 
-def byInterval(df,x,y,bins=None,agg='mean'):
+def byInterval(df,x,Vars,bins=None,agg='mean'):
     # Aggregates data by an interval and returns a 95% CI
     # If dataframe has a datetime index, use resample
     # Handles all other data types by groubpby
     # Will group by continuous data by intervals if fed bins
     # Otherwise groupby will treat index as discrete data points
+    STD = [var+'_std' for var in Vars]
+    c = [var+'_c' for var in Vars]
+    CI = [var+'_CI95' for var in Vars]
     if isinstance(df.index, pd.DatetimeIndex):
         Set = df.resample(x).agg(agg)
-        Set['std'] = df.resample(x).std()[y]
-        Set['c'] = df.resample(x).count()[y]
+        Set[STD] = df.resample(x).std(numeric_only=True)[Vars]
+        Set[c] = df.resample(x).count()[Vars]
     else:
         if bins is None:
             df[f"{x}_grp"] = df[x].copy()
         else:
             df['bins'] = pd.cut(df[x],bins=bins)
-            df[f"{x}_grp"] = df['bins'].apply(lambda x: x.mid.round())
+            df[f"{x}_grp"] = df['bins'].apply(lambda x: x.mid)
             df = df.drop('bins',axis=1)        
         Set = df.groupby(f'{x}_grp').agg(agg,numeric_only=True)
-        Set['std'] = df.groupby(f'{x}_grp').std()[y]
-        Set['c'] = df.groupby(f'{x}_grp').count()[y]
-    Set['CI95'] = Set['std']/(Set['c']**.5)*1.96
-    return(Set[[y,'std','c','CI95']],x,y)
+        Set[STD] = df.groupby(f'{x}_grp').std(numeric_only=True)[Vars]
+        Set[c] = df.groupby(f'{x}_grp').count()[Vars]
+    Set[CI] = Set[STD].values/(Set[c].values**.5)*(stats.t.ppf(0.95,Set[c].values))
+    return Set[Vars+CI+STD+c]
 
-def makeGap(df,Y=None,Mask=None,dropOut=.33):
+def makeMask(df,Y=None,Mask=None,in_out='out',dropOut=.33):
     # Add Random or Systematic gaps to the dataset
     # If no mask - drop randomly using dropOut rate
     # If Mask, drop values within bound(s) of mask(s)
     if Mask is None:
-        Masked = df.sample(frac=dropOut)
+        Masked = df.sample(frac=(1-dropOut))
         Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
-    elif Mask.ndim==1:
-        Masked = df.loc[~df[Y].between(Mask[0],Mask[1])]
-        Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
-    elif Mask.ndim==2:
-        Dropped = pd.DataFrame()
-        for mask in Mask:
-           Dropped = pd.concat([Dropped,df.loc[df[Y].between(mask[0],mask[1])]])
-        Masked = df.loc[df.index.isin(Dropped.index)==False].copy()
+    else:
+        if in_out == 'out':
+            if Mask.ndim==1:
+                Masked = df.loc[~df[Y].between(Mask[0],Mask[1])]
+                Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
+            elif Mask.ndim==2:
+                Dropped = pd.DataFrame()
+                for mask in Mask:
+                    Dropped = pd.concat([Dropped,df.loc[df[Y].between(mask[0],mask[1])]])
+                Masked = df.loc[df.index.isin(Dropped.index)==False].copy()
+        else:
+            if Mask.ndim==1:
+                Masked = df.loc[df[Y].between(Mask[0],Mask[1])]
+                Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
+            elif Mask.ndim==2:
+                Masked = pd.DataFrame()
+                for mask in Mask:
+                    Masked = pd.concat([Masked,df.loc[df[Y].between(mask[0],mask[1])]])
+                Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
     
     return(Masked,Dropped)

@@ -6,6 +6,7 @@ from scipy import stats
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import model_from_json
+from sklearn.preprocessing import StandardScaler
 
 def clean_dir(dirname):
     if os.path.isdir(dirname):
@@ -44,7 +45,7 @@ def train_model(x,y,dirname='SHL_NN_Model',Sub_Models=1,epochs = 250,batch_size 
             keras.callbacks.ModelCheckpoint(
                 f"{dirname}/model_weights"+str(i)+".h5", save_best_only=True, monitor="val_loss"
             ),
-            keras.callbacks.EarlyStopping(monitor="val_loss", patience=2, verbose=0),
+            keras.callbacks.EarlyStopping(monitor="val_loss", patience=10, verbose=0),
         ]
 
         model.compile(
@@ -87,14 +88,18 @@ def predict_Model(x,target=None,dirname='SHL_NN_Model'):
     if target is None:
         return(pred,deriv)
     else:
+        # stand = StandardScaler()
         y = []
         dy_dx = []
         for i in range(len(pred)):
             y.append(pred[i].numpy())
+            # stand.fit(deriv[i].numpy())
+            # dy_dx.append(stand.transform(deriv[i].numpy()))
             dy_dx.append(deriv[i].numpy())
             
         y = np.array(y)
         dy_dx = np.array(dy_dx)
+
 
         N = y.shape[0]
 
@@ -106,12 +111,11 @@ def predict_Model(x,target=None,dirname='SHL_NN_Model'):
 
         SSD = ((dy_dx)**2).sum(axis=1).mean(axis=0)
         SSD_CI = ((dy_dx)**2).sum(axis=1).std(axis=0)/(N)**.5*stats.t.ppf(0.95,N)
+        
         RI = pd.DataFrame(data = {
             'RI':SSD/SSD.sum(),
             'RI_95':SSD_CI/SSD.sum()
         })
-
-        print(dy_dx.shape)
         
         for i in range(x.shape[-1]):
             out[f'x{i}']=x[:,i]
