@@ -10,7 +10,7 @@ def get_Traces(Site,Traces,Dir = '/mnt/w/'):
     Data = pd.DataFrame()
     Time_Trace = 'Clean/SecondStage/clean_tv'
 
-    for year in range (2015,2024):
+    for year in range (2015,2023):
         if os.path.exists(f'{Dir}{str(year)}/{Site}/'):
             filename = f'{Dir}{str(year)}/{Site}/{Time_Trace}'
             with open(filename, mode='rb') as file:
@@ -45,8 +45,6 @@ class filterFlux():
         self.df.loc[self.df[P]>thresh,self.F]=np.nan
 
     def MAD(self,z=5):
-        # diff = [f+'_df' for f in self.F]
-        # difB = [f+'_dF' for f in self.F]
         for f in self.F:
             di = self.df[f].diff()-self.df[f].diff(-1)
             md = di.median()

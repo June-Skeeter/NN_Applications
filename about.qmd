@@ -21,22 +21,24 @@ EC data is poorly suited for traditional statistical methods @wegman_computation
 
 ##	Machine Learning
 
-We provide examples to demonstrate how NN models can be used for inferential modelling
-
-detecting and mapping functional relationships 
-pattern recognition and feature detection
-demonstrate how they can be used to map response functions,
-show their ability to inferential modelling Gap-filling
-
-
- gap filling of EC data and for understanding the 
-
-They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.  
-
 
 Site specific approaches are often needed work with EC data, but from these {site specific} functional relationships, we hope to glean {universal} truths.
 
 We need to ensure that the results conform to our values reasonably expected {given our understanding of system/the framework of our conceptual model}.  And if they don't, we need to be able to see "why" in order to ensure ...
+
+## Neural Network Models
+
+They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible. 
+
+# Objectives
+
+We provide examples to demonstrate how NN models can be used for descriptive analysis and inferential modelling.
+
+* Detecting and mapping functional relationships 
+* Pruning models
+* Gap filling, upscaling, and projection
+ 
+
 
 
 # Calculating and Visualizing VPD
