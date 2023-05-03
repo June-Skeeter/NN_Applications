@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 import tensorflow as tf
+from sklearn import metrics
 from tensorflow import keras
 from keras.models import model_from_json
 
@@ -140,6 +141,12 @@ def run_Model(config,Data):
             'y_CI95':full_out['y_pred'].std(axis=0).flatten()/(N)**.5*t_score
         })
     
+    R2 = metrics.r2_score(Mean_Output['target'],Mean_Output['y_bar'])
+    RMSE = metrics.mean_squared_error(Mean_Output['target'],Mean_Output['y_bar'])
+    print()
+    print('Validation metrics (ensemble mean): \nr2 = ',
+            np.round(R2,5),'\nRMSE = ',np.round(RMSE,5))
+    print()
 
     for i,xi in enumerate(config['inputs']):
         Mean_Output[f'{xi}']=Data['X_eval'][:,i]
