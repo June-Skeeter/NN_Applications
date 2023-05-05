@@ -16,7 +16,7 @@ EC data is poorly suited for traditional statistical methods @wegman_computation
 * We need to ensure our results are reasonable given our understanding of system.
     * And if they don't, we need to be able to see "why"
   
-* As the period of record at sites extend (e.g, decades) the task only becomes more complex
+* As the period of record at flux sites extend (e.g, decades) the task only becomes more complex
     * A sliver lining - computational statistics are ideally suited for voluminous data sets!
 
 ##	Machine Learning
