@@ -1,30 +1,53 @@
 ---
 title: "A Framework for Applying Neural Networks to Eddy Covariance Data"
-format:
-  html:
-    code-fold: true
+# format:
+#   html:
 jupyter: python3
+format:
+  revealjs:
+    code-fold: true
+    controls: true
+    navigation-mode: linear
+    controls-layout: bottom-right
+    controls-tutorial: true
+    margin: 0.05
+    width: 1200
+    css: style.css
+    slide-number: true
+    show-slide-number: all
+    pdfMaxPagesPerSlide: 1
+  # pdf:
+  #   code-fold: true
+  
+author:
+  - name: Dr. June Skeeter
+    # orcid: 0000-0002-7051-343X
+    email: june.skeeter@ubc.ca
+    url: https://github.com/June-Skeeter
+    affiliations:
+    - ref: UBC
+affiliations:
+    - id: UBC
+      name: University of British Columbia
+      department: Department of Geography
+      address: 1984 West Mall
+      city: Vancouver, BC, Canada
+      postal-code: V6T 1Z2
+keywords: [Eddy Covariance, Micrometeorology, Neural Networks, Modelling]
 ---
 
 # Introduction 
 
 EC data is poorly suited for traditional statistical methods @wegman_computational_1988
 
-* Site specific approaches are often needed for EC data
+* Site specific approaches are often needed
     * **But** from these *site specific* functional relationships, we hope to glean "universal" truths.
 
-* We need to ensure our results are reasonable given our understanding of system.
-    * And if they don't, we need to be able to see "why"
+* We need to ensure our results are reasonable given our understanding of the system.
+    * And if they don't, we need to be able to investigate **why**
   
 * As the period of record at flux sites extend (e.g, decades) the task only becomes more complex
-    * A sliver lining - computational statistics are ideally suited for voluminous data sets!
-
-##	Machine Learning
-
-
-Site specific approaches are often needed work with EC data, but from these {site specific} functional relationships, we hope to glean {universal} truths.
-
-We need to ensure that the results conform to our values reasonably expected {given our understanding of system/the framework of our conceptual model}.  And if they don't, we need to be able to see "why" in order to ensure ...
+    * A sliver lining: voluminous data sets are ideally suited for computational statistics!
 
 ## Neural Network Models
 
@@ -32,16 +55,13 @@ They offer the user more control over the structure of the model and inspection 
 
 # Objectives
 
-We provide examples to demonstrate how NN models can be used for descriptive analysis and inferential modelling.
-
-* Detecting and mapping functional relationships 
-* Pruning models
-* Gap filling, upscaling, and projection
+We provide a tollset and examples demonstrating how NN models can be applied to EC data for both descriptive analysis and inferential modelling.
  
+* The github repo associated with this presentation has Python code that can be used to apply NN models.
 
 
 
-# Calculating and Visualizing VPD
+## A Simple 2D Example Calculating and Visualizing VPD
 
 The Vapor Pressure Deficit (VPD) decreases exponentially as a function of air temperature (Ta) and linearly as a function of relative humidity (RH).  We can calculate VPD (kPa) from Ta in ($\circ$ C) and RH (%) as follows:
 
@@ -63,13 +83,13 @@ import matplotlib.pyplot as plt
 from Scripts import MiscFuncs,PlotHelpers
 
 units = {
-    'Ta':'$T_a^\circ$C',
+    'TA':'$T_a^\circ$C',
     'RH':'RH %',
     'VPD':'VPD hPa'
     }
 
 labels = {
-    'Ta':'Air Temperature',
+    'TA':'Air Temperature',
     'RH':'Relative Humidity',
     'VPD':'Vapor Pressure Deficit'
     }
@@ -129,12 +149,14 @@ ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,1],grid_TA,grid_RH,grid_dVPD_dRH,cmap
 ax.set_title('dVPD dRH')
 
 
-df,x,y = MiscFuncs.byInterval(Derivatives,'TA','dVPD/dTA',bins=100)
-ax = PlotHelpers.CI_Plot(axes[1,0],df,y)
+y=['dVPD/dTA']
+df = MiscFuncs.byInterval(Derivatives,'TA',y,bins=100)
+ax = PlotHelpers.CI_Plot(axes[1,0],df,y[0])
 # ax.set_title('Partial First Derivative\nVPD with respect to Ta')
 
-df,x,y = MiscFuncs.byInterval(Derivatives,'RH','dVPD/dRH',bins=100)
-ax = PlotHelpers.CI_Plot(axes[1,1],df,y)
+y=['dVPD/dRH']
+df = MiscFuncs.byInterval(Derivatives,'RH',y,bins=100)
+ax = PlotHelpers.CI_Plot(axes[1,1],df,y[0])
 # ax.set_title('Partial First Derivative\nVPD with respect to RH')
 
 
@@ -162,29 +184,30 @@ BB1 Flux tower was established in 2015.
 ```{python}
 from Scripts import ReadDB
 
-dbNames = {
-    'TA_1_1_1':'Ta',
-    'RH_1_1_1':'RH'
-}
+# dbNames = {
+#     'TA_1_1_1':'TA',
+#     'RH_1_1_1':'RH'
+# }
 
-read_new = True
-if read_new == False:
-    Data = ReadDB.get_Traces('BB',['TA_1_1_1','RH_1_1_1'],Dir='/mnt/c/Users/User/PostDoc_Work/database/')
-    print(Data)
-    Data = Data.dropna(axis=0)
-    Data = Data.rename(columns=dbNames)
-    Data.to_csv('temp/BB1_VPD.csv')
+# read_new = False
+# if read_new == False:
+#     Data = ReadDB.get_Traces('BB',['TA_1_1_1','RH_1_1_1'],Dir='/mnt/c/Users/User/PostDoc_Work/database/')
+#     print(Data)
+#     Data = Data.dropna(axis=0)
+#     Data = Data.rename(columns=dbNames)
+#     Data.to_csv('temp/BB1_VPD.csv')
 
-else:
-    Data = pd.read_csv('temp/BB1_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')
+# else:
+Site = 'BB'
+Data = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')
     
 print(Data.head())
 
-Data['VPD'] = MiscFuncs.Calc_VPD(Data['Ta'],Data['RH'])
+Data['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])
     
 fig,axes=plt.subplots(1,3,figsize=(7,4))
-Data.hist(column='Ta',ax=axes[0],bins=20,edgecolor='k')
-axes[0].set_xlabel(units['Ta'])
+Data.hist(column='TA',ax=axes[0],bins=20,edgecolor='k')
+axes[0].set_xlabel(units['TA'])
 
 Data.hist(column='RH',ax=axes[1],bins=20,edgecolor='k')
 axes[1].set_xlabel(units['RH'])
@@ -207,7 +230,7 @@ Data.describe().round(1)
 #| layout-ncol: 1
 #| warning: False
 
-X_vars = ['Ta', 'RH']
+X_vars = ['TA', 'RH']
 Y_var = 'VPD'
 
 # X_full = Data[X_vars].values
@@ -238,7 +261,7 @@ Y_var = 'VPD'
 # }
 
 Mask = np.array([[-1,1],[2,3]])
-Masked,Dropped = MiscFuncs.makeGap(Data,Y_var,Mask)
+Masked,Dropped = MiscFuncs.makeMask(Data,Y_var,Mask)
 
 print(Masked.shape,Dropped.shape)
 

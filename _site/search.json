@@ -1,17 +1,24 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
+    "objectID": "about.html#neural-network-models",
+    "href": "about.html#neural-network-models",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "",
-    "text": "EC data is poorly suited for traditional statistical methods @wegman_computational_1988\n\nSite specific approaches are often needed for EC data\n\nBut from these site specific functional relationships, we hope to glean “universal” truths.\n\nWe need to ensure our results are reasonable given our understanding of system.\n\nAnd if they don’t, we need to be able to see “why”\n\nAs the period of record at sites extend (e.g, decades) the task only becomes more complex\n\nA sliver lining - computational statistics are ideally suited for voluminous data sets!\n\n\n\n\nWe provide examples to demonstrate how NN models can be used for inferential modelling\ndetecting and mapping functional relationships pattern recognition and feature detection demonstrate how they can be used to map response functions, show their ability to inferential modelling Gap-filling\ngap filling of EC data and for understanding the\nThey offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.\nSite specific approaches are often needed work with EC data, but from these {site specific} functional relationships, we hope to glean {universal} truths.\nWe need to ensure that the results conform to our values reasonably expected {given our understanding of system/the framework of our conceptual model}. And if they don’t, we need to be able to see “why” in order to ensure …"
+    "section": "Neural Network Models",
+    "text": "Neural Network Models\nThey offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible."
+  },
+  {
+    "objectID": "about.html#a-simple-2d-example-calculating-and-visualizing-vpd",
+    "href": "about.html#a-simple-2d-example-calculating-and-visualizing-vpd",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "A Simple 2D Example Calculating and Visualizing VPD",
+    "text": "A Simple 2D Example Calculating and Visualizing VPD\nThe Vapor Pressure Deficit (VPD) decreases exponentially as a function of air temperature (Ta) and linearly as a function of relative humidity (RH). We can calculate VPD (kPa) from Ta in (\\(\\circ\\) C) and RH (%) as follows:\n\\[ ea_H = 0.61365*np.exp((17.502*Ta)/(240.97+Ta))\\] \\[e_H = RH*ea_H/100\\] \\[VPD = (ea_H - e_H)*10\\]\n\n\n\n\n\n\nThis plot shows the relationship between VPD, TA, and RH over a range of possible values"
   },
   {
     "objectID": "about.html#partial-derivatives",
     "href": "about.html#partial-derivatives",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Partial Derivatives",
-    "text": "Partial Derivatives\n\n\nCode\nimport pandas as pd\nimport tensorflow as tf\n\n# Use tensorfolow to calculate the first partial derivative of the function\nX_tensor = tf.convert_to_tensor(range_TA_RH.T)\nwith tf.GradientTape(persistent=True) as tape:\n    tape.watch(X_tensor)\n    VPD_est = MiscFuncs.Calc_VPD(X_tensor) \n\n# Get gradients of VPD_est with respect to X_tensor\nDeriv = tape.gradient(VPD_est,X_tensor).numpy()\nDerivatives = pd.DataFrame(\n    data={\n    'TA':range_TA_RH.T[:,0],\n    'RH':range_TA_RH.T[:,1],\n    'dVPD/dTA':Deriv[:,0],\n    'dVPD/dRH':Deriv[:,1]\n    }\n)\n\n\nfig,axes=plt.subplots(2,2,figsize=(8,8),sharey='row')\n\ndf,x,y = MiscFuncs.byInterval(Derivatives,'TA','dVPD/dTA',bins=100)\nax = PlotHelpers.CI_Plot(axes[0,0],df,y)\nax.set_title('Partial First Derivative\\nVPD with respect to Ta')\n\ndf,x,y = MiscFuncs.byInterval(Derivatives,'RH','dVPD/dRH',bins=100)\nax = PlotHelpers.CI_Plot(axes[0,1],df,y)\nax.set_title('Partial First Derivative\\nVPD with respect to RH')\n\ngrid_dVPD_dTA = Deriv[:,0].T.reshape(grid_TA.shape)\ngrid_dVPD_dRH = Deriv[:,1].T.reshape(grid_RH.shape)\n\nd_bins = np.arange(\n    np.floor(Deriv).min(),np.ceil(Deriv).max(),.5\n    )\nd_norm = [\n    Deriv.min(), Deriv.max()\n    ]\n    \nax=axes[1,0]\nPlotHelpers.Contour_Plot(fig,ax,grid_TA,grid_RH,grid_dVPD_dTA,cmap = cmap,norm=d_norm,bins=d_bins)\nax.set_title('dVPD dTa')\n\nax=axes[1,1]\nPlotHelpers.Contour_Plot(fig,ax,grid_TA,grid_RH,grid_dVPD_dRH,cmap = cmap,norm=d_norm,bins=d_bins)\nax.set_title('dVPD dRH')\n\nplt.tight_layout()\n\n\n\n\n\n\n\nThis plot shows the partial first derivatives of VPD"
+    "text": "Partial Derivatives\n\n\n\n-1.7763568394002505e-14\n\n\n\n\nThis plot shows the partial first derivatives of VPD"
   },
   {
     "objectID": "index.html",
@@ -19,5 +26,26 @@
     "title": "NN_Applications",
     "section": "",
     "text": "Abstract\nEddy covariance (EC) is a passive, non-invasive method for measuring ecosystem-atmosphere trace gas exchange. It has become increasingly popular in recent years as hardware and software have become more accessible. Eddy covariance cannot measure fluxes continuously because the assumptions underpinning the method are not valid under all meteorologic conditions, but data from EC sites are widely used to monitor ecosystem scale energy, water, and carbon exchange. Trace gas fluxes tend to exhibit spatially and temporally variable, non-linear dependence upon numerous drivers. Multi-year EC data sets have hundreds of thousands of data points and flux time series contain both noise and data gaps. These factors make EC data poorly suited for analysis with traditional statistical methods. Here we present a guidance for leveraging the flexibility and functionality of Neural network (NN) models for working with EC data. Neural networks are a flexible machine learning method and an ideal tool for working with large multivariate datasets with complex non-linear dependencies. They offer control over the structure a model and inspection of model derivatives provides a method for ensuring that relationships mapped by a NN are physically plausible. We demonstrate methods for inferential modelling with NN and EC data, provide examples demonstrating how model derivatives can be used to detect and visualize the functional relationships, and offer comparisons to other common ML methods."
+  },
+  {
+    "objectID": "NN_for_EC.html",
+    "href": "NN_for_EC.html",
+    "title": "NN_Applications",
+    "section": "",
+    "text": "## Import some standard packages and define a few functions\nimport time\nimport importlib\nimport numpy as np\nimport pandas as pd\nfrom matplotlib import cm\nfrom sklearn import metrics\nimport matplotlib.pyplot as plt\nfrom Scripts import PlotHelpers\nfrom matplotlib.colors import Normalize\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs, RF_Mod\n\ndbNames = {\n    'Clean/SecondStage/TA_1_1_1':'TA',\n    'Clean/SecondStage/RH_1_1_1':'RH',\n    'Clean/SecondStage/FC':'FCO2',\n    'Clean/SecondStage/FCH4':'FCH4',\n    'Clean/SecondStage/PPFD_IN_1_1_1':'PPFD',\n    'Clean/SecondStage/P_1_1_1':'P',\n    'Flux/qc_co2_flux':'qc_FCO2',\n    'Flux/qc_ch4_flux':'qc_FCH4',\n    'Clean/SecondStage/USTAR':'USTAR',\n    'Clean/SecondStage/TS_1':'TS_1',\n    'Clean/SecondStage/TS_2':'TS_2',\n    'Clean/SecondStage/TS_3':'TS_3',\n    'Clean/SecondStage/wind_speed':'U',\n    'Clean/SecondStage/wind_dir':'dir',\n    'Met/MET_WaterLevel_Avg':'WTD_raw',\n    'Clean/SecondStage/WTD_1_1_1':'WTD',\n}\n\nLocal = '/mnt/c/Users/User/PostDoc_Work/database/'\nRemote = '/mnt/w/'\n\nDir = Remote\n\nSite = 'BB'\n\nread_new = True\nif read_new == True:\n    Data = ReadDB.get_Traces(Site,list(dbNames.keys()),Dir=Dir)\n    Data = Data.rename(columns=dbNames)\n    Data.to_csv(f'temp/{Site}_VPD.csv')\n\nelse:\n    Data = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n\n\n\n\nimportlib.reload(ReadDB)\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])\nData['DOY'] = Data.index.dayofyear\n\ninputs = ['PPFD','VPD','TS_1','Rand']\ntarget = ['FCO2']\n\nData['Rand']=np.random.random(Data['FCO2'].values.shape)\nData['Rand100']=Data['Rand']*100\n\nprint(Data[['FCO2','FCH4']].describe())\nfilter = ReadDB.filterFlux(Data,target)\nfilter.QA_QC()\nfilter.rain('P',thresh=1)\nfilter.MAD(z=7)\nfilter.uStar('USTAR',u_thresh=0.05)\n\nData[['FCO2_Clean','FCH4_Clean']] = filter.df[['FCO2','FCH4']].copy()\n\nClean_Data = filter.df.copy()\n\n               FCO2          FCH4\ncount  37260.000000  42498.000000\nmean      -0.333153     52.984230\nstd        4.312031     69.966599\nmin      -49.348000   -199.917206\n25%       -1.711623      9.618972\n50%       -0.131327     34.761662\n75%        0.749001     90.470169\nmax       49.777348    695.056885"
+  },
+  {
+    "objectID": "NN_for_EC.html#build-and-train-model",
+    "href": "NN_for_EC.html#build-and-train-model",
+    "title": "NN_Applications",
+    "section": "Build and train model",
+    "text": "Build and train model\n\nimportlib.reload(NNetFuncs)\n\nrun = 'Noisy_Data'\n\nNNetFuncs.make_Dense_model(Model_Runs[run]['config'])\nNNetFuncs.train_model(Model_Runs[run]['config'],Model_Runs[run]['Training'])\n\nModel: \"Noisy_Data\"\n_________________________________________________________________\n Layer (type)                Output Shape              Param #   \n=================================================================\n input_1 (InputLayer)        [(None, 5)]               0         \n                                                                 \n normalization (Normalizatio  (None, 5)                0         \n n)                                                              \n                                                                 \n dense (Dense)               (None, 64)                384       \n                                                                 \n dense_1 (Dense)             (None, 1)                 65        \n                                                                 \n=================================================================\nTotal params: 449\nTrainable params: 449\nNon-trainable params: 0\n_________________________________________________________________\nNone\nTraining Time:\n 370.75  Seconds\n\nTraining RF Model\nTraining Time:\n 13.91  Seconds"
+  },
+  {
+    "objectID": "NN_for_EC.html#relative-influence-of-features",
+    "href": "NN_for_EC.html#relative-influence-of-features",
+    "title": "NN_Applications",
+    "section": "Relative influence of features",
+    "text": "Relative influence of features\n\n# Mean_Output['diff'] = (Mean_Output['target']-Mean_Output['y_bar']).abs()\n\nmod = '_norm'\n\nRI = RI.sort_values(by=f'RI{mod}_bar',ascending=True)\nfig,ax=plt.subplots()\n\nax.barh(RI.index,RI[f'RI{mod}_bar'],yerr=RI[f'RI{mod}_CI95'])\nax.grid()"
   }
 ]
