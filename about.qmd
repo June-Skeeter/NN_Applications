@@ -43,70 +43,119 @@ bibliography: ML_EC.bib
 
 ---
 
-## Introduction
+## Eddy Covariance
 
-Neural networks (NN) are flexible, powerful machine learing algorithms.
-
-* **Universal approximators**: can map any continuous function to an arbitrary degree fo accuracy.
-    * Given sufficient "hidden nodes", will fit **any** pattern in a dataset
-        * Care must be taken to ensure the paterns are real
-
-## Introduction
 
 :::: {.columns}
 
-::: {.column width="40%"}
+::: {.column width="50%"}
 
-### Pros
+Ecosystem-scale fluxes of energy, water, and trace gases.
 
-* Well suited for non-linear, multi-variate response functions
-* Robust to over-fitting
+* Spatially integrated, semi-continuous
+
+* Noisy, voluminous data
+    * Ideally suited for NN analysis!
 
 :::
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 
-### Cons
-
-* Computationally expensive
-* Complex and difficult to implement
-* "Black Boxes"
+![](images/BB1_System.jpg)
 
 :::
 
 ::::
 
-## Introduction
 
-Eddy Covariance (EC) measures spatially integrated, semi-continouous, ecosystem-scale fluxes of energy, water, and trace gas.
+## Neural networks
 
-* Noisy, voluminous EC data sets are poorly suited for traditional statistical methods @wegman_computational_1988
-    * Site to site varriability makes standard ana approaches are often needed
+Powerful machine learning algorithms that are well suited for non-linear, multi-variate response functions.
 
-* We need to ensure our results are reasonable given our understanding of the system.
-    * And if they don't, we need to be able to investigate **why**
-  
-* As the period of record at flux sites extend (e.g, decades) the task only becomes more complex
-    * A sliver lining: voluminous data sets are ideally suited for computational statistics!
+* **Universal approximators**: can map any continuous function to an arbitrary degree of accuracy.
+    * Given sufficient "hidden nodes", will fit **any** pattern in a dataset
+        * Care must be taken to ensure the patterns are real
+
+* Capable of interpolation and extrapolation
+
+## Neural networks
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+<!-- ### Limitations -->
+
+* Computationally expensive
+
+* Prone to over-fitting
+
+* "Black Boxes"
+
+:::
+
+::: {.column width="70%"}
+
+<!-- ### Solutions -->
+
+Advances in hardware (GPU processing) and software (Tensorflow)
+
+Early stopping, ensembling, & input normalization
+
+Inspecting partial derivative allows visualization of model's internal workings
+
+:::
+
+::::
 
 # Objectives
 
-Provide a tool set with functional examples demonstrating how NN models can be applied to EC data for both descriptive analysis and inferential modelling.
+Provide a framework for applying NN models can be applied to EC data for both descriptive analysis and inferential modelling. 
  
-* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has Python code that can be used to apply NN models.
+* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has Python code with functional examples that can be used to apply NN models.
+
+## Key Procedures
+
+* Early stopping: End training metrics (e.g., MSE) fail to improve for *e* training epochs
+    * *e* = 2 typically provides a robust, generalizable model
+
+* Ensembling: Train a set of N randomly initialled models on N unique interactions of training/testing data
+    * A small ensemble for ~10 models is sufficient in most applications
+
+* Input normalization: Z-norm scale all inputs to improve training
+
+## Key Procedures
+
+* Feature inspection: Calculating partial first (and second) derivatives of each input
+    * Sum of squared derivatives gives relative influence of each input over output
+    * Plotting model derivatives to help ensure mapped relationships are physically plausible
+        * An **essential step** and **key advantage** of NN models
+
+## A Simple Example
+
+:::: {.columns}
+
+::: {.column width="50%"}
 
 
-## A Simple 2D Example Calculating and Visualizing VPD
+The Vapor Pressure Deficit (VPD):
 
-The Vapor Pressure Deficit (VPD) decreases exponentially as a function of air temperature (Ta) and linearly as a function of relative humidity (RH).  We can calculate VPD (kPa) from Ta in ($\circ$ C) and RH (%) as follows:
+* Increases exponentially as a function of air temperature (Ta)
+* Decreases linearly as a function of relative humidity (RH).
 
+<!-- 
 $$ ea_H = 0.61365*np.exp((17.502*Ta)/(240.97+Ta))$$
 $$e_H = RH*ea_H/100$$
-$$VPD = (ea_H - e_H)*10$$
+$$VPD = (ea_H - e_H)*10$$ -->
+
+
+:::
+::: {.column width="50%"}
+
 
 ```{python}
 #| label: Estimating VPD
-#| fig-cap: "This plot shows the relationship between VPD, TA, and RH over a range of possible values"
+#| fig-cap: "VPD over a range of Ta, and RH values"
 #| layout-ncol: 1
 #| warning: False
 
@@ -114,8 +163,8 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
-
 from Scripts import MiscFuncs,PlotHelpers
+from Scripts import ReadDB, MiscFuncs, NNetFuncs
 
 units = {
     'TA':'$T_a^\circ$C',
@@ -146,58 +195,62 @@ ax.set_ylabel('Relative Humidity %')
 ax.set_title('Vapor Pressure Deficit (VPD)')
 plt.tight_layout()
 
-# Use tensorfolow to calculate the first partial derivative of the function
-X_tensor = tf.convert_to_tensor(range_TA_RH.T)
-with tf.GradientTape(persistent=True) as tape:
-    tape.watch(X_tensor)
-    VPD_est = MiscFuncs.Calc_VPD(X_tensor) 
-# Get gradients of VPD_est with respect to X_tensor
-Deriv = tape.gradient(VPD_est,X_tensor).numpy()
+# # Use tensorfolow to calculate the first partial derivative of the function
+# X_tensor = tf.convert_to_tensor(range_TA_RH.T)
+# with tf.GradientTape(persistent=True) as tape:
+#     tape.watch(X_tensor)
+#     VPD_est = MiscFuncs.Calc_VPD(X_tensor) 
+# # Get gradients of VPD_est with respect to X_tensor
+# Deriv = tape.gradient(VPD_est,X_tensor).numpy()
 
+# Derivatives = pd.DataFrame(
+#     data={
+#     'TA':range_TA_RH.T[:,0],
+#     'RH':range_TA_RH.T[:,1],
+#     'dVPD/dTA':Deriv[:,0],
+#     'dVPD/dRH':Deriv[:,1]
+#     }
+# )
 
-Derivatives = pd.DataFrame(
-    data={
-    'TA':range_TA_RH.T[:,0],
-    'RH':range_TA_RH.T[:,1],
-    'dVPD/dTA':Deriv[:,0],
-    'dVPD/dRH':Deriv[:,1]
-    }
-)
+# fig,axes=plt.subplots(2,2,figsize=(8,8),sharey='row')
 
-fig,axes=plt.subplots(2,2,figsize=(8,8),sharey='row')
+# grid_dVPD_dTA = Deriv[:,0].T.reshape(grid_TA.shape)
+# grid_dVPD_dRH = Deriv[:,1].T.reshape(grid_RH.shape)
 
-grid_dVPD_dTA = Deriv[:,0].T.reshape(grid_TA.shape)
-grid_dVPD_dRH = Deriv[:,1].T.reshape(grid_RH.shape)
-
-d_bins = np.arange(
-    np.floor(Deriv).min(),np.ceil(Deriv).max(),.5
-    )
-d_cmap = 'bwr'
-d_norm = [
-    Deriv.min(),0, Deriv.max()
-    ]
+# d_bins = np.arange(
+#     np.floor(Deriv).min(),np.ceil(Deriv).max(),.5
+#     )
+# d_cmap = 'bwr'
+# d_norm = [
+#     Deriv.min(),0, Deriv.max()
+#     ]
     
-ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,0],grid_TA,grid_RH,grid_dVPD_dTA,cmap = d_cmap,norm=d_norm,bins=d_bins)
-ax.set_title('dVPD dTa')
+# ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,0],grid_TA,grid_RH,grid_dVPD_dTA,cmap = d_cmap,norm=d_norm,bins=d_bins)
+# ax.set_title('dVPD dTa')
 
-ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,1],grid_TA,grid_RH,grid_dVPD_dRH,cmap = d_cmap,norm=d_norm,bins=d_bins)
-ax.set_title('dVPD dRH')
-
-
-y=['dVPD/dTA']
-df = MiscFuncs.byInterval(Derivatives,'TA',y,bins=100)
-ax = PlotHelpers.CI_Plot(axes[1,0],df,y[0])
-# ax.set_title('Partial First Derivative\nVPD with respect to Ta')
-
-y=['dVPD/dRH']
-df = MiscFuncs.byInterval(Derivatives,'RH',y,bins=100)
-ax = PlotHelpers.CI_Plot(axes[1,1],df,y[0])
-# ax.set_title('Partial First Derivative\nVPD with respect to RH')
+# ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,1],grid_TA,grid_RH,grid_dVPD_dRH,cmap = d_cmap,norm=d_norm,bins=d_bins)
+# ax.set_title('dVPD dRH')
 
 
-plt.tight_layout()
+# y=['dVPD/dTA']
+# df = MiscFuncs.byInterval(Derivatives,'TA',y,bins=100)
+# ax = PlotHelpers.CI_Plot(axes[1,0],df,y[0])
+# # ax.set_title('Partial First Derivative\nVPD with respect to Ta')
+
+# y=['dVPD/dRH']
+# df = MiscFuncs.byInterval(Derivatives,'RH',y,bins=100)
+# ax = PlotHelpers.CI_Plot(axes[1,1],df,y[0])
+# # ax.set_title('Partial First Derivative\nVPD with respect to RH')
+
+
+# plt.tight_layout()
 
 ```
+
+:::
+
+::::
+
 
 ## Partial Derivatives
 
@@ -306,10 +359,14 @@ for mask in Mask:
     print(mask)
 ```
 
+## Next Steps & Speculations
 
+* u* filtering
+* Flux footprint calculations
 
 ## Conclusions
 
 They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.
 
 ## Questions
+

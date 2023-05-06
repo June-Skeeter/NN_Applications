@@ -11,7 +11,7 @@
     "href": "about.html#a-simple-2d-example-calculating-and-visualizing-vpd",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "A Simple 2D Example Calculating and Visualizing VPD",
-    "text": "A Simple 2D Example Calculating and Visualizing VPD\nThe Vapor Pressure Deficit (VPD) decreases exponentially as a function of air temperature (Ta) and linearly as a function of relative humidity (RH). We can calculate VPD (kPa) from Ta in (\\(\\circ\\) C) and RH (%) as follows:\n\\[ ea_H = 0.61365*np.exp((17.502*Ta)/(240.97+Ta))\\] \\[e_H = RH*ea_H/100\\] \\[VPD = (ea_H - e_H)*10\\]\n\n\n\n\n\n\nThis plot shows the relationship between VPD, TA, and RH over a range of possible values"
+    "text": "A Simple 2D Example Calculating and Visualizing VPD\n\n\nThe Vapor Pressure Deficit (VPD) decreases exponentially as a function of air temperature (Ta) and linearly as a function of relative humidity (RH). We can calculate VPD (kPa) from Ta in (\\(\\circ\\) C) and RH (%) as follows:\n\n\n\n\n\n\n\n\nThis plot shows the relationship between VPD, TA, and RH over a range of possible values"
   },
   {
     "objectID": "about.html#partial-derivatives",
@@ -32,21 +32,21 @@
     "href": "NN_for_EC.html",
     "title": "Neural Network Applications for Eddy Covariance",
     "section": "",
-    "text": "## Import some standard packages and define a few functions\nimport time\nimport importlib\nimport numpy as np\nimport pandas as pd\nfrom matplotlib import cm\nfrom sklearn import metrics\nimport matplotlib.pyplot as plt\nfrom Scripts import PlotHelpers\nfrom matplotlib.colors import Normalize\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs\n\ndbNames = {\n    'Clean/SecondStage/TA_1_1_1':'TA',\n    'Clean/SecondStage/RH_1_1_1':'RH',\n    'Clean/SecondStage/FC':'FCO2',\n    'Clean/SecondStage/FCH4':'FCH4',\n    'Clean/SecondStage/PPFD_IN_1_1_1':'PPFD',\n    'Clean/SecondStage/P_1_1_1':'P',\n    'Flux/qc_co2_flux':'qc_FCO2',\n    'Flux/qc_ch4_flux':'qc_FCH4',\n    'Clean/SecondStage/USTAR':'USTAR',\n    'Clean/SecondStage/TS_1':'TS_1',\n    'Clean/SecondStage/TS_2':'TS_2',\n    'Clean/SecondStage/TS_3':'TS_3',\n    'Clean/SecondStage/wind_speed':'U',\n    'Clean/SecondStage/wind_dir':'dir',\n    'Met/MET_WaterLevel_Avg':'WTD_raw',\n    'Clean/SecondStage/WTD_1_1_1':'WTD',\n}\n\nLocal = '/mnt/c/Users/User/PostDoc_Work/database/'\nRemote = '/mnt/w/'\n\nDir = Remote\n\nSite = 'BB'\n\nread_new = False\nif read_new == True:\n    Data = ReadDB.get_Traces(Site,list(dbNames.keys()),Dir=Dir)\n    Data = Data.rename(columns=dbNames)\n    Data.to_csv(f'temp/{Site}_VPD.csv')\n\nelse:\n    Data = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n\n\n\n\nimportlib.reload(ReadDB)\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])\nData['DOY'] = Data.index.dayofyear\n\ninputs = ['PPFD','VPD','TS_1','Rand']\ntarget = ['FCO2']\n\nData['Rand']=np.random.random(Data['FCO2'].values.shape)\nData['Rand100']=Data['Rand']*100\n\nprint(Data[['FCO2','FCH4']].describe())\nfilter = ReadDB.filterFlux(Data,target)\nfilter.QA_QC()\nfilter.rain('P',thresh=1)\nfilter.MAD(z=7)\nfilter.uStar('USTAR',u_thresh=0.05)\n\nData[['FCO2_Clean','FCH4_Clean']] = filter.df[['FCO2','FCH4']].copy()\n\nClean_Data = filter.df.copy()\n\n               FCO2          FCH4\ncount  37260.000000  42498.000000\nmean      -0.333153     52.984234\nstd        4.312031     69.966599\nmin      -49.348000   -199.917200\n25%       -1.711623      9.618972\n50%       -0.131327     34.761661\n75%        0.749001     90.470169\nmax       49.777348    695.056900"
+    "text": "## Import some standard packages and define a few functions\nimport time\nimport importlib\nimport numpy as np\nimport pandas as pd\nfrom matplotlib import cm\nfrom sklearn import metrics\nimport matplotlib.pyplot as plt\nfrom Scripts import PlotHelpers\nfrom matplotlib.colors import Normalize\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs\n\ndbNames = {\n    'Clean/SecondStage/TA_1_1_1':'TA',\n    'Clean/SecondStage/RH_1_1_1':'RH',\n    'Clean/SecondStage/FC':'FCO2',\n    'Clean/SecondStage/FCH4':'FCH4',\n    'Clean/SecondStage/PPFD_IN_1_1_1':'PPFD',\n    'Clean/SecondStage/P_1_1_1':'P',\n    'Flux/qc_co2_flux':'qc_FCO2',\n    'Flux/qc_ch4_flux':'qc_FCH4',\n    'Clean/SecondStage/USTAR':'USTAR',\n    'Clean/SecondStage/TS_1':'TS_1',\n    'Clean/SecondStage/TS_2':'TS_2',\n    'Clean/SecondStage/TS_3':'TS_3',\n    'Clean/SecondStage/wind_speed':'U',\n    'Clean/SecondStage/wind_dir':'dir',\n    'Met/MET_WaterLevel_Avg':'WTD_raw',\n    'Clean/SecondStage/WTD_1_1_1':'WTD',\n}\n\nLocal = '/mnt/c/Users/User/PostDoc_Work/database/'\nRemote = '/mnt/w/'\n\nDir = Remote\n\nSite = 'BB'\n\nread_new = False\nif read_new == True:\n    Data = ReadDB.get_Traces(Site,list(dbNames.keys()),Dir=Dir)\n    Data = Data.rename(columns=dbNames)\n    Data.to_csv(f'temp/{Site}_VPD.csv')\n\nelse:\n    Data = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n\n2023-05-06 10:31:07.360259: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.\n\n\n\n\n\nimportlib.reload(ReadDB)\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])\nData['DOY'] = Data.index.dayofyear\n\ninputs = ['PPFD','VPD','TS_1','Rand']\ntarget = ['FCO2']\n\nData['Rand']=np.random.random(Data['FCO2'].values.shape)\nData['Rand100']=Data['Rand']*100\n\nprint(Data[['FCO2','FCH4']].describe())\nfilter = ReadDB.filterFlux(Data,target)\nfilter.QA_QC()\nfilter.rain('P',thresh=1)\nfilter.MAD(z=7)\nfilter.uStar('USTAR',u_thresh=0.05)\n\nData[['FCO2_Clean','FCH4_Clean']] = filter.df[['FCO2','FCH4']].copy()\n\nClean_Data = filter.df.copy()\n\n               FCO2          FCH4\ncount  37260.000000  42498.000000\nmean      -0.333153     52.984234\nstd        4.312031     69.966599\nmin      -49.348000   -199.917200\n25%       -1.711623      9.618972\n50%       -0.131327     34.761661\n75%        0.749001     90.470169\nmax       49.777348    695.056900"
   },
   {
     "objectID": "NN_for_EC.html#build-and-train-model",
     "href": "NN_for_EC.html#build-and-train-model",
     "title": "Neural Network Applications for Eddy Covariance",
     "section": "Build and train model",
-    "text": "Build and train model\n\nimportlib.reload(NNetFuncs)\n\nrun = 'Noisy_Data'\n\n# NNetFuncs.make_Dense_model(Model_Runs[run]['config'])\n# NNetFuncs.train_model(Model_Runs[run]['config'],Model_Runs[run]['Training'])"
+    "text": "Build and train model\n\nimportlib.reload(NNetFuncs)\n\n# run = 'Noisy_Data'\n\nRuns = ['VPD_Estimate']#,'Feature_Detection']\nfor run in Runs:\n    config = Model_Runs[run]['config']\n    Training = Model_Runs[run]['Training']\n\n    NNetFuncs.make_Dense_model(config)\n    NNetFuncs.train_model(config,Training)\n\nModel: \"VPD_Estimate\"\n_________________________________________________________________\n Layer (type)                Output Shape              Param #   \n=================================================================\n input_1 (InputLayer)        [(None, 2)]               0         \n                                                                 \n normalization (Normalizatio  (None, 2)                0         \n n)                                                              \n                                                                 \n dense (Dense)               (None, 64)                192       \n                                                                 \n dense_1 (Dense)             (None, 1)                 65        \n                                                                 \n=================================================================\nTotal params: 257\nTrainable params: 257\nNon-trainable params: 0\n_________________________________________________________________\n\n\n2023-05-06 10:36:36.536135: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.594401: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.594451: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.595204: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA\nTo enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.\n2023-05-06 10:36:36.597258: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.597323: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.597365: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:37.793493: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:37.793578: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:37.793584: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1616] Could not identify NUMA node of platform GPU id 0, defaulting to 0.  Your kernel may not have been built with NUMA support.\n2023-05-06 10:36:37.793612: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:37.793655: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1532] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 3447 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3060 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6\n\n\nNone\n\n\n2023-05-06 10:36:39.945020: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.\n\n\nTraining Time:\n 390.82  Seconds\n\nTraining RF Model\nTraining Time:\n 17.38  Seconds"
   },
   {
     "objectID": "NN_for_EC.html#relative-influence-of-features",
     "href": "NN_for_EC.html#relative-influence-of-features",
     "title": "Neural Network Applications for Eddy Covariance",
     "section": "Relative influence of features",
-    "text": "Relative influence of features\n\nNN_RI = pd.read_csv('Noisy_Data/model_RI.csv',index_col=[0])\nmod = '_norm'\n\nNN_RI = NN_RI.sort_values(by=f'RI{mod}_bar',ascending=True)\nfig,ax=plt.subplots()\n\nax.barh(NN_RI.index,NN_RI[f'RI{mod}_bar'],yerr=NN_RI[f'RI{mod}_CI95'])\nax.grid()"
+    "text": "Relative influence of features"
   },
   {
     "objectID": "about.html",
@@ -88,7 +88,7 @@
     "href": "about.html#questions",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Questions",
-    "text": "Questions\n\n\n\n\n\n\nWegman, Edward J. 1988. “Computational Statistics: A New Agenda for Statistical Theory and Practice.” Journal of the Washington Academy of Sciences 78 (4): 310–22. https://www.jstor.org/stable/24536995."
+    "text": "Questions"
   },
   {
     "objectID": "about.html#example-data",
@@ -103,5 +103,89 @@
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Artificial Gaps",
     "text": "Artificial Gaps\n\n\n\n\n(63812, 17) (76444, 17)\n[-1  1]\n[2 3]\n\n\nFigure 1: ?(caption)"
+  },
+  {
+    "objectID": "about.html#eddy-covariance",
+    "href": "about.html#eddy-covariance",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Eddy Covariance",
+    "text": "Eddy Covariance\n\n\nEcosystem-scale fluxes of energy, water, and trace gases.\n\nSpatially integrated, semi-continuous\nNoisy, voluminous data\n\nIdeally suited for NN analysis!"
+  },
+  {
+    "objectID": "about.html#neural-networks",
+    "href": "about.html#neural-networks",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Neural networks",
+    "text": "Neural networks\nPowerful machine learning algorithms that are well suited for non-linear, multi-variate response functions.\n\nUniversal approximators: can map any continuous function to an arbitrary degree of accuracy.\n\nGiven sufficient “hidden nodes”, will fit any pattern in a dataset\n\nCare must be taken to ensure the patterns are real\n\n\nCapable of interpolation and extrapolation"
+  },
+  {
+    "objectID": "about.html#limitations",
+    "href": "about.html#limitations",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Limitations",
+    "text": "Limitations\nCommonly cited downsides of NN models:\n\nComputationally expensive\n\nRecent advances in Hardware (e.g., GPU processing) and software (e.g., Tensorflow)\n\nProne to over-fitting\n\nEarly stopping, ensembling, & input normalization help produce robust models\n\n“Black Boxes”\n\nInspecting partial derivative allows visualization of model’s internal workings"
+  },
+  {
+    "objectID": "about.html#key-procedures",
+    "href": "about.html#key-procedures",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Key Procedures",
+    "text": "Key Procedures\n\nEarly stopping: End training metrics (e.g., MSE) fail to improve for e training epochs\n\ne = 2 typically provides a robust, generalizable model\n\nEnsembling: Train a set of N randomly initialled models on N unique interactions of training/testing data\n\nA small ensemble for ~10 models is sufficient in most applications\n\nInput normalization: Z-norm scale all inputs to improve training"
+  },
+  {
+    "objectID": "about.html#limitations-1",
+    "href": "about.html#limitations-1",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Limitations",
+    "text": "Limitations\nCommonly cited downsides of NN models:\n\nComputationally expensive\n\nRecent advances in Hardware (e.g., GPU processing) and software (e.g., Tensorflow)\n\nProne to over-fitting\n\nEarly stopping, ensembling, & input normalization help produce robust models\n\n“Black Boxes”\n\nInspecting partial derivative allows visualization of model’s internal workings"
+  },
+  {
+    "objectID": "about.html#neural-networks-1",
+    "href": "about.html#neural-networks-1",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Neural networks",
+    "text": "Neural networks\n\n\n\n\nComputationally expensive\nProne to over-fitting\n“Black Boxes”\n\n\n\nAdvances in hardware (GPU processing) and software (Tensorflow)\nEarly stopping, ensembling, & input normalization\nInspecting partial derivative allows visualization of model’s internal workings"
+  },
+  {
+    "objectID": "about.html#limitations-2",
+    "href": "about.html#limitations-2",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Limitations",
+    "text": "Limitations\nCommonly cited downsides of NN models:\n\nComputationally expensive\n\nRecent advances in Hardware (e.g., GPU processing) and software (e.g., Tensorflow)\n\nProne to over-fitting\n\nEarly stopping, ensembling, & input normalization help produce robust models\n\n“Black Boxes”\n\nInspecting partial derivative allows visualization of model’s internal workings"
+  },
+  {
+    "objectID": "about.html#solutions",
+    "href": "about.html#solutions",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Solutions",
+    "text": "Solutions\n\nAdvances in hardware (e.g., GPU processing) and software (e.g., Tensorflow)\nEarly stopping, ensembling, & input normalization\nInspecting partial derivative allows visualization of model’s internal workings"
+  },
+  {
+    "objectID": "about.html#key-procedures-1",
+    "href": "about.html#key-procedures-1",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Key Procedures",
+    "text": "Key Procedures\n\nFeature inspection: Calculating partial first (and second) derivatives of each input\n\nSum of squared derivatives gives relative influence of each input over output\nPlotting model derivatives to help ensure mapped relationships are physically plausible\n\nAn essential step and key advantage of NN models"
+  },
+  {
+    "objectID": "about.html#next-steps-speculations",
+    "href": "about.html#next-steps-speculations",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Next Steps & Speculations",
+    "text": "Next Steps & Speculations\n\nu* filtering\nFlux footprint calculations"
+  },
+  {
+    "objectID": "about.html#a-simple-example-calculating-and-visualizing-vpd",
+    "href": "about.html#a-simple-example-calculating-and-visualizing-vpd",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "A Simple Example Calculating and Visualizing VPD",
+    "text": "A Simple Example Calculating and Visualizing VPD\n\n\nThe Vapor Pressure Deficit (VPD) decreases exponentially as a function of air temperature (Ta) and linearly as a function of relative humidity (RH). We can calculate VPD (kPa) from Ta in (\\(\\circ\\) C) and RH (%) as follows:\n\n\n\n\n\n\n\n\nThis plot shows the relationship between VPD, TA, and RH over a range of possible values"
+  },
+  {
+    "objectID": "about.html#a-simple-example",
+    "href": "about.html#a-simple-example",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "A Simple Example",
+    "text": "A Simple Example\n\n\nThe Vapor Pressure Deficit (VPD):\n\nIncreases exponentially as a function of air temperature (Ta)\nDecreases linearly as a function of relative humidity (RH).\n\n\n\n\n\n\n\n\n\nVPD over a range of Ta, and RH values"
   }
 ]

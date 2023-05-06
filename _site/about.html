@@ -29,25 +29,6 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-    }
-    .hanging div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -364,82 +345,115 @@
 </div>
 
 </section>
-<section id="introduction" class="slide level2">
-<h2>Introduction</h2>
-<p>Neural networks (NN) are flexible, powerful machine learing algorithms.</p>
+<section id="eddy-covariance" class="slide level2">
+<h2>Eddy Covariance</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Ecosystem-scale fluxes of energy, water, and trace gases.</p>
 <ul>
-<li><strong>Universal approximators</strong>: can map any continuous function to an arbitrary degree fo accuracy.
+<li><p>Spatially integrated, semi-continuous</p></li>
+<li><p>Noisy, voluminous data</p>
+<ul>
+<li>Ideally suited for NN analysis!</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/BB1_System.jpg"></p>
+</div>
+</div>
+</section>
+<section id="neural-networks" class="slide level2">
+<h2>Neural networks</h2>
+<p>Powerful machine learning algorithms that are well suited for non-linear, multi-variate response functions.</p>
+<ul>
+<li><strong>Universal approximators</strong>: can map any continuous function to an arbitrary degree of accuracy.
 <ul>
 <li>Given sufficient “hidden nodes”, will fit <strong>any</strong> pattern in a dataset
 <ul>
-<li>Care must be taken to ensure the paterns are real</li>
+<li>Care must be taken to ensure the patterns are real</li>
 </ul></li>
 </ul></li>
+<li>Capable of interpolation and extrapolation</li>
 </ul>
 </section>
-<section id="introduction-1" class="slide level2">
-<h2>Introduction</h2>
+<section id="neural-networks-1" class="slide level2">
+<h2>Neural networks</h2>
 <div class="columns">
-<div class="column" style="width:40%;">
-<h3 id="pros">Pros</h3>
+<div class="column" style="width:30%;">
+<!-- ### Limitations -->
 <ul>
-<li>Well suited for non-linear, multi-variate response functions</li>
-<li>Robust to over-fitting</li>
+<li><p>Computationally expensive</p></li>
+<li><p>Prone to over-fitting</p></li>
+<li><p>“Black Boxes”</p></li>
 </ul>
-</div><div class="column" style="width:60%;">
-<h3 id="cons">Cons</h3>
-<ul>
-<li>Computationally expensive</li>
-<li>Complex and difficult to implement</li>
-<li>“Black Boxes”</li>
-</ul>
+</div><div class="column" style="width:70%;">
+<!-- ### Solutions -->
+<p>Advances in hardware (GPU processing) and software (Tensorflow)</p>
+<p>Early stopping, ensembling, &amp; input normalization</p>
+<p>Inspecting partial derivative allows visualization of model’s internal workings</p>
 </div>
 </div>
-</section>
-<section id="introduction-2" class="slide level2">
-<h2>Introduction</h2>
-<p>Eddy Covariance (EC) measures spatially integrated, semi-continouous, ecosystem-scale fluxes of energy, water, and trace gas.</p>
-<ul>
-<li>Noisy, voluminous EC data sets are poorly suited for traditional statistical methods <span class="citation" data-cites="wegman_computational_1988">Wegman (<a href="#/questions" role="doc-biblioref" onclick="">1988</a>)</span>
-<ul>
-<li>Site to site varriability makes standard ana approaches are often needed</li>
-</ul></li>
-<li>We need to ensure our results are reasonable given our understanding of the system.
-<ul>
-<li>And if they don’t, we need to be able to investigate <strong>why</strong></li>
-</ul></li>
-<li>As the period of record at flux sites extend (e.g, decades) the task only becomes more complex
-<ul>
-<li>A sliver lining: voluminous data sets are ideally suited for computational statistics!</li>
-</ul></li>
-</ul>
 </section>
 <section>
 <section id="objectives" class="title-slide slide level1 center">
 <h1>Objectives</h1>
-<p>Provide a tool set with functional examples demonstrating how NN models can be applied to EC data for both descriptive analysis and inferential modelling.</p>
+<p>Provide a framework for applying NN models can be applied to EC data for both descriptive analysis and inferential modelling.</p>
 <ul>
-<li>The <a href="https://github.com/June-Skeeter/NN_Applications">github repository</a> linked to this presentation has Python code that can be used to apply NN models.</li>
+<li>The <a href="https://github.com/June-Skeeter/NN_Applications">github repository</a> linked to this presentation has Python code with functional examples that can be used to apply NN models.</li>
 </ul>
 </section>
-<section id="a-simple-2d-example-calculating-and-visualizing-vpd" class="slide level2">
-<h2>A Simple 2D Example Calculating and Visualizing VPD</h2>
-<p>The Vapor Pressure Deficit (VPD) decreases exponentially as a function of air temperature (Ta) and linearly as a function of relative humidity (RH). We can calculate VPD (kPa) from Ta in (<span class="math inline">\(\circ\)</span> C) and RH (%) as follows:</p>
-<p><span class="math display">\[ ea_H = 0.61365*np.exp((17.502*Ta)/(240.97+Ta))\]</span> <span class="math display">\[e_H = RH*ea_H/100\]</span> <span class="math display">\[VPD = (ea_H - e_H)*10\]</span></p>
-<div id="estimating-vpd" class="cell quarto-layout-panel" data-execution_count="1">
+<section id="key-procedures" class="slide level2">
+<h2>Key Procedures</h2>
+<ul>
+<li>Early stopping: End training metrics (e.g., MSE) fail to improve for <em>e</em> training epochs
+<ul>
+<li><em>e</em> = 2 typically provides a robust, generalizable model</li>
+</ul></li>
+<li>Ensembling: Train a set of N randomly initialled models on N unique interactions of training/testing data
+<ul>
+<li>A small ensemble for ~10 models is sufficient in most applications</li>
+</ul></li>
+<li>Input normalization: Z-norm scale all inputs to improve training</li>
+</ul>
+</section>
+<section id="key-procedures-1" class="slide level2">
+<h2>Key Procedures</h2>
+<ul>
+<li>Feature inspection: Calculating partial first (and second) derivatives of each input
+<ul>
+<li>Sum of squared derivatives gives relative influence of each input over output</li>
+<li>Plotting model derivatives to help ensure mapped relationships are physically plausible
+<ul>
+<li>An <strong>essential step</strong> and <strong>key advantage</strong> of NN models</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="a-simple-example" class="slide level2">
+<h2>A Simple Example</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>The Vapor Pressure Deficit (VPD):</p>
+<ul>
+<li>Increases exponentially as a function of air temperature (Ta)</li>
+<li>Decreases linearly as a function of relative humidity (RH).</li>
+</ul>
+<!-- 
+$$ ea_H = 0.61365*np.exp((17.502*Ta)/(240.97+Ta))$$
+$$e_H = RH*ea_H/100$$
+$$VPD = (ea_H - e_H)*10$$ -->
+</div><div class="column" style="width:50%;">
+<div class="cell quarto-layout-panel" data-execution_count="1">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="estimating-vpd-1" class="quarto-figure quarto-figure-center">
+<div id="estimating-vpd" class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="about_files/figure-revealjs/estimating-vpd-output-1.png" width="469"></p>
-<p></p><figcaption>This plot shows the relationship between VPD, TA, and RH over a range of possible values</figcaption><p></p>
+<p></p><figcaption>VPD over a range of Ta, and RH values</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/estimating-vpd-output-2.png" id="estimating-vpd-2" width="756"></p>
 </div>
 </div>
 </div>
@@ -488,7 +502,7 @@ TimeStamp
 2015-01-01 02:00:00      NaN  NaN  
 2015-01-01 02:30:00      NaN  NaN  </code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="135">
+<div class="cell-output cell-output-display" data-execution_count="431">
 
 <div>
 <style scoped="">
@@ -712,20 +726,22 @@ TimeStamp
 </figure>
 </div>
 </section>
+<section id="next-steps-speculations" class="slide level2">
+<h2>Next Steps &amp; Speculations</h2>
+<ul>
+<li>u* filtering</li>
+<li>Flux footprint calculations</li>
+</ul>
+</section>
 <section id="conclusions" class="slide level2">
 <h2>Conclusions</h2>
 <p>They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.</p>
 </section>
-<section id="questions" class="slide level2 smaller scrollable">
+<section id="questions" class="slide level2">
 <h2>Questions</h2>
 
 <div class="footer footer-default">
 
-</div>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-wegman_computational_1988" class="csl-entry" role="doc-biblioentry">
-Wegman, Edward J. 1988. <span>“Computational <span>Statistics</span>: <span>A</span> <span>New</span> <span>Agenda</span> for <span>Statistical</span> <span>Theory</span> and <span>Practice</span>.”</span> <em>Journal of the Washington Academy of Sciences</em> 78 (4): 310–22. <a href="https://www.jstor.org/stable/24536995">https://www.jstor.org/stable/24536995</a>.
-</div>
 </div>
 </section></section>
     </div>
