@@ -11,7 +11,7 @@
 
   <meta name="author" content="Dr.&nbsp;June Skeeter">
   <meta name="keywords" content="Eddy Covariance, Micrometeorology, Neural Networks, Modelling">
-  <title>NN_Applications - A Framework for Applying Neural Networks to Eddy Covariance Data</title>
+  <title>Neural Network Applications for Eddy Covariance - A Framework for Applying Neural Networks to Eddy Covariance Data</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -29,9 +29,27 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto.css" id="theme">
-  <link rel="stylesheet" href="style.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -346,14 +364,45 @@
 </div>
 
 </section>
-<section>
-<section id="introduction" class="title-slide slide level1 center">
-<h1>Introduction</h1>
-<p>EC data is poorly suited for traditional statistical methods <span class="citation" data-cites="wegman_computational_1988">@wegman_computational_1988</span></p>
+<section id="introduction" class="slide level2">
+<h2>Introduction</h2>
+<p>Neural networks (NN) are flexible, powerful machine learing algorithms.</p>
 <ul>
-<li>Site specific approaches are often needed
+<li><strong>Universal approximators</strong>: can map any continuous function to an arbitrary degree fo accuracy.
 <ul>
-<li><strong>But</strong> from these <em>site specific</em> functional relationships, we hope to glean “universal” truths.</li>
+<li>Given sufficient “hidden nodes”, will fit <strong>any</strong> pattern in a dataset
+<ul>
+<li>Care must be taken to ensure the paterns are real</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="introduction-1" class="slide level2">
+<h2>Introduction</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<h3 id="pros">Pros</h3>
+<ul>
+<li>Well suited for non-linear, multi-variate response functions</li>
+<li>Robust to over-fitting</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<h3 id="cons">Cons</h3>
+<ul>
+<li>Computationally expensive</li>
+<li>Complex and difficult to implement</li>
+<li>“Black Boxes”</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="introduction-2" class="slide level2">
+<h2>Introduction</h2>
+<p>Eddy Covariance (EC) measures spatially integrated, semi-continouous, ecosystem-scale fluxes of energy, water, and trace gas.</p>
+<ul>
+<li>Noisy, voluminous EC data sets are poorly suited for traditional statistical methods <span class="citation" data-cites="wegman_computational_1988">Wegman (<a href="#/questions" role="doc-biblioref" onclick="">1988</a>)</span>
+<ul>
+<li>Site to site varriability makes standard ana approaches are often needed</li>
 </ul></li>
 <li>We need to ensure our results are reasonable given our understanding of the system.
 <ul>
@@ -365,16 +414,12 @@
 </ul></li>
 </ul>
 </section>
-<section id="neural-network-models" class="slide level2">
-<h2>Neural Network Models</h2>
-<p>They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.</p>
-</section></section>
 <section>
 <section id="objectives" class="title-slide slide level1 center">
 <h1>Objectives</h1>
-<p>We provide a tollset and examples demonstrating how NN models can be applied to EC data for both descriptive analysis and inferential modelling.</p>
+<p>Provide a tool set with functional examples demonstrating how NN models can be applied to EC data for both descriptive analysis and inferential modelling.</p>
 <ul>
-<li>The github repo associated with this presentation has Python code that can be used to apply NN models.</li>
+<li>The <a href="https://github.com/June-Skeeter/NN_Applications">github repository</a> linked to this presentation has Python code that can be used to apply NN models.</li>
 </ul>
 </section>
 <section id="a-simple-2d-example-calculating-and-visualizing-vpd" class="slide level2">
@@ -413,9 +458,9 @@
 </div>
 </div>
 </div>
-</section></section>
-<section id="example-data" class="title-slide slide level1 center">
-<h1>Example Data</h1>
+</section>
+<section id="example-data" class="slide level2">
+<h2>Example Data</h2>
 <p>BB1 Flux tower was established in 2015.</p>
 <div class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
@@ -443,7 +488,7 @@ TimeStamp
 2015-01-01 02:00:00      NaN  NaN  
 2015-01-01 02:30:00      NaN  NaN  </code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="135">
 
 <div>
 <style scoped="">
@@ -652,9 +697,8 @@ TimeStamp
 </div>
 </div>
 </section>
-
-<section id="artificial-gaps" class="title-slide slide level1 center">
-<h1>Artificial Gaps</h1>
+<section id="artificial-gaps" class="slide level2">
+<h2>Artificial Gaps</h2>
 <div id="fig-format" class="cell quarto-layout-panel" data-execution_count="4">
 <figure>
 <div class="quarto-layout-row quarto-layout-valign-top">
@@ -667,11 +711,23 @@ TimeStamp
 <p></p><figcaption>Figure&nbsp;1: <strong>?(caption)</strong></figcaption><p></p>
 </figure>
 </div>
+</section>
+<section id="conclusions" class="slide level2">
+<h2>Conclusions</h2>
+<p>They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.</p>
+</section>
+<section id="questions" class="slide level2 smaller scrollable">
+<h2>Questions</h2>
 
 <div class="footer footer-default">
 
 </div>
-</section>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-wegman_computational_1988" class="csl-entry" role="doc-biblioentry">
+Wegman, Edward J. 1988. <span>“Computational <span>Statistics</span>: <span>A</span> <span>New</span> <span>Agenda</span> for <span>Statistical</span> <span>Theory</span> and <span>Practice</span>.”</span> <em>Journal of the Washington Academy of Sciences</em> 78 (4): 310–22. <a href="https://www.jstor.org/stable/24536995">https://www.jstor.org/stable/24536995</a>.
+</div>
+</div>
+</section></section>
     </div>
   </div>
 
@@ -849,12 +905,12 @@ TimeStamp
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1200,
+        width: 1050,
 
         height: 700,
 
         // Factor of the display size that should remain empty around the content
-        margin: 5.0e-2,
+        margin: 0.1,
 
         math: {
           mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',

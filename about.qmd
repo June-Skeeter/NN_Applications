@@ -10,9 +10,9 @@ format:
     navigation-mode: linear
     controls-layout: bottom-right
     controls-tutorial: true
-    margin: 0.05
-    width: 1200
-    css: style.css
+    # margin: 0.05
+    # width: 1200
+    # css: style.css
     slide-number: true
     show-slide-number: all
     pdfMaxPagesPerSlide: 1
@@ -26,6 +26,10 @@ author:
     url: https://github.com/June-Skeeter
     affiliations:
     - ref: UBC
+#   - name: Dr. Sara Knox
+#     email: sara.knox@ubc.ca
+#     affiliations:
+#     - ref: UBC
 affiliations:
     - id: UBC
       name: University of British Columbia
@@ -34,14 +38,50 @@ affiliations:
       city: Vancouver, BC, Canada
       postal-code: V6T 1Z2
 keywords: [Eddy Covariance, Micrometeorology, Neural Networks, Modelling]
+citeproc: True
+bibliography: ML_EC.bib
+
 ---
 
-# Introduction 
+## Introduction
 
-EC data is poorly suited for traditional statistical methods @wegman_computational_1988
+Neural networks (NN) are flexible, powerful machine learing algorithms.
 
-* Site specific approaches are often needed
-    * **But** from these *site specific* functional relationships, we hope to glean "universal" truths.
+* **Universal approximators**: can map any continuous function to an arbitrary degree fo accuracy.
+    * Given sufficient "hidden nodes", will fit **any** pattern in a dataset
+        * Care must be taken to ensure the paterns are real
+
+## Introduction
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+### Pros
+
+* Well suited for non-linear, multi-variate response functions
+* Robust to over-fitting
+
+:::
+
+::: {.column width="60%"}
+
+### Cons
+
+* Computationally expensive
+* Complex and difficult to implement
+* "Black Boxes"
+
+:::
+
+::::
+
+## Introduction
+
+Eddy Covariance (EC) measures spatially integrated, semi-continouous, ecosystem-scale fluxes of energy, water, and trace gas.
+
+* Noisy, voluminous EC data sets are poorly suited for traditional statistical methods @wegman_computational_1988
+    * Site to site varriability makes standard ana approaches are often needed
 
 * We need to ensure our results are reasonable given our understanding of the system.
     * And if they don't, we need to be able to investigate **why**
@@ -49,16 +89,11 @@ EC data is poorly suited for traditional statistical methods @wegman_computation
 * As the period of record at flux sites extend (e.g, decades) the task only becomes more complex
     * A sliver lining: voluminous data sets are ideally suited for computational statistics!
 
-## Neural Network Models
-
-They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible. 
-
 # Objectives
 
-We provide a tollset and examples demonstrating how NN models can be applied to EC data for both descriptive analysis and inferential modelling.
+Provide a tool set with functional examples demonstrating how NN models can be applied to EC data for both descriptive analysis and inferential modelling.
  
-* The github repo associated with this presentation has Python code that can be used to apply NN models.
-
+* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has Python code that can be used to apply NN models.
 
 
 ## A Simple 2D Example Calculating and Visualizing VPD
@@ -177,7 +212,7 @@ grid_VPD.min()
 ```
 
 
-# Example Data
+## Example Data
 
 BB1 Flux tower was established in 2015.
 
@@ -221,7 +256,7 @@ Data.describe().round(1)
 ```
 
 
-# Artificial Gaps
+## Artificial Gaps
 
 
 ```{python}
@@ -271,3 +306,10 @@ for mask in Mask:
     print(mask)
 ```
 
+
+
+## Conclusions
+
+They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.
+
+## Questions

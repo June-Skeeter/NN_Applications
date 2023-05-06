@@ -151,6 +151,11 @@ def run_Model(config,Data):
         RI['RI_norm_bar']=SSD/SSD.sum()
         RI['RI_norm_CI95']=SSD_CI/SSD.sum()
 
+    
+    Mean_Output.to_csv(f"{config['Name']}/model_output.csv")
+        
+    RI.to_csv(f"{config['Name']}/model_RI.csv")
+
     R2 = metrics.r2_score(Mean_Output['target'],Mean_Output['y_bar'])
     RMSE = metrics.mean_squared_error(Mean_Output['target'],Mean_Output['y_bar'])**.5
     print('NN Model\n Validation metrics (ensemble mean): \nr2 = ',
@@ -161,7 +166,7 @@ def run_Model(config,Data):
     if config['RF_comp']==True:
         Run_RF(config,Data)
 
-    return (RI,Mean_Output,full_out)
+    return (full_out)
 
 def Train_RF(config,Data):
     # Create a RF model for comparisson
@@ -184,8 +189,6 @@ def Run_RF(config,Data):
     
     print('\n\nRF Model \nValidation metrics: \nr2 = ',np.round(R2,5),'\nRMSE = ',np.round(RMSE,5))
     
-    RI = pd.DataFrame(index=config['inputs'],data = {'RI':RF.feature_importances_})
-        
     N = y_pred.shape[0]
     if N > 1:
         t_score = stats.t.ppf(0.95,N)
@@ -197,7 +200,19 @@ def Run_RF(config,Data):
             'y_bar':y_pred.mean(axis=0).flatten(),
             'y_CI95':y_pred.std(axis=0).flatten()/(N)**.5*t_score
         })
+    
+    Mean_Output.to_csv(f"{config['Name']}/random_forest_output.csv")
+    
+    FI = np.array([tree.feature_importances_ for tree in RF.estimators_])
+    print(FI.shape)
+        
+    RI = pd.DataFrame(index=config['inputs'],data = {
+        
+            'RI_bar':FI.mean(axis=0).flatten(),
+            'RI_CI95':FI.std(axis=0).flatten()/(N)**.5*t_score})
+    
+    RI.to_csv(f"{config['Name']}/random_forest_RI.csv")
 
     T2 = time.time()
     print('Run Time:\n', np.round(T2 - T1,2),' Seconds')
-    return (Mean_Output,RI)
+    # return (Mean_Output,RI)

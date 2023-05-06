@@ -30,22 +30,78 @@
   {
     "objectID": "NN_for_EC.html",
     "href": "NN_for_EC.html",
-    "title": "NN_Applications",
+    "title": "Neural Network Applications for Eddy Covariance",
     "section": "",
-    "text": "## Import some standard packages and define a few functions\nimport time\nimport importlib\nimport numpy as np\nimport pandas as pd\nfrom matplotlib import cm\nfrom sklearn import metrics\nimport matplotlib.pyplot as plt\nfrom Scripts import PlotHelpers\nfrom matplotlib.colors import Normalize\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs, RF_Mod\n\ndbNames = {\n    'Clean/SecondStage/TA_1_1_1':'TA',\n    'Clean/SecondStage/RH_1_1_1':'RH',\n    'Clean/SecondStage/FC':'FCO2',\n    'Clean/SecondStage/FCH4':'FCH4',\n    'Clean/SecondStage/PPFD_IN_1_1_1':'PPFD',\n    'Clean/SecondStage/P_1_1_1':'P',\n    'Flux/qc_co2_flux':'qc_FCO2',\n    'Flux/qc_ch4_flux':'qc_FCH4',\n    'Clean/SecondStage/USTAR':'USTAR',\n    'Clean/SecondStage/TS_1':'TS_1',\n    'Clean/SecondStage/TS_2':'TS_2',\n    'Clean/SecondStage/TS_3':'TS_3',\n    'Clean/SecondStage/wind_speed':'U',\n    'Clean/SecondStage/wind_dir':'dir',\n    'Met/MET_WaterLevel_Avg':'WTD_raw',\n    'Clean/SecondStage/WTD_1_1_1':'WTD',\n}\n\nLocal = '/mnt/c/Users/User/PostDoc_Work/database/'\nRemote = '/mnt/w/'\n\nDir = Remote\n\nSite = 'BB'\n\nread_new = True\nif read_new == True:\n    Data = ReadDB.get_Traces(Site,list(dbNames.keys()),Dir=Dir)\n    Data = Data.rename(columns=dbNames)\n    Data.to_csv(f'temp/{Site}_VPD.csv')\n\nelse:\n    Data = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n\n\n\n\nimportlib.reload(ReadDB)\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])\nData['DOY'] = Data.index.dayofyear\n\ninputs = ['PPFD','VPD','TS_1','Rand']\ntarget = ['FCO2']\n\nData['Rand']=np.random.random(Data['FCO2'].values.shape)\nData['Rand100']=Data['Rand']*100\n\nprint(Data[['FCO2','FCH4']].describe())\nfilter = ReadDB.filterFlux(Data,target)\nfilter.QA_QC()\nfilter.rain('P',thresh=1)\nfilter.MAD(z=7)\nfilter.uStar('USTAR',u_thresh=0.05)\n\nData[['FCO2_Clean','FCH4_Clean']] = filter.df[['FCO2','FCH4']].copy()\n\nClean_Data = filter.df.copy()\n\n               FCO2          FCH4\ncount  37260.000000  42498.000000\nmean      -0.333153     52.984230\nstd        4.312031     69.966599\nmin      -49.348000   -199.917206\n25%       -1.711623      9.618972\n50%       -0.131327     34.761662\n75%        0.749001     90.470169\nmax       49.777348    695.056885"
+    "text": "## Import some standard packages and define a few functions\nimport time\nimport importlib\nimport numpy as np\nimport pandas as pd\nfrom matplotlib import cm\nfrom sklearn import metrics\nimport matplotlib.pyplot as plt\nfrom Scripts import PlotHelpers\nfrom matplotlib.colors import Normalize\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs\n\ndbNames = {\n    'Clean/SecondStage/TA_1_1_1':'TA',\n    'Clean/SecondStage/RH_1_1_1':'RH',\n    'Clean/SecondStage/FC':'FCO2',\n    'Clean/SecondStage/FCH4':'FCH4',\n    'Clean/SecondStage/PPFD_IN_1_1_1':'PPFD',\n    'Clean/SecondStage/P_1_1_1':'P',\n    'Flux/qc_co2_flux':'qc_FCO2',\n    'Flux/qc_ch4_flux':'qc_FCH4',\n    'Clean/SecondStage/USTAR':'USTAR',\n    'Clean/SecondStage/TS_1':'TS_1',\n    'Clean/SecondStage/TS_2':'TS_2',\n    'Clean/SecondStage/TS_3':'TS_3',\n    'Clean/SecondStage/wind_speed':'U',\n    'Clean/SecondStage/wind_dir':'dir',\n    'Met/MET_WaterLevel_Avg':'WTD_raw',\n    'Clean/SecondStage/WTD_1_1_1':'WTD',\n}\n\nLocal = '/mnt/c/Users/User/PostDoc_Work/database/'\nRemote = '/mnt/w/'\n\nDir = Remote\n\nSite = 'BB'\n\nread_new = False\nif read_new == True:\n    Data = ReadDB.get_Traces(Site,list(dbNames.keys()),Dir=Dir)\n    Data = Data.rename(columns=dbNames)\n    Data.to_csv(f'temp/{Site}_VPD.csv')\n\nelse:\n    Data = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n\n\n\n\nimportlib.reload(ReadDB)\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])\nData['DOY'] = Data.index.dayofyear\n\ninputs = ['PPFD','VPD','TS_1','Rand']\ntarget = ['FCO2']\n\nData['Rand']=np.random.random(Data['FCO2'].values.shape)\nData['Rand100']=Data['Rand']*100\n\nprint(Data[['FCO2','FCH4']].describe())\nfilter = ReadDB.filterFlux(Data,target)\nfilter.QA_QC()\nfilter.rain('P',thresh=1)\nfilter.MAD(z=7)\nfilter.uStar('USTAR',u_thresh=0.05)\n\nData[['FCO2_Clean','FCH4_Clean']] = filter.df[['FCO2','FCH4']].copy()\n\nClean_Data = filter.df.copy()\n\n               FCO2          FCH4\ncount  37260.000000  42498.000000\nmean      -0.333153     52.984234\nstd        4.312031     69.966599\nmin      -49.348000   -199.917200\n25%       -1.711623      9.618972\n50%       -0.131327     34.761661\n75%        0.749001     90.470169\nmax       49.777348    695.056900"
   },
   {
     "objectID": "NN_for_EC.html#build-and-train-model",
     "href": "NN_for_EC.html#build-and-train-model",
-    "title": "NN_Applications",
+    "title": "Neural Network Applications for Eddy Covariance",
     "section": "Build and train model",
-    "text": "Build and train model\n\nimportlib.reload(NNetFuncs)\n\nrun = 'Noisy_Data'\n\nNNetFuncs.make_Dense_model(Model_Runs[run]['config'])\nNNetFuncs.train_model(Model_Runs[run]['config'],Model_Runs[run]['Training'])\n\nModel: \"Noisy_Data\"\n_________________________________________________________________\n Layer (type)                Output Shape              Param #   \n=================================================================\n input_1 (InputLayer)        [(None, 5)]               0         \n                                                                 \n normalization (Normalizatio  (None, 5)                0         \n n)                                                              \n                                                                 \n dense (Dense)               (None, 64)                384       \n                                                                 \n dense_1 (Dense)             (None, 1)                 65        \n                                                                 \n=================================================================\nTotal params: 449\nTrainable params: 449\nNon-trainable params: 0\n_________________________________________________________________\nNone\nTraining Time:\n 370.75  Seconds\n\nTraining RF Model\nTraining Time:\n 13.91  Seconds"
+    "text": "Build and train model\n\nimportlib.reload(NNetFuncs)\n\nrun = 'Noisy_Data'\n\n# NNetFuncs.make_Dense_model(Model_Runs[run]['config'])\n# NNetFuncs.train_model(Model_Runs[run]['config'],Model_Runs[run]['Training'])"
   },
   {
     "objectID": "NN_for_EC.html#relative-influence-of-features",
     "href": "NN_for_EC.html#relative-influence-of-features",
-    "title": "NN_Applications",
+    "title": "Neural Network Applications for Eddy Covariance",
     "section": "Relative influence of features",
-    "text": "Relative influence of features\n\n# Mean_Output['diff'] = (Mean_Output['target']-Mean_Output['y_bar']).abs()\n\nmod = '_norm'\n\nRI = RI.sort_values(by=f'RI{mod}_bar',ascending=True)\nfig,ax=plt.subplots()\n\nax.barh(RI.index,RI[f'RI{mod}_bar'],yerr=RI[f'RI{mod}_CI95'])\nax.grid()"
+    "text": "Relative influence of features\n\nNN_RI = pd.read_csv('Noisy_Data/model_RI.csv',index_col=[0])\nmod = '_norm'\n\nNN_RI = NN_RI.sort_values(by=f'RI{mod}_bar',ascending=True)\nfig,ax=plt.subplots()\n\nax.barh(NN_RI.index,NN_RI[f'RI{mod}_bar'],yerr=NN_RI[f'RI{mod}_CI95'])\nax.grid()"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "NN_Applications",
+    "section": "",
+    "text": "Neural networks (NN) are universal approximators\nEC data is poorly suited for traditional statistical methods @wegman_computational_1988\n\nSite specific approaches are often needed\n\nBut from these site specific functional relationships, we hope to glean “universal” truths.\n\nWe need to ensure our results are reasonable given our understanding of the system.\n\nAnd if they don’t, we need to be able to investigate why\n\nAs the period of record at flux sites extend (e.g, decades) the task only becomes more complex\n\nA sliver lining: voluminous data sets are ideally suited for computational statistics!\n\n\n\n\nThey offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible."
+  },
+  {
+    "objectID": "about.html#introduction",
+    "href": "about.html#introduction",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Introduction",
+    "text": "Introduction\nNeural networks (NN) are flexible, powerful machine learing algorithms.\n\nUniversal approximators: can map any continuous function to an arbitrary degree fo accuracy.\n\nGiven sufficient “hidden nodes”, will fit any pattern in a dataset\n\nCare must be taken to ensure the paterns are real"
+  },
+  {
+    "objectID": "about.html#introduction-1",
+    "href": "about.html#introduction-1",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Introduction",
+    "text": "Introduction\n\n\nPros\n\nWell suited for non-linear, multi-variate response functions\nRobust to over-fitting\n\n\nCons\n\nComputationally expensive\nComplex and difficult to implement\n“Black Boxes”"
+  },
+  {
+    "objectID": "about.html#introduction-2",
+    "href": "about.html#introduction-2",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Introduction",
+    "text": "Introduction\nEddy Covariance (EC) measures spatially integrated, semi-continouous, ecosystem-scale fluxes of energy, water, and trace gas.\n\nNoisy, voluminous EC data sets are poorly suited for traditional statistical methods Wegman (1988)\n\nSite to site varriability makes standard ana approaches are often needed\n\nWe need to ensure our results are reasonable given our understanding of the system.\n\nAnd if they don’t, we need to be able to investigate why\n\nAs the period of record at flux sites extend (e.g, decades) the task only becomes more complex\n\nA sliver lining: voluminous data sets are ideally suited for computational statistics!"
+  },
+  {
+    "objectID": "about.html#conclusions",
+    "href": "about.html#conclusions",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Conclusions",
+    "text": "Conclusions\nThey offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible."
+  },
+  {
+    "objectID": "about.html#questions",
+    "href": "about.html#questions",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Questions",
+    "text": "Questions\n\n\n\n\n\n\nWegman, Edward J. 1988. “Computational Statistics: A New Agenda for Statistical Theory and Practice.” Journal of the Washington Academy of Sciences 78 (4): 310–22. https://www.jstor.org/stable/24536995."
+  },
+  {
+    "objectID": "about.html#example-data",
+    "href": "about.html#example-data",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Example Data",
+    "text": "Example Data\nBB1 Flux tower was established in 2015.\n\n\n                           TA         RH  FCO2  FCH4       PPFD    P  qc_FCO2  \\\nTimeStamp                                                                       \n2015-01-01 00:30:00 -5.184118  93.123276   NaN   NaN  13.415596  0.0      NaN   \n2015-01-01 01:00:00 -5.582586  93.134880   NaN   NaN  13.415596  0.0      NaN   \n2015-01-01 01:30:00 -5.273667  93.411385   NaN   NaN  13.415596  0.0      NaN   \n2015-01-01 02:00:00 -5.527215  93.178055   NaN   NaN  13.415596  0.0      NaN   \n2015-01-01 02:30:00 -5.515291  93.384380   NaN   NaN  13.415596  0.0      NaN   \n\n                     qc_FCH4  USTAR      TS_1      TS_2      TS_3   U  dir  \\\nTimeStamp                                                                    \n2015-01-01 00:30:00      NaN    NaN  1.479264  2.179019  6.948500 NaN  NaN   \n2015-01-01 01:00:00      NaN    NaN  1.446164  2.144506  6.990202 NaN  NaN   \n2015-01-01 01:30:00      NaN    NaN  1.485793  2.158336  6.956882 NaN  NaN   \n2015-01-01 02:00:00      NaN    NaN  1.430985  2.130317  6.998434 NaN  NaN   \n2015-01-01 02:30:00      NaN    NaN  1.461107  2.125426  6.966145 NaN  NaN   \n\n                     WTD_raw  WTD  \nTimeStamp                          \n2015-01-01 00:30:00      NaN  NaN  \n2015-01-01 01:00:00      NaN  NaN  \n2015-01-01 01:30:00      NaN  NaN  \n2015-01-01 02:00:00      NaN  NaN  \n2015-01-01 02:30:00      NaN  NaN  \n\n\n\n\n\n\n  \n    \n      \n      TA\n      RH\n      FCO2\n      FCH4\n      PPFD\n      P\n      qc_FCO2\n      qc_FCH4\n      USTAR\n      TS_1\n      TS_2\n      TS_3\n      U\n      dir\n      WTD_raw\n      WTD\n      VPD\n    \n  \n  \n    \n      count\n      140249.0\n      140104.0\n      37260.0\n      42498.0\n      140256.0\n      139996.0\n      91746.0\n      74387.0\n      71373.0\n      138046.0\n      138042.0\n      138042.0\n      71373.0\n      92583.0\n      129783.0\n      1969.0\n      140104.0\n    \n    \n      mean\n      10.6\n      84.2\n      -0.3\n      53.0\n      216.1\n      0.1\n      0.8\n      0.7\n      0.2\n      11.7\n      11.6\n      10.2\n      1.5\n      168.7\n      90.8\n      0.0\n      2.8\n    \n    \n      std\n      6.9\n      15.5\n      4.3\n      70.0\n      365.2\n      0.3\n      0.8\n      0.7\n      0.1\n      5.4\n      5.2\n      4.7\n      1.2\n      84.4\n      94.8\n      0.1\n      3.9\n    \n    \n      min\n      -13.8\n      0.0\n      -49.3\n      -199.9\n      -4.5\n      0.0\n      0.0\n      0.0\n      0.0\n      -23.0\n      -25.2\n      -19.6\n      0.0\n      0.0\n      -5883.7\n      0.0\n      -0.0\n    \n    \n      25%\n      5.9\n      74.9\n      -1.7\n      9.6\n      0.0\n      0.0\n      0.0\n      0.0\n      0.1\n      6.7\n      6.7\n      7.2\n      0.5\n      97.8\n      61.7\n      0.0\n      0.3\n    \n    \n      50%\n      10.3\n      89.6\n      -0.1\n      34.8\n      13.4\n      0.0\n      1.0\n      1.0\n      0.1\n      11.8\n      11.7\n      10.2\n      1.3\n      158.9\n      70.3\n      0.0\n      1.2\n    \n    \n      75%\n      15.2\n      96.5\n      0.7\n      90.5\n      274.8\n      0.0\n      1.0\n      1.0\n      0.2\n      16.7\n      16.4\n      14.6\n      2.2\n      247.9\n      81.0\n      0.0\n      3.7\n    \n    \n      max\n      38.0\n      100.2\n      49.8\n      695.1\n      1883.9\n      11.5\n      2.0\n      2.0\n      2.6\n      24.2\n      21.8\n      17.2\n      8.3\n      360.0\n      5813.5\n      2.4\n      42.4"
+  },
+  {
+    "objectID": "about.html#artificial-gaps",
+    "href": "about.html#artificial-gaps",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Artificial Gaps",
+    "text": "Artificial Gaps\n\n\n\n\n(63812, 17) (76444, 17)\n[-1  1]\n[2 3]\n\n\nFigure 1: ?(caption)"
   }
 ]
