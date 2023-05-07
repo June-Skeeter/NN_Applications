@@ -62,33 +62,23 @@ def byInterval(df,x,Vars,bins=None,agg='mean'):
         Set[STD] = df.groupby(f'{x}_grp').std(numeric_only=True)[Vars]
         Set[c] = df.groupby(f'{x}_grp').count()[Vars]
     Set[CI] = Set[STD].values/(Set[c].values**.5)*(stats.t.ppf(0.95,Set[c].values))
+    Set = Set.loc[Set[c].sum(axis=1)>len(c)*10]
     return Set[Vars+CI+STD+c]
 
-def makeMask(df,Y=None,Mask=None,in_out='out',dropOut=.33):
+def makeSplit(df,Mask=None,dropOut=.33,return_Full=False):
     # Add Random or Systematic gaps to the dataset
     # If no mask - drop randomly using dropOut rate
     # If Mask, drop values within bound(s) of mask(s)
     if Mask is None:
-        Masked = df.sample(frac=(1-dropOut))
-        Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
+        Training = df.sample(frac=(1-dropOut))
+        Validation = df.loc[df.index.isin(Training.index)==False].copy()
     else:
-        if in_out == 'out':
-            if Mask.ndim==1:
-                Masked = df.loc[~df[Y].between(Mask[0],Mask[1])]
-                Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
-            elif Mask.ndim==2:
-                Dropped = pd.DataFrame()
-                for mask in Mask:
-                    Dropped = pd.concat([Dropped,df.loc[df[Y].between(mask[0],mask[1])]])
-                Masked = df.loc[df.index.isin(Dropped.index)==False].copy()
-        else:
-            if Mask.ndim==1:
-                Masked = df.loc[df[Y].between(Mask[0],Mask[1])]
-                Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
-            elif Mask.ndim==2:
-                Masked = pd.DataFrame()
-                for mask in Mask:
-                    Masked = pd.concat([Masked,df.loc[df[Y].between(mask[0],mask[1])]])
-                Dropped = df.loc[df.index.isin(Masked.index)==False].copy()
-    
-    return(Masked,Dropped)
+        Validation = pd.DataFrame()
+        for key,mask in Mask.items():
+            for m in mask:
+                Validation = pd.concat([Validation,df.loc[df[key].between(m[0],m[1])]])
+            Training = df.loc[df.index.isin(Validation.index)==False].copy()
+    if return_Full == False:
+        return(Training,Validation)
+    else:
+        return(Training,df)

@@ -1,24 +1,94 @@
 [
   {
-    "objectID": "about.html#neural-network-models",
-    "href": "about.html#neural-network-models",
+    "objectID": "about.html#eddy-covariance",
+    "href": "about.html#eddy-covariance",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Neural Network Models",
-    "text": "Neural Network Models\nThey offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible."
+    "section": "Eddy Covariance",
+    "text": "Eddy Covariance\n\n\nEcosystem-scale fluxes energy, water, and trace gases.\n\nVoluminous data sets\n\nNoisy & gap-prone\n\nIdeally suited for machine learning!\n\n\n\n\nBurns Bog EC StationDelta, BC"
   },
   {
-    "objectID": "about.html#a-simple-2d-example-calculating-and-visualizing-vpd",
-    "href": "about.html#a-simple-2d-example-calculating-and-visualizing-vpd",
+    "objectID": "about.html#neural-networks",
+    "href": "about.html#neural-networks",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "A Simple 2D Example Calculating and Visualizing VPD",
-    "text": "A Simple 2D Example Calculating and Visualizing VPD\n\n\nThe Vapor Pressure Deficit (VPD) decreases exponentially as a function of air temperature (Ta) and linearly as a function of relative humidity (RH). We can calculate VPD (kPa) from Ta in (\\(\\circ\\) C) and RH (%) as follows:\n\n\n\n\n\n\n\n\nThis plot shows the relationship between VPD, TA, and RH over a range of possible values"
+    "section": "Neural Networks",
+    "text": "Neural Networks\nUniversal approximators: they can map any continuous function to an arbitrary degree accuracy.\n\nWith sufficient hidden nodes, they will fit any pattern in a dataset\n\nCare must be taken to ensure the patterns are real\n\nHave often been treated as “black boxes”\n\n\nWell suited for non-linear, multi-variate response functions\n\nCapable interpolation and extrapolation"
   },
   {
-    "objectID": "about.html#partial-derivatives",
-    "href": "about.html#partial-derivatives",
+    "objectID": "about.html#commonly-cited-limitations",
+    "href": "about.html#commonly-cited-limitations",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Partial Derivatives",
-    "text": "Partial Derivatives\n\n\n\n-1.7763568394002505e-14\n\n\n\n\nThis plot shows the partial first derivatives of VPD"
+    "section": "Commonly Cited Limitations",
+    "text": "Commonly Cited Limitations\n\n\n\n\n\n\n\n\n\nIssue\nSolutions\n\n\n\n\nOver-fitting\n* Model ensembles * 3-way cross validation  * pruning\n\n\nBlack boxes models\n* Plot partial derivatives  * feature importance\n\n\nComputationally expensive\n* Tensorflow  * GPU processing"
+  },
+  {
+    "objectID": "about.html#example-data",
+    "href": "about.html#example-data",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Example Data",
+    "text": "Example Data\n\n\nBB1 EC station\n\nBeakrush-Sphagnum ecosystem undergoing active restoration\n8+ years of CO2 and CH4 flux observations"
+  },
+  {
+    "objectID": "about.html#training-procedures",
+    "href": "about.html#training-procedures",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Training Procedures",
+    "text": "Training Procedures\n\n\nAn iterative process:\n\nThree way cross-validation\n\nTrain & validate - random split by model\nTest - consistent between models\n\nEnsemble-size\n\nLarger ensemble > more robust model\nN = 10 likely suitable for most applications"
+  },
+  {
+    "objectID": "about.html#how-to-prune-a-model",
+    "href": "about.html#how-to-prune-a-model",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "How to Prune a Model",
+    "text": "How to Prune a Model\nCalculate partial first derivative of the output with respect to each input over test data domain.\n\nRelative Influence (RI): Normalized Sum of squared derivatives (SSD)\nIteratively prune inputs with RI below a reference threshold\n\nRandom input assess base-level performance\n\nTrain final model without random scalar"
+  },
+  {
+    "objectID": "about.html#pruning-a-fco2-model",
+    "href": "about.html#pruning-a-fco2-model",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Pruning a FCO2 Model",
+    "text": "Pruning a FCO2 Model"
+  },
+  {
+    "objectID": "about.html#model-inspection",
+    "href": "about.html#model-inspection",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Model Inspection",
+    "text": "Model Inspection\n\n\nPlot the model outputs using the test data.\n\n\n\n\n\n\n\n\n\n\n\nMetric\nScore\n\n\n\n\nRMSE\n0.59 \\(\\mu mol\\) \\(m^{-2}s^{-1}\\)\n\n\nr2\n0.86"
+  },
+  {
+    "objectID": "about.html#plotting-derivatives",
+    "href": "about.html#plotting-derivatives",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Plotting Derivatives",
+    "text": "Plotting Derivatives\nHelp ensure mapped relationships are physically plausible\n\nAn essential step and key advantage NN models\nRaw derivatives show true feature responses\n\n95% confidence intervals indicate model confidence in relationships\n\nNormalized derivatives scaled by input variance\n\nView relative on common scale"
+  },
+  {
+    "objectID": "about.html#partial-derivatives-of-fco2",
+    "href": "about.html#partial-derivatives-of-fco2",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Partial Derivatives of FCO2",
+    "text": "Partial Derivatives of FCO2"
+  },
+  {
+    "objectID": "about.html#normalized-partial-derivatives",
+    "href": "about.html#normalized-partial-derivatives",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Normalized Partial Derivatives",
+    "text": "Normalized Partial Derivatives"
+  },
+  {
+    "objectID": "about.html#next-steps",
+    "href": "about.html#next-steps",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Next Steps",
+    "text": "Next Steps\n\nCustom NN architecture: Separating input layers may allow us partition fluxes.\n\nFCO2 into GPP and ER\nFCH4 into methanogenesis, methanotrophy, transport\n\nFlux footprint analysis: Models can help account for spatial heterogeneity within a a footprint\n\nNN could also be trained to calculate/classify footprints!\n\nu* filtering: Partial derivatives of u* could give thresholds for filtering"
+  },
+  {
+    "objectID": "about.html#why-not-use-a-random-forest",
+    "href": "about.html#why-not-use-a-random-forest",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Why not use a Random Forest?",
+    "text": "Why not use a Random Forest?\nRF models are great! … for classifying discrete objects\n\nBut, it’s my view that applying them to continuous data is misguided\nThey are poorly suited for interpolation and incapable of extrapolation"
   },
   {
     "objectID": "index.html",
@@ -32,160 +102,69 @@
     "href": "NN_for_EC.html",
     "title": "Neural Network Applications for Eddy Covariance",
     "section": "",
-    "text": "## Import some standard packages and define a few functions\nimport time\nimport importlib\nimport numpy as np\nimport pandas as pd\nfrom matplotlib import cm\nfrom sklearn import metrics\nimport matplotlib.pyplot as plt\nfrom Scripts import PlotHelpers\nfrom matplotlib.colors import Normalize\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs\n\ndbNames = {\n    'Clean/SecondStage/TA_1_1_1':'TA',\n    'Clean/SecondStage/RH_1_1_1':'RH',\n    'Clean/SecondStage/FC':'FCO2',\n    'Clean/SecondStage/FCH4':'FCH4',\n    'Clean/SecondStage/PPFD_IN_1_1_1':'PPFD',\n    'Clean/SecondStage/P_1_1_1':'P',\n    'Flux/qc_co2_flux':'qc_FCO2',\n    'Flux/qc_ch4_flux':'qc_FCH4',\n    'Clean/SecondStage/USTAR':'USTAR',\n    'Clean/SecondStage/TS_1':'TS_1',\n    'Clean/SecondStage/TS_2':'TS_2',\n    'Clean/SecondStage/TS_3':'TS_3',\n    'Clean/SecondStage/wind_speed':'U',\n    'Clean/SecondStage/wind_dir':'dir',\n    'Met/MET_WaterLevel_Avg':'WTD_raw',\n    'Clean/SecondStage/WTD_1_1_1':'WTD',\n}\n\nLocal = '/mnt/c/Users/User/PostDoc_Work/database/'\nRemote = '/mnt/w/'\n\nDir = Remote\n\nSite = 'BB'\n\nread_new = False\nif read_new == True:\n    Data = ReadDB.get_Traces(Site,list(dbNames.keys()),Dir=Dir)\n    Data = Data.rename(columns=dbNames)\n    Data.to_csv(f'temp/{Site}_VPD.csv')\n\nelse:\n    Data = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n\n2023-05-06 10:31:07.360259: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.\n\n\n\n\n\nimportlib.reload(ReadDB)\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])\nData['DOY'] = Data.index.dayofyear\n\ninputs = ['PPFD','VPD','TS_1','Rand']\ntarget = ['FCO2']\n\nData['Rand']=np.random.random(Data['FCO2'].values.shape)\nData['Rand100']=Data['Rand']*100\n\nprint(Data[['FCO2','FCH4']].describe())\nfilter = ReadDB.filterFlux(Data,target)\nfilter.QA_QC()\nfilter.rain('P',thresh=1)\nfilter.MAD(z=7)\nfilter.uStar('USTAR',u_thresh=0.05)\n\nData[['FCO2_Clean','FCH4_Clean']] = filter.df[['FCO2','FCH4']].copy()\n\nClean_Data = filter.df.copy()\n\n               FCO2          FCH4\ncount  37260.000000  42498.000000\nmean      -0.333153     52.984234\nstd        4.312031     69.966599\nmin      -49.348000   -199.917200\n25%       -1.711623      9.618972\n50%       -0.131327     34.761661\n75%        0.749001     90.470169\nmax       49.777348    695.056900"
+    "text": "## Import some standard packages and define a few functions\nimport os\n# Hide default info, logs, and warnings - comment out if you need to troubleshoot\nos.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'\n\nimport time\nimport shutil\nimport importlib\nimport numpy as np\nimport pandas as pd\n# from matplotlib import cm\nfrom sklearn import metrics\nimport matplotlib.pyplot as plt\nfrom Scripts import PlotHelpers\n# from matplotlib.colors import Normalize\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs\n\ndbNames = {\n    'Clean/SecondStage/TA_1_1_1':'T air',\n    'Clean/SecondStage/RH_1_1_1':'RH',\n    'Clean/SecondStage/FC':'FCO2',\n    'Clean/SecondStage/FCH4':'FCH4',\n    'Clean/SecondStage/PPFD_IN_1_1_1':'PPFD',\n    'Clean/SecondStage/P_1_1_1':'Precip',\n    'Flux/qc_co2_flux':'qc_FCO2',\n    'Flux/qc_ch4_flux':'qc_FCH4',\n    'Clean/SecondStage/USTAR':'u*',\n    'Clean/SecondStage/TS_1':'T soil 5cm',\n    'Clean/SecondStage/TS_2':'T soil 10cm',\n    'Clean/SecondStage/TS_3':'T soil 30cm',\n    'Clean/SecondStage/wind_speed':'Wind speed',\n    'Clean/SecondStage/wind_dir':'Wind dir',\n    'Clean/SecondStage/WTD_1_1_1':'Water table',\n}\n\nLocal = '/mnt/c/Users/User/PostDoc_Work/database/'\nRemote = '/mnt/w/'\n\nDir = Local\n\nSite = 'BB'\n\nread_new = True\nif read_new == True:\n    Data = ReadDB.get_Traces(Site,list(dbNames.keys()),Dir=Dir)\n    Data = Data.rename(columns=dbNames)\n    Data.to_csv(f'temp/{Site}_Data.csv')\n\nelse:\n    Data = pd.read_csv(f'temp/{Site}_Data.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n\n\n\n\n\nimportlib.reload(ReadDB)\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])\nData['DOY'] = Data.index.dayofyear\n\ntarget = ['FCO2','FCH4']\n\nData['Rand']=np.random.random(Data['FCO2'].values.shape)\n\nprint(Data[['FCO2','FCH4']].describe())\nfilter = ReadDB.filterFlux(Data,target)\nfilter.QA_QC()\nfilter.dir_mask('dir',[[0,30],[330,360]])\nfilter.rain('P',thresh=1)\nfilter.MAD(z=7)\nfilter.uStar('USTAR',u_thresh=0.1)\n\nData[['FCO2_Clean','FCH4_Clean']] = filter.df[['FCO2','FCH4']].copy()\n\nprint(Data[['FCO2_Clean','FCH4_Clean']].describe())\n\nexcludes = ['fco2','fch4']\n\nFull_inputs = []\n\nfor val in list(Data.columns):\n    exct = 0\n    for ex in excludes:\n        if ex in val.lower():\n            exct += 1\n    if exct < 1:\n        Full_inputs.append(val)\n\nFull_inputs\n\n               FCO2          FCH4\ncount  33385.000000  32951.000000\nmean      -0.457040     49.597336\nstd        3.770148     66.645355\nmin      -45.689865   -198.555832\n25%       -1.767280      8.693725\n50%       -0.121570     29.436230\n75%        0.718945     87.813492\nmax       49.698837    695.056885\n         FCO2_Clean    FCH4_Clean\ncount  14123.000000  10777.000000\nmean      -0.828791     20.652699\nstd        1.605370     17.728533\nmin       -3.887600    -63.525269\n25%       -2.137111      7.688650\n50%       -0.834086     16.143156\n75%        0.417498     31.751116\nmax        4.002227     64.322365\n\n\n['TA',\n 'RH',\n 'PPFD',\n 'P',\n 'USTAR',\n 'TS 5cm',\n 'TS 10cm',\n 'TS 30cm',\n 'U',\n 'dir',\n 'WTD',\n 'VPD',\n 'DOY',\n 'Rand']"
   },
   {
     "objectID": "NN_for_EC.html#build-and-train-model",
     "href": "NN_for_EC.html#build-and-train-model",
     "title": "Neural Network Applications for Eddy Covariance",
     "section": "Build and train model",
-    "text": "Build and train model\n\nimportlib.reload(NNetFuncs)\n\n# run = 'Noisy_Data'\n\nRuns = ['VPD_Estimate']#,'Feature_Detection']\nfor run in Runs:\n    config = Model_Runs[run]['config']\n    Training = Model_Runs[run]['Training']\n\n    NNetFuncs.make_Dense_model(config)\n    NNetFuncs.train_model(config,Training)\n\nModel: \"VPD_Estimate\"\n_________________________________________________________________\n Layer (type)                Output Shape              Param #   \n=================================================================\n input_1 (InputLayer)        [(None, 2)]               0         \n                                                                 \n normalization (Normalizatio  (None, 2)                0         \n n)                                                              \n                                                                 \n dense (Dense)               (None, 64)                192       \n                                                                 \n dense_1 (Dense)             (None, 1)                 65        \n                                                                 \n=================================================================\nTotal params: 257\nTrainable params: 257\nNon-trainable params: 0\n_________________________________________________________________\n\n\n2023-05-06 10:36:36.536135: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.594401: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.594451: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.595204: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI FMA\nTo enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.\n2023-05-06 10:36:36.597258: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.597323: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:36.597365: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:37.793493: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:37.793578: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:37.793584: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1616] Could not identify NUMA node of platform GPU id 0, defaulting to 0.  Your kernel may not have been built with NUMA support.\n2023-05-06 10:36:37.793612: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:961] could not open file to read NUMA node: /sys/bus/pci/devices/0000:01:00.0/numa_node\nYour kernel may have been built without NUMA support.\n2023-05-06 10:36:37.793655: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1532] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 3447 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3060 Laptop GPU, pci bus id: 0000:01:00.0, compute capability: 8.6\n\n\nNone\n\n\n2023-05-06 10:36:39.945020: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.\n\n\nTraining Time:\n 390.82  Seconds\n\nTraining RF Model\nTraining Time:\n 17.38  Seconds"
+    "text": "Build and train model\n\nimportlib.reload(NNetFuncs)\n\nRun = 'Full_Model'\n\ndef Build_Train_Eval(Run,print_sum=False):\n\n    config = Run['config']\n    Training = Run['Training']\n\n    NNetFuncs.make_Dense_model(config,print_sum=print_sum)\n    NNetFuncs.train_model(config,Training)\n    \n    Eval = Run['Evaluation']\n    _=NNetFuncs.run_Model(config,Eval)"
   },
   {
-    "objectID": "NN_for_EC.html#relative-influence-of-features",
-    "href": "NN_for_EC.html#relative-influence-of-features",
+    "objectID": "about_BU.html",
+    "href": "about_BU.html",
     "title": "Neural Network Applications for Eddy Covariance",
-    "section": "Relative influence of features",
-    "text": "Relative influence of features"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "NN_Applications",
     "section": "",
-    "text": "Neural networks (NN) are universal approximators\nEC data is poorly suited for traditional statistical methods @wegman_computational_1988\n\nSite specific approaches are often needed\n\nBut from these site specific functional relationships, we hope to glean “universal” truths.\n\nWe need to ensure our results are reasonable given our understanding of the system.\n\nAnd if they don’t, we need to be able to investigate why\n\nAs the period of record at flux sites extend (e.g, decades) the task only becomes more complex\n\nA sliver lining: voluminous data sets are ideally suited for computational statistics!\n\n\n\n\nThey offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible."
+    "text": "Ecosystem-scale fluxes of energy, water, and trace gases.\n\nSpatially integrated, semi-continuous\nNoisy, voluminous data\n\nIdeally suited for NN analysis!"
   },
   {
-    "objectID": "about.html#introduction",
-    "href": "about.html#introduction",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Introduction",
-    "text": "Introduction\nNeural networks (NN) are flexible, powerful machine learing algorithms.\n\nUniversal approximators: can map any continuous function to an arbitrary degree fo accuracy.\n\nGiven sufficient “hidden nodes”, will fit any pattern in a dataset\n\nCare must be taken to ensure the paterns are real"
+    "objectID": "about_BU.html#neural-networks",
+    "href": "about_BU.html#neural-networks",
+    "title": "Neural Network Applications for Eddy Covariance",
+    "section": "Neural Networks",
+    "text": "Neural Networks\nPowerful machine learning algorithms that are well suited for non-linear, multi-variate response functions.\n\nUniversal approximators: can map any continuous function to an arbitrary degree of accuracy.\n\nGiven sufficient “hidden nodes”, will fit any pattern in a dataset\n\nCare must be taken to ensure the patterns are real\n\n\nCapable of interpolation and extrapolation"
   },
   {
-    "objectID": "about.html#introduction-1",
-    "href": "about.html#introduction-1",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Introduction",
-    "text": "Introduction\n\n\nPros\n\nWell suited for non-linear, multi-variate response functions\nRobust to over-fitting\n\n\nCons\n\nComputationally expensive\nComplex and difficult to implement\n“Black Boxes”"
+    "objectID": "about_BU.html#commonly-cited-limitations",
+    "href": "about_BU.html#commonly-cited-limitations",
+    "title": "Neural Network Applications for Eddy Covariance",
+    "section": "Commonly Cited Limitations",
+    "text": "Commonly Cited Limitations\n’Code” #| tbl-colwidths: [35,65] import pandas as pd\nfrom IPython.display import Markdown from tabulate import tabulate\ndf = pd.read_csv(‘About.csv’,sep=‘|’,index_col=‘Drawback’) Markdown(tabulate( df, headers=[“Limitation”, “Solutions”] ))\n\n# Objectives\n\nProvide a framework for applying NN models can be applied to EC data for both descriptive analysis and inferential modelling. \n \n* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has Python code with functional examples that can be used to apply NN models.\n\n## Key Procedures\n\n* Early stopping: End training metrics (e.g., MSE) fail to improve for *e* training epochs\n    * *e* = 2 typically provides a robust, generalizable model\n\n* Ensembling: Train a set of N randomly initialled models on N unique interactions of training/testing data\n    * A small ensemble for ~10 models is sufficient in most applications\n\n* Input normalization: Z-norm scale all inputs to improve training\n\n## Key Procedures\n\n* Feature inspection: Calculating partial first (and second) derivatives of each input\n    * Sum of squared derivatives gives relative influence of each input over output\n    * Plotting model derivatives to help ensure mapped relationships are physically plausible\n        * An **essential step** and **key advantage** of NN models\n\n## A Simple Example\n\n:::: {.columns}\n\n::: {.column width=\"50%\"}\n\n\nThe Vapor Pressure Deficit (VPD):\n\n* Increases exponentially as a function of air temperature (Ta)\n* Decreases linearly as a function of relative humidity (RH).\n\n<!-- \n$$ ea_H = 0.61365*np.exp((17.502*Ta)/(240.97+Ta))$$\n$$e_H = RH*ea_H/100$$\n$$VPD = (ea_H - e_H)*10$$ -->\n\n\n:::\n::: {.column width=\"50%\"}\n\n\n'Code\"\n#| label: Estimating VPD\n#| fig-cap: \"VPD over a range of Ta, and RH values\"\n#| layout-ncol: 1\n#| warning: False\n\nimport numpy as np\nimport pandas as pd\nimport tensorflow as tf\nimport matplotlib.pyplot as plt\nfrom Scripts import MiscFuncs,PlotHelpers\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs\n\nunits = {\n    'TA':'$T_a^\\circ$C',\n    'RH':'RH %',\n    'VPD':'VPD hPa'\n    }\n\nlabels = {\n    'TA':'Air Temperature',\n    'RH':'Relative Humidity',\n    'VPD':'Vapor Pressure Deficit'\n    }\n\nrange_TA_RH,grid_TA,grid_RH,grid_VPD = MiscFuncs.Create_Grid(\n    np.linspace(-50,50),# Define a TA range (in C)\n    np.linspace(0,100), # Possible RH values\n    MiscFuncs.Calc_VPD # Return Vapor Pressure Defecit\n    )\n    \nbins = np.arange(-10,grid_VPD.max(),15)\ncmap = 'PuRd'\nnorm = [0,grid_VPD.max()]\n\nfig,ax=plt.subplots(1,figsize=(5,5))\nPlotHelpers.Contour_Plot(fig,ax,grid_TA,grid_RH,grid_VPD,cmap=cmap,norm=norm,unit = units['VPD'],bins=bins)\nax.set_xlabel('Air Temperature $^\\circ$C')\nax.set_ylabel('Relative Humidity %')\nax.set_title('Vapor Pressure Deficit (VPD)')\nplt.tight_layout()\n\n# # Use tensorfolow to calculate the first partial derivative of the function\n# X_tensor = tf.convert_to_tensor(range_TA_RH.T)\n# with tf.GradientTape(persistent=True) as tape:\n#     tape.watch(X_tensor)\n#     VPD_est = MiscFuncs.Calc_VPD(X_tensor) \n# # Get gradients of VPD_est with respect to X_tensor\n# Deriv = tape.gradient(VPD_est,X_tensor).numpy()\n\n# Derivatives = pd.DataFrame(\n#     data={\n#     'TA':range_TA_RH.T[:,0],\n#     'RH':range_TA_RH.T[:,1],\n#     'dVPD/dTA':Deriv[:,0],\n#     'dVPD/dRH':Deriv[:,1]\n#     }\n# )\n\n# fig,axes=plt.subplots(2,2,figsize=(8,8),sharey='row')\n\n# grid_dVPD_dTA = Deriv[:,0].T.reshape(grid_TA.shape)\n# grid_dVPD_dRH = Deriv[:,1].T.reshape(grid_RH.shape)\n\n# d_bins = np.arange(\n#     np.floor(Deriv).min(),np.ceil(Deriv).max(),.5\n#     )\n# d_cmap = 'bwr'\n# d_norm = [\n#     Deriv.min(),0, Deriv.max()\n#     ]\n    \n# ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,0],grid_TA,grid_RH,grid_dVPD_dTA,cmap = d_cmap,norm=d_norm,bins=d_bins)\n# ax.set_title('dVPD dTa')\n\n# ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,1],grid_TA,grid_RH,grid_dVPD_dRH,cmap = d_cmap,norm=d_norm,bins=d_bins)\n# ax.set_title('dVPD dRH')\n\n\n# y=['dVPD/dTA']\n# df = MiscFuncs.byInterval(Derivatives,'TA',y,bins=100)\n# ax = PlotHelpers.CI_Plot(axes[1,0],df,y[0])\n# # ax.set_title('Partial First Derivative\\nVPD with respect to Ta')\n\n# y=['dVPD/dRH']\n# df = MiscFuncs.byInterval(Derivatives,'RH',y,bins=100)\n# ax = PlotHelpers.CI_Plot(axes[1,1],df,y[0])\n# # ax.set_title('Partial First Derivative\\nVPD with respect to RH')\n\n\n# plt.tight_layout()\n\n:::\n::::"
   },
   {
-    "objectID": "about.html#introduction-2",
-    "href": "about.html#introduction-2",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Introduction",
-    "text": "Introduction\nEddy Covariance (EC) measures spatially integrated, semi-continouous, ecosystem-scale fluxes of energy, water, and trace gas.\n\nNoisy, voluminous EC data sets are poorly suited for traditional statistical methods Wegman (1988)\n\nSite to site varriability makes standard ana approaches are often needed\n\nWe need to ensure our results are reasonable given our understanding of the system.\n\nAnd if they don’t, we need to be able to investigate why\n\nAs the period of record at flux sites extend (e.g, decades) the task only becomes more complex\n\nA sliver lining: voluminous data sets are ideally suited for computational statistics!"
+    "objectID": "about_BU.html#partial-derivatives",
+    "href": "about_BU.html#partial-derivatives",
+    "title": "Neural Network Applications for Eddy Covariance",
+    "section": "Partial Derivatives",
+    "text": "Partial Derivatives\n’Code” #| label: Derivatives of VPD #| fig-cap: “This plot shows the partial first derivatives of VPD” #| layout-ncol: 1 #| warning: False grid_VPD.min()\n\n\n## Example Data\n\nBB1 Flux tower was established in 2015.\n\n'Code\"\nfrom Scripts import ReadDB\n\n# dbNames = {\n#     'TA_1_1_1':'TA',\n#     'RH_1_1_1':'RH'\n# }\n\n# read_new = False\n# if read_new == False:\n#     Data = ReadDB.get_Traces('BB',['TA_1_1_1','RH_1_1_1'],Dir='/mnt/c/Users/User/PostDoc_Work/database/')\n#     print(Data)\n#     Data = Data.dropna(axis=0)\n#     Data = Data.rename(columns=dbNames)\n#     Data.to_csv('temp/BB1_VPD.csv')\n\n# else:\nSite = 'BB'\nData = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n    \nprint(Data.head())\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])\n    \nfig,axes=plt.subplots(1,3,figsize=(7,4))\nData.hist(column='TA',ax=axes[0],bins=20,edgecolor='k')\naxes[0].set_xlabel(units['TA'])\n\nData.hist(column='RH',ax=axes[1],bins=20,edgecolor='k')\naxes[1].set_xlabel(units['RH'])\n\nData.hist(column='VPD',ax=axes[2],bins=20,edgecolor='k')\naxes[2].set_xlabel(units['VPD'])\n\nplt.tight_layout()\n\nData.describe().round(1)"
   },
   {
-    "objectID": "about.html#conclusions",
-    "href": "about.html#conclusions",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Conclusions",
-    "text": "Conclusions\nThey offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible."
-  },
-  {
-    "objectID": "about.html#questions",
-    "href": "about.html#questions",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Questions",
-    "text": "Questions"
-  },
-  {
-    "objectID": "about.html#example-data",
-    "href": "about.html#example-data",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Example Data",
-    "text": "Example Data\nBB1 Flux tower was established in 2015.\n\n\n                           TA         RH  FCO2  FCH4       PPFD    P  qc_FCO2  \\\nTimeStamp                                                                       \n2015-01-01 00:30:00 -5.184118  93.123276   NaN   NaN  13.415596  0.0      NaN   \n2015-01-01 01:00:00 -5.582586  93.134880   NaN   NaN  13.415596  0.0      NaN   \n2015-01-01 01:30:00 -5.273667  93.411385   NaN   NaN  13.415596  0.0      NaN   \n2015-01-01 02:00:00 -5.527215  93.178055   NaN   NaN  13.415596  0.0      NaN   \n2015-01-01 02:30:00 -5.515291  93.384380   NaN   NaN  13.415596  0.0      NaN   \n\n                     qc_FCH4  USTAR      TS_1      TS_2      TS_3   U  dir  \\\nTimeStamp                                                                    \n2015-01-01 00:30:00      NaN    NaN  1.479264  2.179019  6.948500 NaN  NaN   \n2015-01-01 01:00:00      NaN    NaN  1.446164  2.144506  6.990202 NaN  NaN   \n2015-01-01 01:30:00      NaN    NaN  1.485793  2.158336  6.956882 NaN  NaN   \n2015-01-01 02:00:00      NaN    NaN  1.430985  2.130317  6.998434 NaN  NaN   \n2015-01-01 02:30:00      NaN    NaN  1.461107  2.125426  6.966145 NaN  NaN   \n\n                     WTD_raw  WTD  \nTimeStamp                          \n2015-01-01 00:30:00      NaN  NaN  \n2015-01-01 01:00:00      NaN  NaN  \n2015-01-01 01:30:00      NaN  NaN  \n2015-01-01 02:00:00      NaN  NaN  \n2015-01-01 02:30:00      NaN  NaN  \n\n\n\n\n\n\n  \n    \n      \n      TA\n      RH\n      FCO2\n      FCH4\n      PPFD\n      P\n      qc_FCO2\n      qc_FCH4\n      USTAR\n      TS_1\n      TS_2\n      TS_3\n      U\n      dir\n      WTD_raw\n      WTD\n      VPD\n    \n  \n  \n    \n      count\n      140249.0\n      140104.0\n      37260.0\n      42498.0\n      140256.0\n      139996.0\n      91746.0\n      74387.0\n      71373.0\n      138046.0\n      138042.0\n      138042.0\n      71373.0\n      92583.0\n      129783.0\n      1969.0\n      140104.0\n    \n    \n      mean\n      10.6\n      84.2\n      -0.3\n      53.0\n      216.1\n      0.1\n      0.8\n      0.7\n      0.2\n      11.7\n      11.6\n      10.2\n      1.5\n      168.7\n      90.8\n      0.0\n      2.8\n    \n    \n      std\n      6.9\n      15.5\n      4.3\n      70.0\n      365.2\n      0.3\n      0.8\n      0.7\n      0.1\n      5.4\n      5.2\n      4.7\n      1.2\n      84.4\n      94.8\n      0.1\n      3.9\n    \n    \n      min\n      -13.8\n      0.0\n      -49.3\n      -199.9\n      -4.5\n      0.0\n      0.0\n      0.0\n      0.0\n      -23.0\n      -25.2\n      -19.6\n      0.0\n      0.0\n      -5883.7\n      0.0\n      -0.0\n    \n    \n      25%\n      5.9\n      74.9\n      -1.7\n      9.6\n      0.0\n      0.0\n      0.0\n      0.0\n      0.1\n      6.7\n      6.7\n      7.2\n      0.5\n      97.8\n      61.7\n      0.0\n      0.3\n    \n    \n      50%\n      10.3\n      89.6\n      -0.1\n      34.8\n      13.4\n      0.0\n      1.0\n      1.0\n      0.1\n      11.8\n      11.7\n      10.2\n      1.3\n      158.9\n      70.3\n      0.0\n      1.2\n    \n    \n      75%\n      15.2\n      96.5\n      0.7\n      90.5\n      274.8\n      0.0\n      1.0\n      1.0\n      0.2\n      16.7\n      16.4\n      14.6\n      2.2\n      247.9\n      81.0\n      0.0\n      3.7\n    \n    \n      max\n      38.0\n      100.2\n      49.8\n      695.1\n      1883.9\n      11.5\n      2.0\n      2.0\n      2.6\n      24.2\n      21.8\n      17.2\n      8.3\n      360.0\n      5813.5\n      2.4\n      42.4"
-  },
-  {
-    "objectID": "about.html#artificial-gaps",
-    "href": "about.html#artificial-gaps",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "objectID": "about_BU.html#artificial-gaps",
+    "href": "about_BU.html#artificial-gaps",
+    "title": "Neural Network Applications for Eddy Covariance",
     "section": "Artificial Gaps",
-    "text": "Artificial Gaps\n\n\n\n\n(63812, 17) (76444, 17)\n[-1  1]\n[2 3]\n\n\nFigure 1: ?(caption)"
+    "text": "Artificial Gaps"
   },
   {
-    "objectID": "about.html#eddy-covariance",
-    "href": "about.html#eddy-covariance",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Eddy Covariance",
-    "text": "Eddy Covariance\n\n\nEcosystem-scale fluxes of energy, water, and trace gases.\n\nSpatially integrated, semi-continuous\nNoisy, voluminous data\n\nIdeally suited for NN analysis!"
-  },
-  {
-    "objectID": "about.html#neural-networks",
-    "href": "about.html#neural-networks",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Neural networks",
-    "text": "Neural networks\nPowerful machine learning algorithms that are well suited for non-linear, multi-variate response functions.\n\nUniversal approximators: can map any continuous function to an arbitrary degree of accuracy.\n\nGiven sufficient “hidden nodes”, will fit any pattern in a dataset\n\nCare must be taken to ensure the patterns are real\n\n\nCapable of interpolation and extrapolation"
-  },
-  {
-    "objectID": "about.html#limitations",
-    "href": "about.html#limitations",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Limitations",
-    "text": "Limitations\nCommonly cited downsides of NN models:\n\nComputationally expensive\n\nRecent advances in Hardware (e.g., GPU processing) and software (e.g., Tensorflow)\n\nProne to over-fitting\n\nEarly stopping, ensembling, & input normalization help produce robust models\n\n“Black Boxes”\n\nInspecting partial derivative allows visualization of model’s internal workings"
-  },
-  {
-    "objectID": "about.html#key-procedures",
-    "href": "about.html#key-procedures",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Key Procedures",
-    "text": "Key Procedures\n\nEarly stopping: End training metrics (e.g., MSE) fail to improve for e training epochs\n\ne = 2 typically provides a robust, generalizable model\n\nEnsembling: Train a set of N randomly initialled models on N unique interactions of training/testing data\n\nA small ensemble for ~10 models is sufficient in most applications\n\nInput normalization: Z-norm scale all inputs to improve training"
-  },
-  {
-    "objectID": "about.html#limitations-1",
-    "href": "about.html#limitations-1",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Limitations",
-    "text": "Limitations\nCommonly cited downsides of NN models:\n\nComputationally expensive\n\nRecent advances in Hardware (e.g., GPU processing) and software (e.g., Tensorflow)\n\nProne to over-fitting\n\nEarly stopping, ensembling, & input normalization help produce robust models\n\n“Black Boxes”\n\nInspecting partial derivative allows visualization of model’s internal workings"
-  },
-  {
-    "objectID": "about.html#neural-networks-1",
-    "href": "about.html#neural-networks-1",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Neural networks",
-    "text": "Neural networks\n\n\n\n\nComputationally expensive\nProne to over-fitting\n“Black Boxes”\n\n\n\nAdvances in hardware (GPU processing) and software (Tensorflow)\nEarly stopping, ensembling, & input normalization\nInspecting partial derivative allows visualization of model’s internal workings"
-  },
-  {
-    "objectID": "about.html#limitations-2",
-    "href": "about.html#limitations-2",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Limitations",
-    "text": "Limitations\nCommonly cited downsides of NN models:\n\nComputationally expensive\n\nRecent advances in Hardware (e.g., GPU processing) and software (e.g., Tensorflow)\n\nProne to over-fitting\n\nEarly stopping, ensembling, & input normalization help produce robust models\n\n“Black Boxes”\n\nInspecting partial derivative allows visualization of model’s internal workings"
-  },
-  {
-    "objectID": "about.html#solutions",
-    "href": "about.html#solutions",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Solutions",
-    "text": "Solutions\n\nAdvances in hardware (e.g., GPU processing) and software (e.g., Tensorflow)\nEarly stopping, ensembling, & input normalization\nInspecting partial derivative allows visualization of model’s internal workings"
-  },
-  {
-    "objectID": "about.html#key-procedures-1",
-    "href": "about.html#key-procedures-1",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "Key Procedures",
-    "text": "Key Procedures\n\nFeature inspection: Calculating partial first (and second) derivatives of each input\n\nSum of squared derivatives gives relative influence of each input over output\nPlotting model derivatives to help ensure mapped relationships are physically plausible\n\nAn essential step and key advantage of NN models"
-  },
-  {
-    "objectID": "about.html#next-steps-speculations",
-    "href": "about.html#next-steps-speculations",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "objectID": "about_BU.html#next-steps-speculations",
+    "href": "about_BU.html#next-steps-speculations",
+    "title": "Neural Network Applications for Eddy Covariance",
     "section": "Next Steps & Speculations",
     "text": "Next Steps & Speculations\n\nu* filtering\nFlux footprint calculations"
   },
   {
-    "objectID": "about.html#a-simple-example-calculating-and-visualizing-vpd",
-    "href": "about.html#a-simple-example-calculating-and-visualizing-vpd",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "A Simple Example Calculating and Visualizing VPD",
-    "text": "A Simple Example Calculating and Visualizing VPD\n\n\nThe Vapor Pressure Deficit (VPD) decreases exponentially as a function of air temperature (Ta) and linearly as a function of relative humidity (RH). We can calculate VPD (kPa) from Ta in (\\(\\circ\\) C) and RH (%) as follows:\n\n\n\n\n\n\n\n\nThis plot shows the relationship between VPD, TA, and RH over a range of possible values"
+    "objectID": "about_BU.html#conclusions",
+    "href": "about_BU.html#conclusions",
+    "title": "Neural Network Applications for Eddy Covariance",
+    "section": "Conclusions",
+    "text": "Conclusions\nThey offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible."
   },
   {
-    "objectID": "about.html#a-simple-example",
-    "href": "about.html#a-simple-example",
-    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
-    "section": "A Simple Example",
-    "text": "A Simple Example\n\n\nThe Vapor Pressure Deficit (VPD):\n\nIncreases exponentially as a function of air temperature (Ta)\nDecreases linearly as a function of relative humidity (RH).\n\n\n\n\n\n\n\n\n\nVPD over a range of Ta, and RH values"
+    "objectID": "about_BU.html#questions",
+    "href": "about_BU.html#questions",
+    "title": "Neural Network Applications for Eddy Covariance",
+    "section": "Questions",
+    "text": "Questions"
   }
 ]

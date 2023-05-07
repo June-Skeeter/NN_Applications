@@ -3,6 +3,8 @@ title: "A Framework for Applying Neural Networks to Eddy Covariance Data"
 # format:
 #   html:
 jupyter: python3
+echo: false
+fig-dpi: 300
 format:
   revealjs:
     code-fold: true
@@ -32,14 +34,12 @@ author:
 #     - ref: UBC
 affiliations:
     - id: UBC
-      name: University of British Columbia
-      department: Department of Geography
+      name: University British Columbia
+      department: Department Geography
       address: 1984 West Mall
       city: Vancouver, BC, Canada
       postal-code: V6T 1Z2
 keywords: [Eddy Covariance, Micrometeorology, Neural Networks, Modelling]
-citeproc: True
-bibliography: ML_EC.bib
 
 ---
 
@@ -50,323 +50,321 @@ bibliography: ML_EC.bib
 
 ::: {.column width="50%"}
 
-Ecosystem-scale fluxes of energy, water, and trace gases.
+Ecosystem-scale fluxes energy, water, and trace gases.
 
-* Spatially integrated, semi-continuous
-
-* Noisy, voluminous data
-    * Ideally suited for NN analysis!
+* Voluminous data sets
+  * Noisy & gap-prone
+* Ideally suited for machine learning!
 
 :::
 
 ::: {.column width="50%"}
 
-![](images/BB1_System.jpg)
+<img src="images/BB1_System.jpg" alt="your-image-description" style="border: 2px solid  black;">
+
+<h3>Burns Bog EC Station<br>Delta, BC</h3>
 
 :::
 
 ::::
 
 
-## Neural networks
+## Neural Networks
 
-Powerful machine learning algorithms that are well suited for non-linear, multi-variate response functions.
+**Universal approximators**: they can map any continuous function to an arbitrary degree accuracy.
 
-* **Universal approximators**: can map any continuous function to an arbitrary degree of accuracy.
-    * Given sufficient "hidden nodes", will fit **any** pattern in a dataset
-        * Care must be taken to ensure the patterns are real
+* With sufficient hidden nodes, they will fit **any** pattern in a dataset
+  * Care must be taken to ensure the patterns are real
+    * Have often been treated as "black boxes"
 
-* Capable of interpolation and extrapolation
+* Well suited for non-linear, multi-variate response functions
+  * Capable *interpolation* and **extrapolation**
 
-## Neural networks
+## Commonly Cited Limitations
 
-:::: {.columns}
 
-::: {.column width="30%"}
+```{python}
+#| tbl-colwidths: [40,60]
+import pandas as pd
 
-<!-- ### Limitations -->
+from IPython.display import Markdown
+from tabulate import tabulate
 
-* Computationally expensive
+df = pd.read_csv('About.csv',sep='|',index_col='Drawback')
+Markdown(tabulate(
+  df, 
+  headers=["Issue", "Solutions"]
+))
 
-* Prone to over-fitting
+```
 
-* "Black Boxes"
-
-:::
-
-::: {.column width="70%"}
-
-<!-- ### Solutions -->
-
-Advances in hardware (GPU processing) and software (Tensorflow)
-
-Early stopping, ensembling, & input normalization
-
-Inspecting partial derivative allows visualization of model's internal workings
-
-:::
-
-::::
-
-# Objectives
+# Objective
 
 Provide a framework for applying NN models can be applied to EC data for both descriptive analysis and inferential modelling. 
  
-* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has Python code with functional examples that can be used to apply NN models.
-
-## Key Procedures
-
-* Early stopping: End training metrics (e.g., MSE) fail to improve for *e* training epochs
-    * *e* = 2 typically provides a robust, generalizable model
-
-* Ensembling: Train a set of N randomly initialled models on N unique interactions of training/testing data
-    * A small ensemble for ~10 models is sufficient in most applications
-
-* Input normalization: Z-norm scale all inputs to improve training
-
-## Key Procedures
-
-* Feature inspection: Calculating partial first (and second) derivatives of each input
-    * Sum of squared derivatives gives relative influence of each input over output
-    * Plotting model derivatives to help ensure mapped relationships are physically plausible
-        * An **essential step** and **key advantage** of NN models
-
-## A Simple Example
-
-:::: {.columns}
-
-::: {.column width="50%"}
-
-
-The Vapor Pressure Deficit (VPD):
-
-* Increases exponentially as a function of air temperature (Ta)
-* Decreases linearly as a function of relative humidity (RH).
-
-<!-- 
-$$ ea_H = 0.61365*np.exp((17.502*Ta)/(240.97+Ta))$$
-$$e_H = RH*ea_H/100$$
-$$VPD = (ea_H - e_H)*10$$ -->
-
-
-:::
-::: {.column width="50%"}
-
-
-```{python}
-#| label: Estimating VPD
-#| fig-cap: "VPD over a range of Ta, and RH values"
-#| layout-ncol: 1
-#| warning: False
-
-import numpy as np
-import pandas as pd
-import tensorflow as tf
-import matplotlib.pyplot as plt
-from Scripts import MiscFuncs,PlotHelpers
-from Scripts import ReadDB, MiscFuncs, NNetFuncs
-
-units = {
-    'TA':'$T_a^\circ$C',
-    'RH':'RH %',
-    'VPD':'VPD hPa'
-    }
-
-labels = {
-    'TA':'Air Temperature',
-    'RH':'Relative Humidity',
-    'VPD':'Vapor Pressure Deficit'
-    }
-
-range_TA_RH,grid_TA,grid_RH,grid_VPD = MiscFuncs.Create_Grid(
-    np.linspace(-50,50),# Define a TA range (in C)
-    np.linspace(0,100), # Possible RH values
-    MiscFuncs.Calc_VPD # Return Vapor Pressure Defecit
-    )
-    
-bins = np.arange(-10,grid_VPD.max(),15)
-cmap = 'PuRd'
-norm = [0,grid_VPD.max()]
-
-fig,ax=plt.subplots(1,figsize=(5,5))
-PlotHelpers.Contour_Plot(fig,ax,grid_TA,grid_RH,grid_VPD,cmap=cmap,norm=norm,unit = units['VPD'],bins=bins)
-ax.set_xlabel('Air Temperature $^\circ$C')
-ax.set_ylabel('Relative Humidity %')
-ax.set_title('Vapor Pressure Deficit (VPD)')
-plt.tight_layout()
-
-# # Use tensorfolow to calculate the first partial derivative of the function
-# X_tensor = tf.convert_to_tensor(range_TA_RH.T)
-# with tf.GradientTape(persistent=True) as tape:
-#     tape.watch(X_tensor)
-#     VPD_est = MiscFuncs.Calc_VPD(X_tensor) 
-# # Get gradients of VPD_est with respect to X_tensor
-# Deriv = tape.gradient(VPD_est,X_tensor).numpy()
-
-# Derivatives = pd.DataFrame(
-#     data={
-#     'TA':range_TA_RH.T[:,0],
-#     'RH':range_TA_RH.T[:,1],
-#     'dVPD/dTA':Deriv[:,0],
-#     'dVPD/dRH':Deriv[:,1]
-#     }
-# )
-
-# fig,axes=plt.subplots(2,2,figsize=(8,8),sharey='row')
-
-# grid_dVPD_dTA = Deriv[:,0].T.reshape(grid_TA.shape)
-# grid_dVPD_dRH = Deriv[:,1].T.reshape(grid_RH.shape)
-
-# d_bins = np.arange(
-#     np.floor(Deriv).min(),np.ceil(Deriv).max(),.5
-#     )
-# d_cmap = 'bwr'
-# d_norm = [
-#     Deriv.min(),0, Deriv.max()
-#     ]
-    
-# ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,0],grid_TA,grid_RH,grid_dVPD_dTA,cmap = d_cmap,norm=d_norm,bins=d_bins)
-# ax.set_title('dVPD dTa')
-
-# ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,1],grid_TA,grid_RH,grid_dVPD_dRH,cmap = d_cmap,norm=d_norm,bins=d_bins)
-# ax.set_title('dVPD dRH')
-
-
-# y=['dVPD/dTA']
-# df = MiscFuncs.byInterval(Derivatives,'TA',y,bins=100)
-# ax = PlotHelpers.CI_Plot(axes[1,0],df,y[0])
-# # ax.set_title('Partial First Derivative\nVPD with respect to Ta')
-
-# y=['dVPD/dRH']
-# df = MiscFuncs.byInterval(Derivatives,'RH',y,bins=100)
-# ax = PlotHelpers.CI_Plot(axes[1,1],df,y[0])
-# # ax.set_title('Partial First Derivative\nVPD with respect to RH')
-
-
-# plt.tight_layout()
-
-```
-
-:::
-
-::::
-
-
-## Partial Derivatives
-
-```{python}
-#| label: Derivatives of VPD
-#| fig-cap: "This plot shows the partial first derivatives of VPD"
-#| layout-ncol: 1
-#| warning: False
-grid_VPD.min()
-
-
-```
+* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has functional examples that can be used to apply NN models.
+  * Runs in Python and Tensorflow: *GPU support not required*
 
 
 ## Example Data
 
-BB1 Flux tower was established in 2015.
+:::: {.columns}
+
+::: {.column width="40%"}
+
+BB1 EC station
+
+* Beakrush-Sphagnum ecosystem undergoing active restoration
+* 8+ years of CO<sub>2</sub> and CH<sub>4</sub> flux observations
+
+:::
+
+::: {.column width="60%"}
+
+
+<img src="images/BB1.jpg" alt="your-image-description" style="border: 2px solid  black; width: 100%">
+
+
+:::
+::::
+
+
+## Training Procedures
+
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+An iterative process:
+
+* Three way cross-validation
+  * Train & validate - random split by model 
+  * Test - consistent between models
+
+* Ensemble-size
+  * Larger ensemble > more robust model
+  * N = 10 likely suitable for most applications
+
+:::
+
+::: {.column width="30%"}
+
+<img src="images/NN_Workflows.png" alt="your-image-description">
+
+
+:::
+
+::::
+
+## How to Prune a Model
+
+Calculate partial first derivative of the output with respect to each input over test data domain.
+
+* **Relative Influence (RI)**:  Normalized Sum of squared derivatives (SSD)
+
+* Iteratively prune inputs with RI below a reference threshold
+  * Random input assess base-level performance
+
+* Train final model without random scalar
+
+## Pruning a FCO<sub>2</sub> Model
 
 ```{python}
-from Scripts import ReadDB
+#| label: RI of models
+#| layout-ncol: 1
+#| warning: False
+import pandas as pd
+import matplotlib.pyplot as plt
+from Scripts import MiscFuncs,PlotHelpers
 
-# dbNames = {
-#     'TA_1_1_1':'TA',
-#     'RH_1_1_1':'RH'
-# }
+fig,ax=plt.subplots(1,2,sharey=True,sharex=True)
 
-# read_new = False
-# if read_new == False:
-#     Data = ReadDB.get_Traces('BB',['TA_1_1_1','RH_1_1_1'],Dir='/mnt/c/Users/User/PostDoc_Work/database/')
-#     print(Data)
-#     Data = Data.dropna(axis=0)
-#     Data = Data.rename(columns=dbNames)
-#     Data.to_csv('temp/BB1_VPD.csv')
+Base = 'Test'
+Name = 'Full_Model'
+RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
+RI = RI.sort_values(by=f'RI_bar',ascending=True)
+PlotHelpers.makeRI_plot(ax[0],RI,Title='Over-Parametrized Model')
 
-# else:
-Site = 'BB'
-Data = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')
-    
-print(Data.head())
-
-Data['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])
-    
-fig,axes=plt.subplots(1,3,figsize=(7,4))
-Data.hist(column='TA',ax=axes[0],bins=20,edgecolor='k')
-axes[0].set_xlabel(units['TA'])
-
-Data.hist(column='RH',ax=axes[1],bins=20,edgecolor='k')
-axes[1].set_xlabel(units['RH'])
-
-Data.hist(column='VPD',ax=axes[2],bins=20,edgecolor='k')
-axes[2].set_xlabel(units['VPD'])
-
+Name = 'Final_Model'
+RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
+RI = RI.sort_values(by=f'RI_bar',ascending=True)
+PlotHelpers.makeRI_plot(ax[1],RI,Title='Pruned Model')
+ax[1].set_ylabel('')
 plt.tight_layout()
 
-Data.describe().round(1)
 ```
 
+## Model Inspection
 
-## Artificial Gaps
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Plot the model outputs using the test data.
+
+
+::: {style="font-size: 80%;"}
+
+```{python}
+#| label: Validation
+#| layout-ncol: 1
+#| warning: False
+#| tbl-colwidths: [25,75]
+
+import numpy as np
+from sklearn import metrics
+
+df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
+
+unit = '$\mu mol$ $m^{-2}s^{-1}$'
+
+x,y='target','y_bar'
+r2 = str(np.round(metrics.r2_score(df[x],df[y]),2))
+RMSE = str(np.round(metrics.mean_squared_error(df[x],df[y])**.5,2))+f' {unit}'
+
+m = pd.DataFrame(index=['RMSE','r<sup>2</sup>'],data={'Metrics':[RMSE,r2]})
+Markdown(tabulate(
+  m, 
+  headers=["Metric", "Score"]
+))
+
+
+```
+
+:::
+
+:::
+
+::: {.column width="50%"}
 
 
 ```{python}
-#| label: fig-format
-#| fig-cap: "Format the training data" 
+#| label: Performance of final model
 #| layout-ncol: 1
 #| warning: False
 
-X_vars = ['TA', 'RH']
-Y_var = 'VPD'
+df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
 
-# X_full = Data[X_vars].values
-# Y_full = Data[Y_var].values
-# print('Full Training Samples: ',Y_full.shape)
+unit = '$\mu mol m^{-2} s^{-1}$'
 
-# Mask = np.array([-1,1])
-# # Masked dataset for training
-# x_mask = Data.loc[(
-#     (Data[Y_var]<Mask.min())|(Data[Y_var]>Mask.max())
-#     ),X_vars].values
-# y_mask = Data.loc[(
-#     (Data[Y_var]<Mask.min())|(Data[Y_var]>Mask.max())
-#     ),Y_var].values
-# print('Masked Samples: ',y_mask.shape)
+fig,ax=plt.subplots(figsize=(5,5))
+ax = PlotHelpers.make1_1_Plot(ax,df,'target','y_bar',unit=unit)
+ax.set_ylabel('NN Estimate')
+ax.set_xlabel('EC Observation')
+ax.set_title('')
+radom_code_to_mask_text=0
 
-# # Missing values for assessing performance
-# x_missing = Data.loc[Data[Y_var].isin(y_mask)==False,X_vars].values
-# y_missing = Data.loc[Data[Y_var].isin(y_mask)==False,Y_var].values
-# print('Missing Samples: ',y_missing.shape)
-
-# Make some artificial gap scenarios
-
-# Scenarios = {
-#     "Random Drop Out":{}
-#     "Missing Middle":{}
-#     "Clipped Wings":{}
-# }
-
-Mask = np.array([[-1,1],[2,3]])
-Masked,Dropped = MiscFuncs.makeMask(Data,Y_var,Mask)
-
-print(Masked.shape,Dropped.shape)
-
-
-# print(Mask.ndim)
-for mask in Mask:
-    print(mask)
 ```
 
-## Next Steps & Speculations
 
-* u* filtering
-* Flux footprint calculations
+:::
 
-## Conclusions
+::::
 
-They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.
+## Plotting Derivatives
+    
+Help ensure mapped relationships are physically plausible
 
-## Questions
+* An **essential step** and **key advantage** NN models
+* Raw derivatives show true feature responses
+  * 95% confidence intervals indicate model confidence in relationships
+* Normalized derivatives scaled by input variance
+  * View relative on common scale
 
+
+## Partial Derivatives of FCO<sub>2</sub>
+ 
+```{python}
+#| label: Derivatives of final model
+#| layout-ncol: 1
+#| warning: False
+
+Max=4
+Top = RI.sort_values(by=f'RI_bar',ascending=False).index[:Max]
+
+cols = 2
+npi=len(RI.index)
+rows = int(np.ceil(len(Top)/2))
+
+fig,axes=plt.subplots(rows,cols,sharey=True)
+
+axes = axes.flatten()
+
+mod = ''
+
+for i,xi in enumerate(Top):
+    df_int = MiscFuncs.byInterval(df,f'{xi}',[f'dy_d{xi}{mod}'],bins=50)
+    PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+plt.tight_layout()
+
+axes[i].get_ylabel()
+
+for ax in axes:
+    l = ax.get_ylabel()
+    ax.set_ylabel(l.split('_norm')[0].replace('_',' / ').replace('y','FCO2'))
+
+
+radom_code_to_mask_text=0
+
+```
+
+## Normalized Partial Derivatives
+ 
+```{python}
+#| label: Normalized Derivatives of final model
+#| layout-ncol: 1
+#| warning: False
+
+import numpy as np
+
+Max=4
+Top = RI.sort_values(by=f'RI_bar',ascending=False).index[:Max]
+
+cols = 2
+npi=len(RI.index)
+rows = int(np.ceil(len(Top)/2))
+
+fig,axes=plt.subplots(rows,cols,sharey=True)
+
+axes = axes.flatten()
+
+mod = '_norm'
+
+for i,xi in enumerate(Top):
+    df_int = MiscFuncs.byInterval(df,f'{xi}',[f'dy_d{xi}{mod}'],bins=50)
+    PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+plt.tight_layout()
+
+axes[i].get_ylabel()
+
+for ax in axes:
+    l = ax.get_ylabel()
+    ax.set_ylabel(l.split('_norm')[0].replace('_',' / ').replace('y',' '))
+
+
+radom_code_to_mask_text=0
+
+```
+
+
+## Next Steps
+
+* Custom NN architecture: Separating input layers may allow us partition fluxes.
+  * FCO<sub>2</sub> into GPP and ER
+  * FCH<sub>4</sub> into methanogenesis, methanotrophy, transport
+* Flux footprint analysis: Models can help account for spatial heterogeneity within a a footprint
+  * NN could also be trained to calculate/classify footprints!
+* u* filtering: Partial derivatives of u* could give thresholds for filtering
+
+# Thank You
+
+Questions?
+
+## Why not use a Random Forest?
+
+RF models are great! ... for classifying discrete objects
+
+* But, it's my view that applying them to continuous data is misguided
+* They are [poorly suited](https://github.com/June-Skeeter/NN_Applications) for interpolation and incapable of extrapolation

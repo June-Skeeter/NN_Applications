@@ -10,7 +10,7 @@ def get_Traces(Site,Traces,Dir = '/mnt/w/'):
     Data = pd.DataFrame()
     Time_Trace = 'Clean/SecondStage/clean_tv'
 
-    for year in range (2015,2023):
+    for year in range (2017,2023):
         if os.path.exists(f'{Dir}{str(year)}/{Site}/'):
             filename = f'{Dir}{str(year)}/{Site}/{Time_Trace}'
             with open(filename, mode='rb') as file:
@@ -36,6 +36,10 @@ class filterFlux():
 
         self.df = df.copy()
         self.F = F
+
+    def dir_mask(self,dir,mask):
+        for m in mask:
+            self.df.loc[self.df[dir].between(m[0],m[1]),self.F]=np.nan
     
     def QA_QC(self,thresh=0):
         for f in self.F:

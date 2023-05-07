@@ -8,6 +8,9 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
+      - href: NN_for_EC.ipynb
+        text: Example Code
+
 
 format:
   html:

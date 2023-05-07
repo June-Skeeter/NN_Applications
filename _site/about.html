@@ -319,9 +319,6 @@
       margin-right: 0; 
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -339,7 +336,7 @@
 <a href="mailto:june.skeeter@ubc.ca">june.skeeter@ubc.ca</a>
 </div>
         <p class="quarto-title-affiliation">
-            University of British Columbia
+            University British Columbia
           </p>
     </div>
 </div>
@@ -349,396 +346,249 @@
 <h2>Eddy Covariance</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Ecosystem-scale fluxes of energy, water, and trace gases.</p>
+<p>Ecosystem-scale fluxes energy, water, and trace gases.</p>
 <ul>
-<li><p>Spatially integrated, semi-continuous</p></li>
-<li><p>Noisy, voluminous data</p>
+<li>Voluminous data sets
 <ul>
-<li>Ideally suited for NN analysis!</li>
+<li>Noisy &amp; gap-prone</li>
 </ul></li>
+<li>Ideally suited for machine learning!</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<p><img data-src="images/BB1_System.jpg"></p>
+<p><img src="images/BB1_System.jpg" alt="your-image-description" style="border: 2px solid  black;"></p>
+<h3>
+Burns Bog EC Station<br>Delta, BC
+</h3>
 </div>
 </div>
 </section>
 <section id="neural-networks" class="slide level2">
-<h2>Neural networks</h2>
-<p>Powerful machine learning algorithms that are well suited for non-linear, multi-variate response functions.</p>
+<h2>Neural Networks</h2>
+<p><strong>Universal approximators</strong>: they can map any continuous function to an arbitrary degree accuracy.</p>
 <ul>
-<li><strong>Universal approximators</strong>: can map any continuous function to an arbitrary degree of accuracy.
+<li>With sufficient hidden nodes, they will fit <strong>any</strong> pattern in a dataset
 <ul>
-<li>Given sufficient “hidden nodes”, will fit <strong>any</strong> pattern in a dataset
+<li>Care must be taken to ensure the patterns are real
 <ul>
-<li>Care must be taken to ensure the patterns are real</li>
+<li>Have often been treated as “black boxes”</li>
 </ul></li>
 </ul></li>
-<li>Capable of interpolation and extrapolation</li>
+<li>Well suited for non-linear, multi-variate response functions
+<ul>
+<li>Capable <em>interpolation</em> and <strong>extrapolation</strong></li>
+</ul></li>
 </ul>
 </section>
-<section id="neural-networks-1" class="slide level2">
-<h2>Neural networks</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<!-- ### Limitations -->
-<ul>
-<li><p>Computationally expensive</p></li>
-<li><p>Prone to over-fitting</p></li>
-<li><p>“Black Boxes”</p></li>
-</ul>
-</div><div class="column" style="width:70%;">
-<!-- ### Solutions -->
-<p>Advances in hardware (GPU processing) and software (Tensorflow)</p>
-<p>Early stopping, ensembling, &amp; input normalization</p>
-<p>Inspecting partial derivative allows visualization of model’s internal workings</p>
+<section id="commonly-cited-limitations" class="slide level2">
+<h2>Commonly Cited Limitations</h2>
+<div class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="1">
+<table>
+<colgroup>
+<col style="width: 40%">
+<col style="width: 60%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue</th>
+<th style="text-align: left;">Solutions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Over-fitting</td>
+<td style="text-align: left;">* Model ensembles<br> * 3-way cross validation <br> * pruning</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Black boxes models</td>
+<td style="text-align: left;">* Plot partial derivatives <br> * feature importance</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computationally expensive</td>
+<td style="text-align: left;">* Tensorflow <br> * GPU processing</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
 <section>
-<section id="objectives" class="title-slide slide level1 center">
-<h1>Objectives</h1>
+<section id="objective" class="title-slide slide level1 center">
+<h1>Objective</h1>
 <p>Provide a framework for applying NN models can be applied to EC data for both descriptive analysis and inferential modelling.</p>
 <ul>
-<li>The <a href="https://github.com/June-Skeeter/NN_Applications">github repository</a> linked to this presentation has Python code with functional examples that can be used to apply NN models.</li>
-</ul>
-</section>
-<section id="key-procedures" class="slide level2">
-<h2>Key Procedures</h2>
+<li>The <a href="https://github.com/June-Skeeter/NN_Applications">github repository</a> linked to this presentation has functional examples that can be used to apply NN models.
 <ul>
-<li>Early stopping: End training metrics (e.g., MSE) fail to improve for <em>e</em> training epochs
-<ul>
-<li><em>e</em> = 2 typically provides a robust, generalizable model</li>
-</ul></li>
-<li>Ensembling: Train a set of N randomly initialled models on N unique interactions of training/testing data
-<ul>
-<li>A small ensemble for ~10 models is sufficient in most applications</li>
-</ul></li>
-<li>Input normalization: Z-norm scale all inputs to improve training</li>
-</ul>
-</section>
-<section id="key-procedures-1" class="slide level2">
-<h2>Key Procedures</h2>
-<ul>
-<li>Feature inspection: Calculating partial first (and second) derivatives of each input
-<ul>
-<li>Sum of squared derivatives gives relative influence of each input over output</li>
-<li>Plotting model derivatives to help ensure mapped relationships are physically plausible
-<ul>
-<li>An <strong>essential step</strong> and <strong>key advantage</strong> of NN models</li>
-</ul></li>
+<li>Runs in Python and Tensorflow: <em>GPU support not required</em></li>
 </ul></li>
 </ul>
-</section>
-<section id="a-simple-example" class="slide level2">
-<h2>A Simple Example</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>The Vapor Pressure Deficit (VPD):</p>
-<ul>
-<li>Increases exponentially as a function of air temperature (Ta)</li>
-<li>Decreases linearly as a function of relative humidity (RH).</li>
-</ul>
-<!-- 
-$$ ea_H = 0.61365*np.exp((17.502*Ta)/(240.97+Ta))$$
-$$e_H = RH*ea_H/100$$
-$$VPD = (ea_H - e_H)*10$$ -->
-</div><div class="column" style="width:50%;">
-<div class="cell quarto-layout-panel" data-execution_count="1">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<div id="estimating-vpd" class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="about_files/figure-revealjs/estimating-vpd-output-1.png" width="469"></p>
-<p></p><figcaption>VPD over a range of Ta, and RH values</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="partial-derivatives" class="slide level2">
-<h2>Partial Derivatives</h2>
-<div class="cell quarto-layout-panel" data-execution_count="2">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<pre><code>-1.7763568394002505e-14</code></pre>
-</div>
-</div>
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p>This plot shows the partial first derivatives of VPD</p>
-</div>
-</div>
-</div>
 </section>
 <section id="example-data" class="slide level2">
 <h2>Example Data</h2>
-<p>BB1 Flux tower was established in 2015.</p>
-<div class="cell" data-execution_count="3">
-<div class="cell-output cell-output-stdout">
-<pre><code>                           TA         RH  FCO2  FCH4       PPFD    P  qc_FCO2  \
-TimeStamp                                                                       
-2015-01-01 00:30:00 -5.184118  93.123276   NaN   NaN  13.415596  0.0      NaN   
-2015-01-01 01:00:00 -5.582586  93.134880   NaN   NaN  13.415596  0.0      NaN   
-2015-01-01 01:30:00 -5.273667  93.411385   NaN   NaN  13.415596  0.0      NaN   
-2015-01-01 02:00:00 -5.527215  93.178055   NaN   NaN  13.415596  0.0      NaN   
-2015-01-01 02:30:00 -5.515291  93.384380   NaN   NaN  13.415596  0.0      NaN   
-
-                     qc_FCH4  USTAR      TS_1      TS_2      TS_3   U  dir  \
-TimeStamp                                                                    
-2015-01-01 00:30:00      NaN    NaN  1.479264  2.179019  6.948500 NaN  NaN   
-2015-01-01 01:00:00      NaN    NaN  1.446164  2.144506  6.990202 NaN  NaN   
-2015-01-01 01:30:00      NaN    NaN  1.485793  2.158336  6.956882 NaN  NaN   
-2015-01-01 02:00:00      NaN    NaN  1.430985  2.130317  6.998434 NaN  NaN   
-2015-01-01 02:30:00      NaN    NaN  1.461107  2.125426  6.966145 NaN  NaN   
-
-                     WTD_raw  WTD  
-TimeStamp                          
-2015-01-01 00:30:00      NaN  NaN  
-2015-01-01 01:00:00      NaN  NaN  
-2015-01-01 01:30:00      NaN  NaN  
-2015-01-01 02:00:00      NaN  NaN  
-2015-01-01 02:30:00      NaN  NaN  </code></pre>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p>BB1 EC station</p>
+<ul>
+<li>Beakrush-Sphagnum ecosystem undergoing active restoration</li>
+<li>8+ years of CO<sub>2</sub> and CH<sub>4</sub> flux observations</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<p><img src="images/BB1.jpg" alt="your-image-description" style="border: 2px solid  black; width: 100%"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="431">
-
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>TA</th>
-      <th>RH</th>
-      <th>FCO2</th>
-      <th>FCH4</th>
-      <th>PPFD</th>
-      <th>P</th>
-      <th>qc_FCO2</th>
-      <th>qc_FCH4</th>
-      <th>USTAR</th>
-      <th>TS_1</th>
-      <th>TS_2</th>
-      <th>TS_3</th>
-      <th>U</th>
-      <th>dir</th>
-      <th>WTD_raw</th>
-      <th>WTD</th>
-      <th>VPD</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>140249.0</td>
-      <td>140104.0</td>
-      <td>37260.0</td>
-      <td>42498.0</td>
-      <td>140256.0</td>
-      <td>139996.0</td>
-      <td>91746.0</td>
-      <td>74387.0</td>
-      <td>71373.0</td>
-      <td>138046.0</td>
-      <td>138042.0</td>
-      <td>138042.0</td>
-      <td>71373.0</td>
-      <td>92583.0</td>
-      <td>129783.0</td>
-      <td>1969.0</td>
-      <td>140104.0</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>10.6</td>
-      <td>84.2</td>
-      <td>-0.3</td>
-      <td>53.0</td>
-      <td>216.1</td>
-      <td>0.1</td>
-      <td>0.8</td>
-      <td>0.7</td>
-      <td>0.2</td>
-      <td>11.7</td>
-      <td>11.6</td>
-      <td>10.2</td>
-      <td>1.5</td>
-      <td>168.7</td>
-      <td>90.8</td>
-      <td>0.0</td>
-      <td>2.8</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>6.9</td>
-      <td>15.5</td>
-      <td>4.3</td>
-      <td>70.0</td>
-      <td>365.2</td>
-      <td>0.3</td>
-      <td>0.8</td>
-      <td>0.7</td>
-      <td>0.1</td>
-      <td>5.4</td>
-      <td>5.2</td>
-      <td>4.7</td>
-      <td>1.2</td>
-      <td>84.4</td>
-      <td>94.8</td>
-      <td>0.1</td>
-      <td>3.9</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>-13.8</td>
-      <td>0.0</td>
-      <td>-49.3</td>
-      <td>-199.9</td>
-      <td>-4.5</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>-23.0</td>
-      <td>-25.2</td>
-      <td>-19.6</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>-5883.7</td>
-      <td>0.0</td>
-      <td>-0.0</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>5.9</td>
-      <td>74.9</td>
-      <td>-1.7</td>
-      <td>9.6</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>0.1</td>
-      <td>6.7</td>
-      <td>6.7</td>
-      <td>7.2</td>
-      <td>0.5</td>
-      <td>97.8</td>
-      <td>61.7</td>
-      <td>0.0</td>
-      <td>0.3</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>10.3</td>
-      <td>89.6</td>
-      <td>-0.1</td>
-      <td>34.8</td>
-      <td>13.4</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>0.1</td>
-      <td>11.8</td>
-      <td>11.7</td>
-      <td>10.2</td>
-      <td>1.3</td>
-      <td>158.9</td>
-      <td>70.3</td>
-      <td>0.0</td>
-      <td>1.2</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>15.2</td>
-      <td>96.5</td>
-      <td>0.7</td>
-      <td>90.5</td>
-      <td>274.8</td>
-      <td>0.0</td>
-      <td>1.0</td>
-      <td>1.0</td>
-      <td>0.2</td>
-      <td>16.7</td>
-      <td>16.4</td>
-      <td>14.6</td>
-      <td>2.2</td>
-      <td>247.9</td>
-      <td>81.0</td>
-      <td>0.0</td>
-      <td>3.7</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>38.0</td>
-      <td>100.2</td>
-      <td>49.8</td>
-      <td>695.1</td>
-      <td>1883.9</td>
-      <td>11.5</td>
-      <td>2.0</td>
-      <td>2.0</td>
-      <td>2.6</td>
-      <td>24.2</td>
-      <td>21.8</td>
-      <td>17.2</td>
-      <td>8.3</td>
-      <td>360.0</td>
-      <td>5813.5</td>
-      <td>2.4</td>
-      <td>42.4</td>
-    </tr>
-  </tbody>
+</div>
+</section>
+<section id="training-procedures" class="slide level2">
+<h2>Training Procedures</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<p>An iterative process:</p>
+<ul>
+<li>Three way cross-validation
+<ul>
+<li>Train &amp; validate - random split by model</li>
+<li>Test - consistent between models</li>
+</ul></li>
+<li>Ensemble-size
+<ul>
+<li>Larger ensemble &gt; more robust model</li>
+<li>N = 10 likely suitable for most applications</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:30%;">
+<p><img src="images/NN_Workflows.png" alt="your-image-description"></p>
+</div>
+</div>
+</section>
+<section id="how-to-prune-a-model" class="slide level2">
+<h2>How to Prune a Model</h2>
+<p>Calculate partial first derivative of the output with respect to each input over test data domain.</p>
+<ul>
+<li><p><strong>Relative Influence (RI)</strong>: Normalized Sum of squared derivatives (SSD)</p></li>
+<li><p>Iteratively prune inputs with RI below a reference threshold</p>
+<ul>
+<li>Random input assess base-level performance</li>
+</ul></li>
+<li><p>Train final model without random scalar</p></li>
+</ul>
+</section>
+<section id="pruning-a-fco2-model" class="slide level2">
+<h2>Pruning a FCO<sub>2</sub> Model</h2>
+<div class="cell quarto-layout-panel" data-execution_count="2">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/ri-of-models-output-1.png" id="ri-of-models" width="2968"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="model-inspection" class="slide level2">
+<h2>Model Inspection</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Plot the model outputs using the test data.</p>
+<div style="font-size: 80%;">
+<div class="cell quarto-layout-panel" data-execution_count="3">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div id="validation" class="cell-output cell-output-display quarto-layout-cell" data-execution_count="3" style="flex-basis: 100.0%;justify-content: center;">
+<table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Metric</th>
+<th style="text-align: left;">Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">RMSE</td>
+<td style="text-align: left;">0.59 <span class="math inline">\(\mu mol\)</span> <span class="math inline">\(m^{-2}s^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">r<sup>2</sup></td>
+<td style="text-align: left;">0.86</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
-<div class="cell-output cell-output-display">
-<p><img data-src="about_files/figure-revealjs/cell-4-output-3.png" width="662" height="374"></p>
 </div>
 </div>
-</section>
-<section id="artificial-gaps" class="slide level2">
-<h2>Artificial Gaps</h2>
-<div id="fig-format" class="cell quarto-layout-panel" data-execution_count="4">
-<figure>
+</div><div class="column" style="width:50%;">
+<div class="cell quarto-layout-panel" data-execution_count="4">
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<pre><code>(63812, 17) (76444, 17)
-[-1  1]
-[2 3]</code></pre>
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/performance-of-final-model-output-1.png" id="performance-of-final-model" width="1370"></p>
 </div>
 </div>
-<p></p><figcaption>Figure&nbsp;1: <strong>?(caption)</strong></figcaption><p></p>
-</figure>
+</div>
+</div>
 </div>
 </section>
-<section id="next-steps-speculations" class="slide level2">
-<h2>Next Steps &amp; Speculations</h2>
+<section id="plotting-derivatives" class="slide level2">
+<h2>Plotting Derivatives</h2>
+<p>Help ensure mapped relationships are physically plausible</p>
 <ul>
-<li>u* filtering</li>
-<li>Flux footprint calculations</li>
+<li>An <strong>essential step</strong> and <strong>key advantage</strong> NN models</li>
+<li>Raw derivatives show true feature responses
+<ul>
+<li>95% confidence intervals indicate model confidence in relationships</li>
+</ul></li>
+<li>Normalized derivatives scaled by input variance
+<ul>
+<li>View relative on common scale</li>
+</ul></li>
 </ul>
 </section>
-<section id="conclusions" class="slide level2">
-<h2>Conclusions</h2>
-<p>They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.</p>
+<section id="partial-derivatives-of-fco2" class="slide level2">
+<h2>Partial Derivatives of FCO<sub>2</sub></h2>
+<div class="cell quarto-layout-panel" data-execution_count="5">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/derivatives-of-final-model-output-1.png" id="derivatives-of-final-model" width="2947"></p>
+</div>
+</div>
+</div>
 </section>
-<section id="questions" class="slide level2">
-<h2>Questions</h2>
+<section id="normalized-partial-derivatives" class="slide level2">
+<h2>Normalized Partial Derivatives</h2>
+<div class="cell quarto-layout-panel" data-execution_count="6">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/normalized-derivatives-of-final-model-output-1.png" id="normalized-derivatives-of-final-model" width="2947"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="next-steps" class="slide level2">
+<h2>Next Steps</h2>
+<ul>
+<li>Custom NN architecture: Separating input layers may allow us partition fluxes.
+<ul>
+<li>FCO<sub>2</sub> into GPP and ER</li>
+<li>FCH<sub>4</sub> into methanogenesis, methanotrophy, transport</li>
+</ul></li>
+<li>Flux footprint analysis: Models can help account for spatial heterogeneity within a a footprint
+<ul>
+<li>NN could also be trained to calculate/classify footprints!</li>
+</ul></li>
+<li>u* filtering: Partial derivatives of u* could give thresholds for filtering</li>
+</ul>
+</section></section>
+<section>
+<section id="thank-you" class="title-slide slide level1 center">
+<h1>Thank You</h1>
+<p>Questions?</p>
+</section>
+<section id="why-not-use-a-random-forest" class="slide level2">
+<h2>Why not use a Random Forest?</h2>
+<p>RF models are great! … for classifying discrete objects</p>
+<ul>
+<li>But, it’s my view that applying them to continuous data is misguided</li>
+<li>They are <a href="https://github.com/June-Skeeter/NN_Applications">poorly suited</a> for interpolation and incapable of extrapolation</li>
+</ul>
 
 <div class="footer footer-default">
 
