@@ -32,7 +32,7 @@
     "href": "about.html#training-procedures",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Training Procedures",
-    "text": "Training Procedures\n\n\nAn iterative process:\n\nThree way cross-validation\n\nTrain & validate - random split by model\nTest - consistent between models\n\nEnsemble-size\n\nLarger ensemble > more robust model\nN = 10 likely suitable for most applications"
+    "text": "Training Procedures\n\n\nAn iterative process:\n\nThree way cross-validation\n\nTrain & validate - random split by model\nTest - consistent between models\n\nEnsemble-size\n\nLarger ensemble > more robust model\nN <= 10 likely suitable for data exploration\n\nN >=30 would give best performance"
   },
   {
     "objectID": "about.html#how-to-prune-a-model",

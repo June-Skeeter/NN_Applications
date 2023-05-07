@@ -144,7 +144,8 @@ An iterative process:
 
 * Ensemble-size
   * Larger ensemble > more robust model
-  * N = 10 likely suitable for most applications
+  * N <= 10 likely suitable for data exploration
+    * N >=30 would give best performance
 
 :::
 
