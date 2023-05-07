@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Neural Network Applications for Eddy Covariance – nn_for_ec</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Neural Network Applications for Eddy Covariance</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">
+ <span class="menu-text">A Framework for Applying Neural Networks to Eddy Covariance Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./NN_for_EC.html" aria-current="page">
+ <span class="menu-text">Example Code</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#neural-networks-for-eddy-covarinace" id="toc-neural-networks-for-eddy-covarinace" class="nav-link active" data-scroll-target="#neural-networks-for-eddy-covarinace">Neural Networks for Eddy Covarinace</a>
+  <ul class="collapse">
+  <li><a href="#pre-processing" id="toc-pre-processing" class="nav-link" data-scroll-target="#pre-processing">Pre-processing</a></li>
+  </ul></li>
+  <li><a href="#make-scenarios" id="toc-make-scenarios" class="nav-link" data-scroll-target="#make-scenarios">Make Scenarios</a>
+  <ul class="collapse">
+  <li><a href="#build-and-train-model" id="toc-build-and-train-model" class="nav-link" data-scroll-target="#build-and-train-model">Build and train model</a></li>
+  </ul></li>
+  <li><a href="#evaluate-and-prune-the-model" id="toc-evaluate-and-prune-the-model" class="nav-link" data-scroll-target="#evaluate-and-prune-the-model">Evaluate and prune the model</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="neural-networks-for-eddy-covarinace" class="level1">
+<h1>Neural Networks for Eddy Covarinace</h1>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Import some standard packages and define a few functions</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide default info, logs, and warnings - comment out if you need to troubleshoot</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'TF_CPP_MIN_LOG_LEVEL'</span>] <span class="op">=</span> <span class="st">'3'</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> shutil</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> importlib</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># from matplotlib import cm</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> metrics</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Scripts <span class="im">import</span> PlotHelpers</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># from matplotlib.colors import Normalize</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Scripts <span class="im">import</span> ReadDB, MiscFuncs, NNetFuncs</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>dbNames <span class="op">=</span> {</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/TA_1_1_1'</span>:<span class="st">'T air'</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/RH_1_1_1'</span>:<span class="st">'RH'</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/FC'</span>:<span class="st">'FCO2'</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/FCH4'</span>:<span class="st">'FCH4'</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/PPFD_IN_1_1_1'</span>:<span class="st">'PPFD'</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/P_1_1_1'</span>:<span class="st">'Precip'</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Flux/qc_co2_flux'</span>:<span class="st">'qc_FCO2'</span>,</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Flux/qc_ch4_flux'</span>:<span class="st">'qc_FCH4'</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/USTAR'</span>:<span class="st">'u*'</span>,</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/TS_1'</span>:<span class="st">'T soil 5cm'</span>,</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/TS_2'</span>:<span class="st">'T soil 10cm'</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/TS_3'</span>:<span class="st">'T soil 30cm'</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/wind_speed'</span>:<span class="st">'Wind speed'</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/wind_dir'</span>:<span class="st">'Wind dir'</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Clean/SecondStage/WTD_1_1_1'</span>:<span class="st">'Water table'</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>Local <span class="op">=</span> <span class="st">'/mnt/c/Users/User/PostDoc_Work/database/'</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>Remote <span class="op">=</span> <span class="st">'/mnt/w/'</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Dir <span class="op">=</span> Local</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>Site <span class="op">=</span> <span class="st">'BB'</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>read_new <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> read_new <span class="op">==</span> <span class="va">True</span>:</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    Data <span class="op">=</span> ReadDB.get_Traces(Site,<span class="bu">list</span>(dbNames.keys()),Dir<span class="op">=</span>Dir)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    Data <span class="op">=</span> Data.rename(columns<span class="op">=</span>dbNames)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    Data.to_csv(<span class="ss">f'temp/</span><span class="sc">{</span>Site<span class="sc">}</span><span class="ss">_Data.csv'</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    Data <span class="op">=</span> pd.read_csv(<span class="ss">f'temp/</span><span class="sc">{</span>Site<span class="sc">}</span><span class="ss">_Data.csv'</span>,parse_dates<span class="op">=</span>[<span class="st">'TimeStamp'</span>],index_col<span class="op">=</span><span class="st">'TimeStamp'</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="pre-processing" class="level2">
+<h2 class="anchored" data-anchor-id="pre-processing">Pre-processing</h2>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>importlib.<span class="bu">reload</span>(ReadDB)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Data[<span class="st">'VPD'</span>] <span class="op">=</span> MiscFuncs.Calc_VPD(Data[<span class="st">'TA'</span>],Data[<span class="st">'RH'</span>])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Data[<span class="st">'DOY'</span>] <span class="op">=</span> Data.index.dayofyear</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>target <span class="op">=</span> [<span class="st">'FCO2'</span>,<span class="st">'FCH4'</span>]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>Data[<span class="st">'Rand'</span>]<span class="op">=</span>np.random.random(Data[<span class="st">'FCO2'</span>].values.shape)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Data[[<span class="st">'FCO2'</span>,<span class="st">'FCH4'</span>]].describe())</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">filter</span> <span class="op">=</span> ReadDB.filterFlux(Data,target)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">filter</span>.QA_QC()</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="bu">filter</span>.dir_mask(<span class="st">'dir'</span>,[[<span class="dv">0</span>,<span class="dv">30</span>],[<span class="dv">330</span>,<span class="dv">360</span>]])</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">filter</span>.rain(<span class="st">'P'</span>,thresh<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">filter</span>.MAD(z<span class="op">=</span><span class="dv">7</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">filter</span>.uStar(<span class="st">'USTAR'</span>,u_thresh<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>Data[[<span class="st">'FCO2_Clean'</span>,<span class="st">'FCH4_Clean'</span>]] <span class="op">=</span> <span class="bu">filter</span>.df[[<span class="st">'FCO2'</span>,<span class="st">'FCH4'</span>]].copy()</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Data[[<span class="st">'FCO2_Clean'</span>,<span class="st">'FCH4_Clean'</span>]].describe())</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>excludes <span class="op">=</span> [<span class="st">'fco2'</span>,<span class="st">'fch4'</span>]</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>Full_inputs <span class="op">=</span> []</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> val <span class="kw">in</span> <span class="bu">list</span>(Data.columns):</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    exct <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ex <span class="kw">in</span> excludes:</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ex <span class="kw">in</span> val.lower():</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>            exct <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> exct <span class="op">&lt;</span> <span class="dv">1</span>:</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        Full_inputs.append(val)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>Full_inputs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               FCO2          FCH4
+count  33385.000000  32951.000000
+mean      -0.457040     49.597336
+std        3.770148     66.645355
+min      -45.689865   -198.555832
+25%       -1.767280      8.693725
+50%       -0.121570     29.436230
+75%        0.718945     87.813492
+max       49.698837    695.056885
+         FCO2_Clean    FCH4_Clean
+count  14123.000000  10777.000000
+mean      -0.828791     20.652699
+std        1.605370     17.728533
+min       -3.887600    -63.525269
+25%       -2.137111      7.688650
+50%       -0.834086     16.143156
+75%        0.417498     31.751116
+max        4.002227     64.322365</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>['TA',
+ 'RH',
+ 'PPFD',
+ 'P',
+ 'USTAR',
+ 'TS 5cm',
+ 'TS 10cm',
+ 'TS 30cm',
+ 'U',
+ 'dir',
+ 'WTD',
+ 'VPD',
+ 'DOY',
+ 'Rand']</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="make-scenarios" class="level1">
+<h1>Make Scenarios</h1>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Configure_Run(run,name,df,Base<span class="op">=</span><span class="st">''</span>,layers<span class="op">=</span><span class="dv">1</span>,m<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'Name'</span>]<span class="op">=</span>name</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'Base'</span>]<span class="op">=</span>Base</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Nodes / layer = the number of inputs times a multiplier, defaults to m=5</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    Nodes <span class="op">=</span> [m<span class="op">*</span><span class="bu">len</span>(run[<span class="st">'config'</span>][<span class="st">'inputs'</span>]) <span class="cf">for</span> l <span class="kw">in</span> <span class="bu">range</span>(layers)]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'Nodes'</span>]<span class="op">=</span>Nodes</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'Activation'</span>]<span class="op">=</span>[<span class="st">'relu'</span> <span class="cf">for</span> l <span class="kw">in</span> Nodes]</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'epochs'</span>]<span class="op">=</span><span class="dv">250</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set to 0 for no pruning - Higher values = more strict pruning </span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'Prune_scale'</span>]<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'Norm'</span>]<span class="op">=</span><span class="va">True</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'RF_comp'</span>]<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'validation_split'</span>]<span class="op">=</span><span class="fl">.25</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'patience'</span>]<span class="op">=</span><span class="dv">4</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'N_models'</span>]<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'Training'</span>] <span class="op">=</span> {}</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'Evaluation'</span>] <span class="op">=</span> {}</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    target <span class="op">=</span> Model_Runs[key][<span class="st">'config'</span>][<span class="st">'target'</span>]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> Model_Runs[key][<span class="st">'config'</span>][<span class="st">'inputs'</span>]</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    Model_Runs[key][<span class="st">'config'</span>][<span class="st">'mean'</span>] <span class="op">=</span> df[inputs].mean().values</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    Model_Runs[key][<span class="st">'config'</span>][<span class="st">'variance'</span>] <span class="op">=</span> df[inputs].std().values<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.loc[df[target<span class="op">+</span>inputs].dropna().index].copy()</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">'Mask'</span> <span class="kw">in</span> Model_Runs[key][<span class="st">'config'</span>]:</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        Training,Validation <span class="op">=</span> MiscFuncs.makeSplit(df,Mask<span class="op">=</span>Model_Runs[key][<span class="st">'config'</span>][<span class="st">'Mask'</span>],return_Full<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        Training,Validation <span class="op">=</span> MiscFuncs.makeSplit(df,dropOut<span class="op">=</span>Model_Runs[key][<span class="st">'config'</span>][<span class="st">'validation_split'</span>])</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(Training[target<span class="op">+</span>inputs].shape,Validation[target<span class="op">+</span>inputs].shape)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    Model_Runs[key][<span class="st">'Training'</span>][<span class="st">'X'</span>] <span class="op">=</span> Training[inputs].values</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    Model_Runs[key][<span class="st">'Training'</span>][<span class="st">'Y'</span>] <span class="op">=</span> Training[target].values.flatten()</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    Model_Runs[key][<span class="st">'Evaluation'</span>][<span class="st">'X'</span>] <span class="op">=</span> Validation[inputs].values</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    Model_Runs[key][<span class="st">'Evaluation'</span>][<span class="st">'Y'</span>] <span class="op">=</span> Validation[target].values.flatten()</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Larger batch &gt; runs faster &gt; but won't fit as well</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    batch <span class="op">=</span> np.ceil(Model_Runs[key][<span class="st">'Training'</span>][<span class="st">'Y'</span>].shape[<span class="dv">0</span>]<span class="op">*</span><span class="fl">.01</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> batch<span class="op">&lt;</span><span class="dv">32</span>:</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        batch<span class="op">=</span><span class="dv">32</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    run[<span class="st">'config'</span>][<span class="st">'batch_size'</span>]<span class="op">=</span><span class="bu">int</span>(batch)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(run)    </span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>Model_Runs <span class="op">=</span> {</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Full_Model'</span>:{</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>        <span class="st">'config'</span>:{</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>            <span class="st">'target'</span>:[<span class="st">'FCO2_Clean'</span>],</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>            <span class="st">'inputs'</span>:Full_inputs,</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>            },</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key <span class="kw">in</span> Model_Runs.keys():</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(key)</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    Model_Runs[key] <span class="op">=</span> Configure_Run(Model_Runs[key],key,Data.copy(),Base<span class="op">=</span><span class="st">'Test'</span>)</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>Model_Runs[key][<span class="st">'config'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Full_Model
+(10570, 15) (3523, 15)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>{'target': ['FCO2_Clean'],
+ 'inputs': ['TA',
+  'RH',
+  'PPFD',
+  'P',
+  'USTAR',
+  'TS 5cm',
+  'TS 10cm',
+  'TS 30cm',
+  'U',
+  'dir',
+  'WTD',
+  'VPD',
+  'DOY',
+  'Rand'],
+ 'Name': 'Full_Model',
+ 'Base': 'Test',
+ 'Nodes': [70],
+ 'Activation': ['relu'],
+ 'epochs': 250,
+ 'Prune_scale': 2,
+ 'Norm': True,
+ 'RF_comp': False,
+ 'validation_split': 0.25,
+ 'patience': 3,
+ 'N_models': 10,
+ 'mean': array([1.05914688e+01, 8.45259781e+01, 2.17713760e+02, 6.54291734e-02,
+        1.64241463e-01, 1.15897694e+01, 1.14355001e+01, 1.12391300e+01,
+        1.51118171e+00, 1.68358032e+02, 6.34482155e+01, 2.74992728e+00,
+        1.83083524e+02, 5.01421670e-01]),
+ 'variance': array([4.82479309e+01, 2.44342428e+02, 1.29616722e+05, 6.87984209e-02,
+        1.34844746e-02, 2.71218554e+01, 2.53605397e+01, 1.30344353e+01,
+        1.33950994e+00, 6.91920945e+03, 1.05928283e+02, 1.52296638e+01,
+        1.11123164e+04, 8.33925894e-02]),
+ 'batch_size': 106}</code></pre>
+</div>
+</div>
+<section id="build-and-train-model" class="level2">
+<h2 class="anchored" data-anchor-id="build-and-train-model">Build and train model</h2>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>importlib.<span class="bu">reload</span>(NNetFuncs)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Run <span class="op">=</span> <span class="st">'Full_Model'</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Build_Train_Eval(Run,print_sum<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    config <span class="op">=</span> Run[<span class="st">'config'</span>]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    Training <span class="op">=</span> Run[<span class="st">'Training'</span>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    NNetFuncs.make_Dense_model(config,print_sum<span class="op">=</span>print_sum)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    NNetFuncs.train_model(config,Training)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    Eval <span class="op">=</span> Run[<span class="st">'Evaluation'</span>]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    _<span class="op">=</span>NNetFuncs.run_Model(config,Eval)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="evaluate-and-prune-the-model" class="level1">
+<h1>Evaluate and prune the model</h1>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>importlib.<span class="bu">reload</span>(NNetFuncs)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>key<span class="op">=</span><span class="st">'Full_Model'</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Base <span class="op">=</span> Model_Runs[key][<span class="st">'config'</span>][<span class="st">'Base'</span>]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Drop_Thresh_Scale <span class="op">=</span> Model_Runs[key][<span class="st">'config'</span>][<span class="st">'Base'</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>Continue_Prune <span class="op">=</span> Model_Runs[key][<span class="st">'config'</span>][<span class="st">'Prune_scale'</span>]</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>T1 <span class="op">=</span> time.time()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> Continue_Prune <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    RI <span class="op">=</span> NNetFuncs.Prune(Base,key,Verbose<span class="op">=</span><span class="va">True</span>,Prune_Scale<span class="op">=</span>Continue_Prune)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    Pruned_Inputs <span class="op">=</span> <span class="bu">list</span>(RI.loc[RI[<span class="st">'Drop'</span>]<span class="op">==</span><span class="dv">0</span>].index)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(Pruned_Inputs)<span class="op">&lt;</span><span class="bu">len</span>(Model_Runs[key][<span class="st">'config'</span>][<span class="st">'inputs'</span>])<span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> <span class="st">'Pruned_Model'</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        Model_Runs[key]<span class="op">=</span>{</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>                <span class="st">'config'</span>:{</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'target'</span>:[<span class="st">'FCO2_Clean'</span>],</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'inputs'</span>:Pruned_Inputs<span class="op">+</span>[<span class="st">'Rand'</span>]</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                    },</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>                }</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Pruned inputs: '</span>,Model_Runs[key][<span class="st">'config'</span>][<span class="st">'inputs'</span>][:<span class="op">-</span><span class="dv">1</span>],<span class="st">'</span><span class="ch">\n\n</span><span class="st">'</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        Model_Runs[key] <span class="op">=</span> Configure_Run(Model_Runs[key],key,Data.copy(),Base)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        Build_Train_Eval(Model_Runs[key])</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        Continue_Prune <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> <span class="st">'Final_Model'</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        Model_Runs[key]<span class="op">=</span>{</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>                <span class="st">'config'</span>:{</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'target'</span>:[<span class="st">'FCO2_Clean'</span>],</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'inputs'</span>:Pruned_Inputs</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>                    },</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>                }</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Final inputs: '</span>,Model_Runs[key][<span class="st">'config'</span>][<span class="st">'inputs'</span>][:<span class="op">-</span><span class="dv">1</span>],<span class="st">'</span><span class="ch">\n\n</span><span class="st">'</span>)</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        Model_Runs[key] <span class="op">=</span> Configure_Run(Model_Runs[key],key,Data.copy(),Base)</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>        Build_Train_Eval(Model_Runs[key],print_sum<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>        shutil.rmtree(<span class="ss">f'Models/</span><span class="sc">{</span>Base<span class="sc">}</span><span class="ss">/Pruned_Model'</span>)</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>T2 <span class="op">=</span> time.time()</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Pruning Time: "</span>, T2<span class="op">-</span>T1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         RI_bar  RI_CI95  lower_bound  upper_bound  Drop
+Rand       0.03     0.00         0.03         0.03  0.88
+dir        0.40     0.03         0.37         0.43  0.88
+P          0.67     0.08         0.59         0.75  0.88
+U          0.83     0.09         0.75         0.92  0.88
+RH         0.85     0.16         0.69         1.01  0.88
+TA         0.92     0.14         0.78         1.06  0.88
+USTAR      1.00     0.09         0.91         1.10  0.00
+WTD        1.27     0.12         1.15         1.38  0.00
+VPD        1.68     0.26         1.42         1.94  0.00
+TS 5cm     2.93     0.87         2.06         3.79  0.00
+TS 10cm    3.47     0.86         2.61         4.33  0.00
+DOY        6.66     0.54         6.11         7.20  0.00
+TS 30cm   12.63     0.88        11.75        13.51  0.00
+PPFD      66.67     2.85        63.82        69.52  0.00
+Pruned inputs:  ['USTAR', 'WTD', 'VPD', 'TS 5cm', 'TS 10cm', 'DOY', 'TS 30cm', 'PPFD'] 
+
+
+(10570, 10) (3523, 10)
+Training Time:
+ 148.76  Seconds
+NN Model
+ Validation metrics (ensemble mean): 
+r2 =  0.89291 
+RMSE =  0.5267
+Run Time:
+ 0.62  Seconds
+10 models
+Mean epochs/model:  47.0
+         RI_bar  RI_CI95  lower_bound  upper_bound  Drop
+Rand       0.04     0.01         0.03         0.05  0.88
+USTAR      0.27     0.03         0.24         0.30  0.88
+VPD        0.74     0.05         0.68         0.79  0.88
+WTD        1.37     0.09         1.28         1.46  0.00
+TS 10cm    3.61     0.71         2.90         4.31  0.00
+TS 5cm     4.56     1.54         3.02         6.10  0.00
+DOY        6.07     0.95         5.13         7.02  0.00
+TS 30cm   13.14     1.47        11.68        14.61  0.00
+PPFD      70.21     3.26        66.95        73.47  0.00
+Pruned inputs:  ['WTD', 'TS 10cm', 'TS 5cm', 'DOY', 'TS 30cm', 'PPFD'] 
+
+
+(10570, 8) (3523, 8)
+Training Time:
+ 156.14  Seconds
+NN Model
+ Validation metrics (ensemble mean): 
+r2 =  0.87258 
+RMSE =  0.57687
+Run Time:
+ 0.76  Seconds
+10 models
+Mean epochs/model:  50.3
+         RI_bar  RI_CI95  lower_bound  upper_bound  Drop
+Rand       0.04     0.01         0.03         0.05  0.65
+WTD        1.55     0.09         1.46         1.63  0.00
+TS 10cm    6.03     1.47         4.56         7.50  0.00
+DOY        6.62     1.09         5.53         7.72  0.00
+TS 5cm    10.60     2.12         8.48        12.72  0.00
+TS 30cm   17.30     1.73        15.56        19.03  0.00
+PPFD      57.86     3.04        54.82        60.91  0.00
+Final inputs:  ['WTD', 'TS 10cm', 'DOY', 'TS 5cm', 'TS 30cm'] 
+
+
+(10570, 7) (3523, 7)
+Model: "Final_Model"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_1 (InputLayer)        [(None, 6)]               0         
+                                                                 
+ normalization (Normalizatio  (None, 6)                0         
+ n)                                                              
+                                                                 
+ dense (Dense)               (None, 30)                210       
+                                                                 
+ dense_1 (Dense)             (None, 1)                 31        
+                                                                 
+=================================================================
+Total params: 241
+Trainable params: 241
+Non-trainable params: 0
+_________________________________________________________________
+None
+Training Time:
+ 188.91  Seconds
+NN Model
+ Validation metrics (ensemble mean): 
+r2 =  0.86483 
+RMSE =  0.58753
+Run Time:
+ 0.5  Seconds
+10 models
+Mean epochs/model:  52.6
+Pruning Time:  496.08984375</code></pre>
+</div>
+</div>
+<p>Inspect pruned model</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>importlib.<span class="bu">reload</span>(PlotHelpers)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> Model_Runs[key][<span class="st">'config'</span>]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>Eval <span class="op">=</span> Model_Runs[key][<span class="st">'Evaluation'</span>]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>full_out<span class="op">=</span>NNetFuncs.run_Model(config,Eval)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># print('\n\n')</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>Base <span class="op">=</span> Model_Runs[key][<span class="st">'config'</span>][<span class="st">'Base'</span>]</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>Name <span class="op">=</span> Model_Runs[key][<span class="st">'config'</span>][<span class="st">'Name'</span>]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># run = 'Feature_Detection'</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>unit <span class="op">=</span> <span class="st">'$\mu mol m^{-2} s^{-1}$'</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f'Models/</span><span class="sc">{</span>Base<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>Name<span class="sc">}</span><span class="ss">/model_output.csv'</span>,index_col<span class="op">=</span>[<span class="dv">0</span>])</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>fig,ax<span class="op">=</span>plt.subplots()</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> PlotHelpers.make1_1_Plot(ax,df,<span class="st">'target'</span>,<span class="st">'y_bar'</span>,unit<span class="op">=</span>unit)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'NN Estimate'</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'EC Observation'</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>RI <span class="op">=</span> pd.read_csv(<span class="ss">f'Models/</span><span class="sc">{</span>Base<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>Name<span class="sc">}</span><span class="ss">/model_RI.csv'</span>,index_col<span class="op">=</span>[<span class="dv">0</span>])</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>RI <span class="op">=</span> RI.sort_values(by<span class="op">=</span><span class="ss">f'RI_bar'</span>,ascending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>fig,ax<span class="op">=</span>plt.subplots()</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>PlotHelpers.makeRI_plot(ax,RI)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co"># RI['Thresh'] = RI['RI_bar']-RI['RI_CI95']</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(RI.<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NN Model
+ Validation metrics (ensemble mean): 
+r2 =  0.86978 
+RMSE =  0.58452
+Run Time:
+ 0.59  Seconds
+10 models
+Mean epochs/model:  66.1
+         RI_bar  RI_CI95
+TS 10cm    5.85     0.67
+TS 30cm   11.78     1.30
+DOY       16.89     1.65
+PPFD      65.48     2.72</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="NN_for_EC_files/figure-html/cell-7-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="NN_for_EC_files/figure-html/cell-7-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>Max<span class="op">=</span><span class="dv">4</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>Top <span class="op">=</span> RI.sort_values(by<span class="op">=</span><span class="ss">f'RI_bar'</span>,ascending<span class="op">=</span><span class="va">False</span>).index[:Max]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>npi<span class="op">=</span><span class="bu">len</span>(RI.index)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> <span class="bu">int</span>(np.ceil(<span class="bu">len</span>(Top)<span class="op">/</span><span class="dv">2</span>))</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>fig,axes<span class="op">=</span>plt.subplots(rows,cols,sharey<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                      figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">6</span>))</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.flatten()</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>mod <span class="op">=</span> <span class="st">'_norm'</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i,xi <span class="kw">in</span> <span class="bu">enumerate</span>(Top):</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(xi)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    df_int <span class="op">=</span> MiscFuncs.byInterval(df,<span class="ss">f'</span><span class="sc">{</span>xi<span class="sc">}</span><span class="ss">'</span>,[<span class="ss">f'dy_d</span><span class="sc">{</span>xi<span class="sc">}{</span>mod<span class="sc">}</span><span class="ss">'</span>],bins<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    PlotHelpers.CI_Plot(axes[i],df_int,<span class="ss">f'dy_d</span><span class="sc">{</span>xi<span class="sc">}{</span>mod<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>axes[i].get_ylabel()</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> axes:</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> ax.get_ylabel()</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(l.split(<span class="st">'_norm'</span>)[<span class="dv">0</span>].replace(<span class="st">'_'</span>,<span class="st">' / '</span>).replace(<span class="st">'y'</span>,<span class="st">'FCO2'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PPFD
+DOY
+TS 30cm
+TS 10cm</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="NN_for_EC_files/figure-html/cell-8-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># df = pd.read_csv(f'Models/{run}/random_forest_output.csv',index_col=[0])</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># unit = ''</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># fig,ax=plt.subplots()</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.scatter(df['target'],df['y_bar'])</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.plot(df['target'],df['target'],color='k')</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># r2 = np.round(metrics.r2_score(df['target'],df['y_bar']),2)</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># RMSE = np.round(metrics.mean_squared_error(df['target'],df['y_bar'])**.5,2)</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ax = PlotHelpers.make1_1_Plot(ax,df,'target','y_bar',unit=unit)</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.set_ylabel('NN Estimate')</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.set_xlabel('EC Observation')</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># RF_RI = pd.read_csv(f'Models/{run}/random_forest_RI.csv',index_col=[0])</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co"># mod = ''</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co"># RF_RI = RF_RI.sort_values(by = f'RI{mod}_bar')</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co"># fig,ax=plt.subplots()</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.barh(RF_RI.index,RF_RI[f'RI{mod}_bar'],xerr=RF_RI[f'RI{mod}_CI95'])</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.grid()</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.set_xscale('log')</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co"># RF_RI</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NN_RI = pd.read_csv(f'{run}/model_RI.csv',index_col=[0])</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mod = '_norm'</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># NN_RI = NN_RI.sort_values(by=f'RI{mod}_bar',ascending=True)</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># fig,ax=plt.subplots()</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.barh(NN_RI.index,NN_RI[f'RI{mod}_bar'],yerr=NN_RI[f'RI{mod}_CI95'])</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.grid()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RF_Output = pd.read_csv(f'{run}/random_forest_output.csv',index_col=[0])</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># RF_Output.head()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

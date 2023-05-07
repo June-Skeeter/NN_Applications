@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Neural Network Applications for Eddy Covariance – about_bu</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Neural Network Applications for Eddy Covariance</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html">
+ <span class="menu-text">A Framework for Applying Neural Networks to Eddy Covariance Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./NN_for_EC.html">
+ <span class="menu-text">Example Code</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#eddy-covariance" id="toc-eddy-covariance" class="nav-link active" data-scroll-target="#eddy-covariance">Eddy Covariance</a></li>
+  <li><a href="#neural-networks" id="toc-neural-networks" class="nav-link" data-scroll-target="#neural-networks">Neural Networks</a></li>
+  <li><a href="#commonly-cited-limitations" id="toc-commonly-cited-limitations" class="nav-link" data-scroll-target="#commonly-cited-limitations">Commonly Cited Limitations</a></li>
+  <li><a href="#partial-derivatives" id="toc-partial-derivatives" class="nav-link" data-scroll-target="#partial-derivatives">Partial Derivatives</a></li>
+  <li><a href="#artificial-gaps" id="toc-artificial-gaps" class="nav-link" data-scroll-target="#artificial-gaps">Artificial Gaps</a></li>
+  <li><a href="#next-steps-speculations" id="toc-next-steps-speculations" class="nav-link" data-scroll-target="#next-steps-speculations">Next Steps &amp; Speculations</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions">Questions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="eddy-covariance" class="level2">
+<h2 class="anchored" data-anchor-id="eddy-covariance">Eddy Covariance</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Ecosystem-scale fluxes of energy, water, and trace gases.</p>
+<ul>
+<li><p>Spatially integrated, semi-continuous</p></li>
+<li><p>Noisy, voluminous data</p>
+<ul>
+<li>Ideally suited for NN analysis!</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img src="images/BB1_System.jpg" class="img-fluid"></p>
+<h3 class="anchored">
+Burns Bog EC Station<br>Delta, BC
+</h3>
+</div>
+</div>
+</section>
+<section id="neural-networks" class="level2">
+<h2 class="anchored" data-anchor-id="neural-networks">Neural Networks</h2>
+<p>Powerful machine learning algorithms that are well suited for non-linear, multi-variate response functions.</p>
+<ul>
+<li><strong>Universal approximators</strong>: can map any continuous function to an arbitrary degree of accuracy.
+<ul>
+<li>Given sufficient “hidden nodes”, will fit <strong>any</strong> pattern in a dataset
+<ul>
+<li>Care must be taken to ensure the patterns are real</li>
+</ul></li>
+</ul></li>
+<li>Capable of interpolation and extrapolation</li>
+</ul>
+</section>
+<section id="commonly-cited-limitations" class="level2">
+<h2 class="anchored" data-anchor-id="commonly-cited-limitations">Commonly Cited Limitations</h2>
+<p>’Code” #| tbl-colwidths: [35,65] import pandas as pd</p>
+<p>from IPython.display import Markdown from tabulate import tabulate</p>
+<p>df = pd.read_csv(‘About.csv’,sep=‘|’,index_col=‘Drawback’) Markdown(tabulate( df, headers=[“Limitation”, “Solutions”] ))</p>
+<pre><code>
+# Objectives
+
+Provide a framework for applying NN models can be applied to EC data for both descriptive analysis and inferential modelling. 
+ 
+* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has Python code with functional examples that can be used to apply NN models.
+
+## Key Procedures
+
+* Early stopping: End training metrics (e.g., MSE) fail to improve for *e* training epochs
+    * *e* = 2 typically provides a robust, generalizable model
+
+* Ensembling: Train a set of N randomly initialled models on N unique interactions of training/testing data
+    * A small ensemble for ~10 models is sufficient in most applications
+
+* Input normalization: Z-norm scale all inputs to improve training
+
+## Key Procedures
+
+* Feature inspection: Calculating partial first (and second) derivatives of each input
+    * Sum of squared derivatives gives relative influence of each input over output
+    * Plotting model derivatives to help ensure mapped relationships are physically plausible
+        * An **essential step** and **key advantage** of NN models
+
+## A Simple Example
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+The Vapor Pressure Deficit (VPD):
+
+* Increases exponentially as a function of air temperature (Ta)
+* Decreases linearly as a function of relative humidity (RH).
+
+&lt;!-- 
+$$ ea_H = 0.61365*np.exp((17.502*Ta)/(240.97+Ta))$$
+$$e_H = RH*ea_H/100$$
+$$VPD = (ea_H - e_H)*10$$ --&gt;
+
+
+:::
+::: {.column width="50%"}
+
+
+'Code"
+#| label: Estimating VPD
+#| fig-cap: "VPD over a range of Ta, and RH values"
+#| layout-ncol: 1
+#| warning: False
+
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from Scripts import MiscFuncs,PlotHelpers
+from Scripts import ReadDB, MiscFuncs, NNetFuncs
+
+units = {
+    'TA':'$T_a^\circ$C',
+    'RH':'RH %',
+    'VPD':'VPD hPa'
+    }
+
+labels = {
+    'TA':'Air Temperature',
+    'RH':'Relative Humidity',
+    'VPD':'Vapor Pressure Deficit'
+    }
+
+range_TA_RH,grid_TA,grid_RH,grid_VPD = MiscFuncs.Create_Grid(
+    np.linspace(-50,50),# Define a TA range (in C)
+    np.linspace(0,100), # Possible RH values
+    MiscFuncs.Calc_VPD # Return Vapor Pressure Defecit
+    )
+    
+bins = np.arange(-10,grid_VPD.max(),15)
+cmap = 'PuRd'
+norm = [0,grid_VPD.max()]
+
+fig,ax=plt.subplots(1,figsize=(5,5))
+PlotHelpers.Contour_Plot(fig,ax,grid_TA,grid_RH,grid_VPD,cmap=cmap,norm=norm,unit = units['VPD'],bins=bins)
+ax.set_xlabel('Air Temperature $^\circ$C')
+ax.set_ylabel('Relative Humidity %')
+ax.set_title('Vapor Pressure Deficit (VPD)')
+plt.tight_layout()
+
+# # Use tensorfolow to calculate the first partial derivative of the function
+# X_tensor = tf.convert_to_tensor(range_TA_RH.T)
+# with tf.GradientTape(persistent=True) as tape:
+#     tape.watch(X_tensor)
+#     VPD_est = MiscFuncs.Calc_VPD(X_tensor) 
+# # Get gradients of VPD_est with respect to X_tensor
+# Deriv = tape.gradient(VPD_est,X_tensor).numpy()
+
+# Derivatives = pd.DataFrame(
+#     data={
+#     'TA':range_TA_RH.T[:,0],
+#     'RH':range_TA_RH.T[:,1],
+#     'dVPD/dTA':Deriv[:,0],
+#     'dVPD/dRH':Deriv[:,1]
+#     }
+# )
+
+# fig,axes=plt.subplots(2,2,figsize=(8,8),sharey='row')
+
+# grid_dVPD_dTA = Deriv[:,0].T.reshape(grid_TA.shape)
+# grid_dVPD_dRH = Deriv[:,1].T.reshape(grid_RH.shape)
+
+# d_bins = np.arange(
+#     np.floor(Deriv).min(),np.ceil(Deriv).max(),.5
+#     )
+# d_cmap = 'bwr'
+# d_norm = [
+#     Deriv.min(),0, Deriv.max()
+#     ]
+    
+# ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,0],grid_TA,grid_RH,grid_dVPD_dTA,cmap = d_cmap,norm=d_norm,bins=d_bins)
+# ax.set_title('dVPD dTa')
+
+# ax,_ = PlotHelpers.Contour_Plot(fig,axes[0,1],grid_TA,grid_RH,grid_dVPD_dRH,cmap = d_cmap,norm=d_norm,bins=d_bins)
+# ax.set_title('dVPD dRH')
+
+
+# y=['dVPD/dTA']
+# df = MiscFuncs.byInterval(Derivatives,'TA',y,bins=100)
+# ax = PlotHelpers.CI_Plot(axes[1,0],df,y[0])
+# # ax.set_title('Partial First Derivative\nVPD with respect to Ta')
+
+# y=['dVPD/dRH']
+# df = MiscFuncs.byInterval(Derivatives,'RH',y,bins=100)
+# ax = PlotHelpers.CI_Plot(axes[1,1],df,y[0])
+# # ax.set_title('Partial First Derivative\nVPD with respect to RH')
+
+
+# plt.tight_layout()
+</code></pre>
+<p>:::</p>
+<p>::::</p>
+</section>
+<section id="partial-derivatives" class="level2">
+<h2 class="anchored" data-anchor-id="partial-derivatives">Partial Derivatives</h2>
+<p>’Code” #| label: Derivatives of VPD #| fig-cap: “This plot shows the partial first derivatives of VPD” #| layout-ncol: 1 #| warning: False grid_VPD.min()</p>
+<pre><code>
+
+## Example Data
+
+BB1 Flux tower was established in 2015.
+
+'Code"
+from Scripts import ReadDB
+
+# dbNames = {
+#     'TA_1_1_1':'TA',
+#     'RH_1_1_1':'RH'
+# }
+
+# read_new = False
+# if read_new == False:
+#     Data = ReadDB.get_Traces('BB',['TA_1_1_1','RH_1_1_1'],Dir='/mnt/c/Users/User/PostDoc_Work/database/')
+#     print(Data)
+#     Data = Data.dropna(axis=0)
+#     Data = Data.rename(columns=dbNames)
+#     Data.to_csv('temp/BB1_VPD.csv')
+
+# else:
+Site = 'BB'
+Data = pd.read_csv(f'temp/{Site}_VPD.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')
+    
+print(Data.head())
+
+Data['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])
+    
+fig,axes=plt.subplots(1,3,figsize=(7,4))
+Data.hist(column='TA',ax=axes[0],bins=20,edgecolor='k')
+axes[0].set_xlabel(units['TA'])
+
+Data.hist(column='RH',ax=axes[1],bins=20,edgecolor='k')
+axes[1].set_xlabel(units['RH'])
+
+Data.hist(column='VPD',ax=axes[2],bins=20,edgecolor='k')
+axes[2].set_xlabel(units['VPD'])
+
+plt.tight_layout()
+
+Data.describe().round(1)</code></pre>
+</section>
+<section id="artificial-gaps" class="level2">
+<h2 class="anchored" data-anchor-id="artificial-gaps">Artificial Gaps</h2>
+</section>
+<section id="next-steps-speculations" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps-speculations">Next Steps &amp; Speculations</h2>
+<ul>
+<li>u* filtering</li>
+<li>Flux footprint calculations</li>
+</ul>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>They offer the user more control over the structure of the model and inspection of the model derivatives provides a method for validating that the relationships mapped by a model are physically plausible.</p>
+</section>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions">Questions</h2>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
