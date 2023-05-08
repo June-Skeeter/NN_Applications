@@ -10,7 +10,7 @@ def get_Traces(Site,Traces,Dir = '/mnt/w/'):
     Data = pd.DataFrame()
     Time_Trace = 'Clean/SecondStage/clean_tv'
 
-    for year in range (2017,2023):
+    for year in range (2016,2023):
         if os.path.exists(f'{Dir}{str(year)}/{Site}/'):
             filename = f'{Dir}{str(year)}/{Site}/{Time_Trace}'
             with open(filename, mode='rb') as file:

@@ -38,7 +38,7 @@ def Create_Grid(x1,x2,func=None):
     return(flat_X,grid_x1,grid_x2,grid_y)
 
 
-def byInterval(df,x,Vars,bins=None,agg='mean'):
+def byInterval(df,x,Vars,bins=None,method='quantile',agg='mean'):
     # Aggregates data by an interval and returns a 95% CI
     # If dataframe has a datetime index, use resample
     # Handles all other data types by groubpby
@@ -55,7 +55,11 @@ def byInterval(df,x,Vars,bins=None,agg='mean'):
         if bins is None:
             df[f"{x}_grp"] = df[x].copy()
         else:
-            df['bins'] = pd.cut(df[x],bins=bins)
+            if method != 'quantile':
+                df['bins'] = pd.cut(df[x],bins=bins)
+            else:
+                
+                df['bins'] = pd.cut(df[x],bins=df[x].quantile(np.linspace(0,1,bins)).unique())
             df[f"{x}_grp"] = df['bins'].apply(lambda x: x.mid)
             df = df.drop('bins',axis=1)        
         Set = df.groupby(f'{x}_grp').agg(agg,numeric_only=True)

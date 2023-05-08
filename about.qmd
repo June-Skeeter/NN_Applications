@@ -50,11 +50,12 @@ keywords: [Eddy Covariance, Micrometeorology, Neural Networks, Modelling]
 
 ::: {.column width="50%"}
 
-Ecosystem-scale fluxes energy, water, and trace gases.
+Semi-continuous, ecosystem-scale measurements of energy, water, and trace gas fluxes.
 
-* Voluminous data sets
-  * Noisy & gap-prone
-* Ideally suited for machine learning!
+* Noisy, voluminous data sets
+  * Frequent gaps
+  * Observational bias
+* Well suited for machine learning!
 
 :::
 
@@ -71,14 +72,15 @@ Ecosystem-scale fluxes energy, water, and trace gases.
 
 ## Neural Networks
 
-**Universal approximators**: they can map any continuous function to an arbitrary degree accuracy.
-
-* With sufficient hidden nodes, they will fit **any** pattern in a dataset
-  * Care must be taken to ensure the patterns are real
-    * Have often been treated as "black boxes"
+**Universal approximators**: can map any continuous function to an arbitrary degree accuracy.
 
 * Well suited for non-linear, multi-variate response functions
-  * Capable *interpolation* and **extrapolation**
+  * Capable **interpolation** and *extrapolation*
+
+* With enough nodes, they will fit **any** pattern in a dataset
+  * Often treated as "black boxes"
+  * Care must be taken to ensure the patterns are real
+
 
 ## Commonly Cited Limitations
 
@@ -100,30 +102,29 @@ Markdown(tabulate(
 
 # Objective
 
-Provide a framework for applying NN models can be applied to EC data for both descriptive analysis and inferential modelling. 
+Provide a framework for applying NN models to EC data for descriptive analysis and inferential modelling. 
  
 * The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has functional examples that can be used to apply NN models.
-  * Runs in Python and Tensorflow: *GPU support not required*
-
+  * Runs in Python and Tensorflow
+    * *GPU support not required*
 
 ## Example Data
 
 :::: {.columns}
 
-::: {.column width="40%"}
+::: {.column width="45%"}
 
-BB1 EC station
+Burns Bog EC station
 
-* Beakrush-Sphagnum ecosystem undergoing active restoration
-* 8+ years of CO<sub>2</sub> and CH<sub>4</sub> flux observations
+* Harvested peatland undergoing active restoration
+* 8+ years of meteorological & flux (CO<sub>2</sub> and CH<sub>4</sub>) data
 
 :::
 
-::: {.column width="60%"}
+::: {.column width="55%"}
 
 
 <img src="images/BB1.jpg" alt="your-image-description" style="border: 2px solid  black; width: 100%">
-
 
 :::
 ::::
@@ -139,13 +140,10 @@ BB1 EC station
 An iterative process:
 
 * Three way cross-validation
-  * Train & validate - random split by model 
-  * Test - consistent between models
-
-* Ensemble-size
-  * Larger ensemble > more robust model
-  * N <= 10 likely suitable for data exploration
-    * N >=30 would give best performance
+  * Train/validate/test
+* Larger ensemble > more robust model
+  * N <= 10 suitable for exploration
+  * N >=30 will give best performance
 
 :::
 
@@ -158,18 +156,19 @@ An iterative process:
 
 ::::
 
-## How to Prune a Model
+## Pruning Inputs
 
 Calculate partial first derivative of the output with respect to each input over test data domain.
 
-* **Relative Influence (RI)**:  Normalized Sum of squared derivatives (SSD)
+* **Relative Influence (RI)** of inputs
+  * Normalized Sum of squared derivatives (SSD)
 
-* Iteratively prune inputs with RI below a reference threshold
-  * Random input assess base-level performance
+* Iteratively remove inputs with RI below a threshold
+  * Use a Random scalar input to inform threshold
 
 * Train final model without random scalar
 
-## Pruning a FCO<sub>2</sub> Model
+## Before and After Pruning
 
 ```{python}
 #| label: RI of models
@@ -185,12 +184,12 @@ Base = 'Test'
 Name = 'Full_Model'
 RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
 RI = RI.sort_values(by=f'RI_bar',ascending=True)
-PlotHelpers.makeRI_plot(ax[0],RI,Title='Over-Parametrized Model')
+PlotHelpers.makeRI_plot(ax[0],RI,Title='Over-Parametrized Model for FCO$_2$')
 
 Name = 'Final_Model'
 RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
 RI = RI.sort_values(by=f'RI_bar',ascending=True)
-PlotHelpers.makeRI_plot(ax[1],RI,Title='Pruned Model')
+PlotHelpers.makeRI_plot(ax[1],RI,Title='Pruned Model for FCO$_2$')
 ax[1].set_ylabel('')
 plt.tight_layout()
 
@@ -203,8 +202,7 @@ plt.tight_layout()
 
 ::: {.column width="50%"}
 
-Plot the model outputs using the test data.
-
+Plot the model outputs and validation metrics calculated with the test data.
 
 ::: {style="font-size: 80%;"}
 
@@ -266,13 +264,14 @@ radom_code_to_mask_text=0
 
 ## Plotting Derivatives
     
-Help ensure mapped relationships are physically plausible
+Helps ensure model responses are physically plausible
 
-* An **essential step** and **key advantage** NN models
+* An **essential step** and **key advantage** of NN models
 * Raw derivatives show true feature responses
-  * 95% confidence intervals indicate model confidence in relationships
 * Normalized derivatives scaled by input variance
-  * View relative on common scale
+  * Relative effects on common scale
+  * What the model "sees"
+* 95% confidence intervals around derivatives indicate modeled confidence in relationships
 
 
 ## Partial Derivatives of FCO<sub>2</sub>
@@ -298,6 +297,8 @@ mod = ''
 for i,xi in enumerate(Top):
     df_int = MiscFuncs.byInterval(df,f'{xi}',[f'dy_d{xi}{mod}'],bins=50)
     PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    axes[i].set_title(xi)
+
 plt.tight_layout()
 
 axes[i].get_ylabel()
@@ -327,25 +328,22 @@ cols = 2
 npi=len(RI.index)
 rows = int(np.ceil(len(Top)/2))
 
-fig,axes=plt.subplots(rows,cols,sharey=True)
+fig,axes=plt.subplots(rows,cols,sharey=True,sharex=True)
 
 axes = axes.flatten()
 
 mod = '_norm'
 
 for i,xi in enumerate(Top):
-    df_int = MiscFuncs.byInterval(df,f'{xi}',[f'dy_d{xi}{mod}'],bins=50)
+    axes[i].axvspan(0,0,edgecolor='k',linewidth=1.5)
+    df_int = MiscFuncs.byInterval(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],bins=50)
     PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    axes[i].set_title(xi)
 plt.tight_layout()
-
 axes[i].get_ylabel()
-
 for ax in axes:
     l = ax.get_ylabel()
-    ax.set_ylabel(l.split('_norm')[0].replace('_',' / ').replace('y',' '))
-
-
-radom_code_to_mask_text=0
+    ax.set_ylabel(l.split('_')[0]+'/dx')
 
 ```
 
@@ -355,9 +353,9 @@ radom_code_to_mask_text=0
 * Custom NN architecture: Separating input layers may allow us partition fluxes.
   * FCO<sub>2</sub> into GPP and ER
   * FCH<sub>4</sub> into methanogenesis, methanotrophy, transport
-* Flux footprint analysis: Models can help account for spatial heterogeneity within a a footprint
-  * NN could also be trained to calculate/classify footprints!
-* u* filtering: Partial derivatives of u* could give thresholds for filtering
+* Flux footprints: map response to spatial heterogenity
+* Upscaling: in space and time
+* u* filtering: partial derivatives could identify u* thresholds for filtering
 
 # Thank You
 
@@ -368,4 +366,4 @@ Questions?
 RF models are great! ... for classifying discrete objects
 
 * But, it's my view that applying them to continuous data is misguided
-* They are [poorly suited](https://github.com/June-Skeeter/NN_Applications) for interpolation and incapable of extrapolation
+* They are [poorly suited](https://june-skeeter.github.io/NN_Applications/NN_for_EC.html#evaluate-and-prune-the-model) for interpolation and incapable of extrapolation

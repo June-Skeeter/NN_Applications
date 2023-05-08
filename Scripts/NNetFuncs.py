@@ -14,10 +14,9 @@ from scipy import stats
 import tensorflow as tf
 from sklearn import metrics
 from tensorflow import keras
-from sklearn.utils import shuffle
 from keras.models import model_from_json
 from sklearn.ensemble import RandomForestRegressor
-
+from sklearn.model_selection import train_test_split
 
 def clean_dir(Base,dirname):
     if os.path.isdir(f'Models/{Base}') == False:
@@ -74,17 +73,21 @@ def train_model(config,Data):
             keras.callbacks.CSVLogger(f"Models/{config['Base']}/{config['Name']}/training{i}.log")
         ]
         model.compile(optimizer="adam",loss="mean_squared_error")
-        X,Y = shuffle(Data['X'],Data['Y'],random_state=i)
+        X,X_test,Y,Y_test = train_test_split(Data['X'],Data['Y'],random_state=i)
         model.fit(X,Y,callbacks=callbacks,verbose=0,validation_split=config['validation_split'],
                   batch_size=config['batch_size'],epochs=config['epochs'])
-
+        Test_Data={
+            'X':X_test,
+            'Y':Y_test
+        }
         tf.keras.backend.clear_session()
         
     T2 = time.time()
     print('Training Time:\n', np.round(T2 - T1,2),' Seconds')
     
     if config['RF_comp']==True:
-        Train_RF(config,Data,Base)
+        Train_RF(config,X,Y)
+    return(Test_Data)
 
 def get_SSD(dy_dx):
     N =  dy_dx.shape[0]
@@ -104,6 +107,8 @@ def run_Model(config,Data):
     
     if config['Norm'] == True and 'Normalization' in json.dumps(architecture):
         full_out['dy_dx_norm'] = []
+        full_out['X_norm'] = []
+
     else:
         config['Norm'] = False
 
@@ -132,7 +137,9 @@ def run_Model(config,Data):
                     for mod in architecture['config']['layers']:
                         if mod['class_name'] == 'Normalization':
                             v = np.array(mod['config']['variance'])
+                            m = np.array(mod['config']['mean'])
                             full_out['dy_dx_norm'].append((full_out['dy_dx'][-1]*(v**.5)))
+                            full_out['X_norm'].append((Data['X']-m)/(v**.5))
                             break
                 temp = pd.read_csv(f"Models/{config['Base']}/{config['Name']}/training{N}.log")
                 Stopped_Training.append(temp['epoch'].max())
@@ -150,6 +157,7 @@ def run_Model(config,Data):
             'target':Data['Y'],
             'y_bar':full_out['y_pred'].mean(axis=0).flatten(),
             'y_CI95':full_out['y_pred'].std(axis=0).flatten()/(N)**.5*t_score
+
         })
 
     for i,xi in enumerate(config['inputs']):
@@ -163,6 +171,7 @@ def run_Model(config,Data):
     if "dy_dx_norm" in full_out:
         for i,xi in enumerate(config['inputs']):
             Mean_Output[f'dy_d{xi}_norm']=full_out['dy_dx_norm'].mean(axis=0)[:,i]
+            Mean_Output[f'{xi}_norm']=full_out['X_norm'].mean(axis=0)[:,i]
             Mean_Output[f'dy_d{xi}_norm_CI95']=full_out['dy_dx_norm'].std(axis=0)[:,i]/(N)**.5*t_score
         SSD,SSD_CI = get_SSD(full_out['dy_dx_norm'])
         RI['RI_bar']=SSD/SSD.sum()*100
@@ -183,7 +192,7 @@ def run_Model(config,Data):
     print('Mean epochs/model: ', Stopped_Training.mean())
         
     if config['RF_comp']==True:
-        Run_RF(config,Data,Base)
+        Run_RF(config,Data)
 
     return (full_out)
 
@@ -196,32 +205,32 @@ def Prune(Base,Name,Prune_Scale=1,Verbose=False):
     RI = pd.read_csv(f"Models/{Base}/{Name}/model_RI.csv",index_col=[0])
     RI = RI.sort_values(by=f'RI_bar',ascending=True)
     RI['lower_bound'] = RI['RI_bar']-RI['RI_CI95']
-    RI['upper_bound'] = RI['RI_bar']+RI['RI_CI95']
+    # RI['upper_bound'] = RI['RI_bar']+RI['RI_CI95']
     RI['Drop']=0
 
 
-    Drop_Thresh = RI['upper_bound'].min()*(len(RI.index))*Prune_Scale
+    Drop_Thresh = RI['RI_bar'].nsmallest(2).sum()*Prune_Scale[0]+Prune_Scale[1]
     RI.loc[RI['lower_bound']<Drop_Thresh,'Drop']=Drop_Thresh
     if Verbose == True:
-        print(RI.round(2))
+        print(RI.loc[RI['Drop']>0].round(2))
         
     RI.to_csv(f"Models/{Base}/{Name}/model_RI.csv")
     return(RI)
 
 
 ## Simple functions for comparing with a RF
-def Train_RF(config,Data,Base):
+def Train_RF(config,X,Y):
     # Create a RF model for comparisson
     print('\nTraining RF Model')
     T1 = time.time()
     RF = RandomForestRegressor()
-    RF.fit(Data['X'],Data['Y'])
+    RF.fit(X,Y)
     joblib.dump(RF, f"Models/{config['Base']}/{config['Name']}/random_forest.joblib")
     T2 = time.time()
     print('Training Time:\n', np.round(T2 - T1,2),' Seconds')
     print('\n\n')
 
-def Run_RF(config,Data,Base):
+def Run_RF(config,Data):
     # Run a RF model for comparisson
     T1 = time.time()
     RF = joblib.load(f"Models/{config['Base']}/{config['Name']}/random_forest.joblib")

@@ -4,35 +4,35 @@
     "href": "about.html#eddy-covariance",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Eddy Covariance",
-    "text": "Eddy Covariance\n\n\nEcosystem-scale fluxes energy, water, and trace gases.\n\nVoluminous data sets\n\nNoisy & gap-prone\n\nIdeally suited for machine learning!\n\n\n\n\nBurns Bog EC StationDelta, BC"
+    "text": "Eddy Covariance\n\n\nSemi-continuous, ecosystem-scale measurements of energy, water, and trace gas fluxes.\n\nNoisy, voluminous data sets\n\nFrequent gaps\nObservational bias\n\nWell suited for machine learning!\n\n\n\n\nBurns Bog EC StationDelta, BC"
   },
   {
     "objectID": "about.html#neural-networks",
     "href": "about.html#neural-networks",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Neural Networks",
-    "text": "Neural Networks\nUniversal approximators: they can map any continuous function to an arbitrary degree accuracy.\n\nWith sufficient hidden nodes, they will fit any pattern in a dataset\n\nCare must be taken to ensure the patterns are real\n\nHave often been treated as “black boxes”\n\n\nWell suited for non-linear, multi-variate response functions\n\nCapable interpolation and extrapolation"
+    "text": "Neural Networks\nUniversal approximators: can map any continuous function to an arbitrary degree accuracy.\n\nWell suited for non-linear, multi-variate response functions\n\nCapable interpolation and extrapolation\n\nWith enough nodes, they will fit any pattern in a dataset\n\nOften treated as “black boxes”\nCare must be taken to ensure the patterns are real"
   },
   {
     "objectID": "about.html#commonly-cited-limitations",
     "href": "about.html#commonly-cited-limitations",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Commonly Cited Limitations",
-    "text": "Commonly Cited Limitations\n\n\n\n\n\n\n\n\n\nIssue\nSolutions\n\n\n\n\nOver-fitting\n* Model ensembles * 3-way cross validation  * pruning\n\n\nBlack boxes models\n* Plot partial derivatives  * feature importance\n\n\nComputationally expensive\n* Tensorflow  * GPU processing"
+    "text": "Commonly Cited Limitations\n\n\n\n\n\n\n\n\n\nIssue\nSolutions\n\n\n\n\nOver-fitting\n- Model ensembles- 3-way cross validation - Pruning inputs\n\n\nBlack boxes models\n- Plot partial derivatives - Feature importance\n\n\nComputationally expensive\n- Tensorflow - GPU processing"
   },
   {
     "objectID": "about.html#example-data",
     "href": "about.html#example-data",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Example Data",
-    "text": "Example Data\n\n\nBB1 EC station\n\nBeakrush-Sphagnum ecosystem undergoing active restoration\n8+ years of CO2 and CH4 flux observations"
+    "text": "Example Data\n\n\nBurns Bog EC station\n\nHarvested peatland undergoing active restoration\n8+ years of meteorological & flux (CO2 and CH4) data"
   },
   {
     "objectID": "about.html#training-procedures",
     "href": "about.html#training-procedures",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Training Procedures",
-    "text": "Training Procedures\n\n\nAn iterative process:\n\nThree way cross-validation\n\nTrain & validate - random split by model\nTest - consistent between models\n\nEnsemble-size\n\nLarger ensemble > more robust model\nN <= 10 likely suitable for data exploration\n\nN >=30 would give best performance"
+    "text": "Training Procedures\n\n\nAn iterative process:\n\nThree way cross-validation\n\nTrain/validate - random split by model\nTest - consistent between models\n\nLarger ensemble > more robust model\n\nN <= 10 suitable for exploration\nN >=30 will give best performance"
   },
   {
     "objectID": "about.html#how-to-prune-a-model",
@@ -53,14 +53,14 @@
     "href": "about.html#model-inspection",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Model Inspection",
-    "text": "Model Inspection\n\n\nPlot the model outputs using the test data.\n\n\n\n\n\n\n\n\n\n\n\nMetric\nScore\n\n\n\n\nRMSE\n0.59 \\(\\mu mol\\) \\(m^{-2}s^{-1}\\)\n\n\nr2\n0.86"
+    "text": "Model Inspection\n\n\nPlot the model outputs and validation metrics calculated with the test data.\n\n\n\n\n\n\n\n\n\n\n\nMetric\nScore\n\n\n\n\nRMSE\n0.57 \\(\\mu mol\\) \\(m^{-2}s^{-1}\\)\n\n\nr2\n0.88"
   },
   {
     "objectID": "about.html#plotting-derivatives",
     "href": "about.html#plotting-derivatives",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Plotting Derivatives",
-    "text": "Plotting Derivatives\nHelp ensure mapped relationships are physically plausible\n\nAn essential step and key advantage NN models\nRaw derivatives show true feature responses\n\n95% confidence intervals indicate model confidence in relationships\n\nNormalized derivatives scaled by input variance\n\nView relative on common scale"
+    "text": "Plotting Derivatives\nHelps ensure model responses are physically plausible\n\nAn essential step and key advantage of NN models\nRaw derivatives show true feature responses\nNormalized derivatives scaled by input variance\n\nRelative effects on common scale\nWhat the model “sees”\n\n95% confidence intervals around derivatives indicate modeled confidence in relationships"
   },
   {
     "objectID": "about.html#partial-derivatives-of-fco2",
@@ -81,7 +81,7 @@
     "href": "about.html#next-steps",
     "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
     "section": "Next Steps",
-    "text": "Next Steps\n\nCustom NN architecture: Separating input layers may allow us partition fluxes.\n\nFCO2 into GPP and ER\nFCH4 into methanogenesis, methanotrophy, transport\n\nFlux footprint analysis: Models can help account for spatial heterogeneity within a a footprint\n\nNN could also be trained to calculate/classify footprints!\n\nu* filtering: Partial derivatives of u* could give thresholds for filtering"
+    "text": "Next Steps\n\nCustom NN architecture: Separating input layers may allow us partition fluxes.\n\nFCO2 into GPP and ER\nFCH4 into methanogenesis, methanotrophy, transport\n\nFlux footprints: map response to spatial heterogenity\nUp scalling: in space and time\nu* filtering: partial derivatives could identify u* thresholds for filtering"
   },
   {
     "objectID": "about.html#why-not-use-a-random-forest",
@@ -102,14 +102,14 @@
     "href": "NN_for_EC.html",
     "title": "Neural Network Applications for Eddy Covariance",
     "section": "",
-    "text": "## Import some standard packages and define a few functions\nimport os\n# Hide default info, logs, and warnings - comment out if you need to troubleshoot\nos.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'\n\nimport time\nimport shutil\nimport importlib\nimport numpy as np\nimport pandas as pd\n# from matplotlib import cm\nfrom sklearn import metrics\nimport matplotlib.pyplot as plt\nfrom Scripts import PlotHelpers\n# from matplotlib.colors import Normalize\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs\n\ndbNames = {\n    'Clean/SecondStage/TA_1_1_1':'T air',\n    'Clean/SecondStage/RH_1_1_1':'RH',\n    'Clean/SecondStage/FC':'FCO2',\n    'Clean/SecondStage/FCH4':'FCH4',\n    'Clean/SecondStage/PPFD_IN_1_1_1':'PPFD',\n    'Clean/SecondStage/P_1_1_1':'Precip',\n    'Flux/qc_co2_flux':'qc_FCO2',\n    'Flux/qc_ch4_flux':'qc_FCH4',\n    'Clean/SecondStage/USTAR':'u*',\n    'Clean/SecondStage/TS_1':'T soil 5cm',\n    'Clean/SecondStage/TS_2':'T soil 10cm',\n    'Clean/SecondStage/TS_3':'T soil 30cm',\n    'Clean/SecondStage/wind_speed':'Wind speed',\n    'Clean/SecondStage/wind_dir':'Wind dir',\n    'Clean/SecondStage/WTD_1_1_1':'Water table',\n}\n\nLocal = '/mnt/c/Users/User/PostDoc_Work/database/'\nRemote = '/mnt/w/'\n\nDir = Local\n\nSite = 'BB'\n\nread_new = True\nif read_new == True:\n    Data = ReadDB.get_Traces(Site,list(dbNames.keys()),Dir=Dir)\n    Data = Data.rename(columns=dbNames)\n    Data.to_csv(f'temp/{Site}_Data.csv')\n\nelse:\n    Data = pd.read_csv(f'temp/{Site}_Data.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n\n\n\n\n\nimportlib.reload(ReadDB)\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['TA'],Data['RH'])\nData['DOY'] = Data.index.dayofyear\n\ntarget = ['FCO2','FCH4']\n\nData['Rand']=np.random.random(Data['FCO2'].values.shape)\n\nprint(Data[['FCO2','FCH4']].describe())\nfilter = ReadDB.filterFlux(Data,target)\nfilter.QA_QC()\nfilter.dir_mask('dir',[[0,30],[330,360]])\nfilter.rain('P',thresh=1)\nfilter.MAD(z=7)\nfilter.uStar('USTAR',u_thresh=0.1)\n\nData[['FCO2_Clean','FCH4_Clean']] = filter.df[['FCO2','FCH4']].copy()\n\nprint(Data[['FCO2_Clean','FCH4_Clean']].describe())\n\nexcludes = ['fco2','fch4']\n\nFull_inputs = []\n\nfor val in list(Data.columns):\n    exct = 0\n    for ex in excludes:\n        if ex in val.lower():\n            exct += 1\n    if exct < 1:\n        Full_inputs.append(val)\n\nFull_inputs\n\n               FCO2          FCH4\ncount  33385.000000  32951.000000\nmean      -0.457040     49.597336\nstd        3.770148     66.645355\nmin      -45.689865   -198.555832\n25%       -1.767280      8.693725\n50%       -0.121570     29.436230\n75%        0.718945     87.813492\nmax       49.698837    695.056885\n         FCO2_Clean    FCH4_Clean\ncount  14123.000000  10777.000000\nmean      -0.828791     20.652699\nstd        1.605370     17.728533\nmin       -3.887600    -63.525269\n25%       -2.137111      7.688650\n50%       -0.834086     16.143156\n75%        0.417498     31.751116\nmax        4.002227     64.322365\n\n\n['TA',\n 'RH',\n 'PPFD',\n 'P',\n 'USTAR',\n 'TS 5cm',\n 'TS 10cm',\n 'TS 30cm',\n 'U',\n 'dir',\n 'WTD',\n 'VPD',\n 'DOY',\n 'Rand']"
+    "text": "## Import some standard packages and define a few functions\nimport os\n# Hide default info, logs, and warnings - comment out if you need to troubleshoot\nos.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'\n\nimport time\nimport shutil\nimport importlib\nimport numpy as np\nimport pandas as pd\n# from matplotlib import cm\nfrom sklearn import metrics\nimport matplotlib.pyplot as plt\nfrom Scripts import PlotHelpers\n# from matplotlib.colors import Normalize\nfrom Scripts import ReadDB, MiscFuncs, NNetFuncs\n\ndbNames = {\n    'Clean/SecondStage/TA_1_1_1':'T air',\n    'Clean/SecondStage/RH_1_1_1':'RH',\n    'Clean/SecondStage/FC':'FCO2',\n    'Clean/SecondStage/FCH4':'FCH4',\n    'Clean/SecondStage/PPFD_IN_1_1_1':'PPFD',\n    'Clean/SecondStage/P_1_1_1':'Precip',\n    'Flux/qc_co2_flux':'qc_FCO2',\n    'Flux/qc_ch4_flux':'qc_FCH4',\n    'Clean/SecondStage/USTAR':'u*',\n    'Clean/SecondStage/TS_1':'T soil 5cm',\n    'Clean/SecondStage/TS_2':'T soil 10cm',\n    'Clean/SecondStage/TS_3':'T soil 30cm',\n    'Clean/SecondStage/wind_speed':'Wind speed',\n    'Clean/SecondStage/wind_dir':'Wind dir',\n    'Clean/SecondStage/WTD_1_1_1':'Water table',\n}\n\nLocal = '/mnt/c/Users/User/PostDoc_Work/database/'\nRemote = '/mnt/w/'\n\nDir = Local\n\nSite = 'BB'\n\nread_new = True\nif read_new == True:\n    Data = ReadDB.get_Traces(Site,list(dbNames.keys()),Dir=Dir)\n    Data = Data.rename(columns=dbNames)\n    Data.to_csv(f'temp/{Site}_Data.csv')\n\nelse:\n    Data = pd.read_csv(f'temp/{Site}_Data.csv',parse_dates=['TimeStamp'],index_col='TimeStamp')\n\n\n\n\n\nimportlib.reload(ReadDB)\n\nData['VPD'] = MiscFuncs.Calc_VPD(Data['T air'],Data['RH'])\n# Data['DOY'] = Data.index.dayofyear\n\ntarget = ['FCO2','FCH4']\n\nData['Rand']=np.random.random(Data['FCO2'].values.shape)\n\nprint(Data[['FCO2','FCH4']].describe())\nfilter = ReadDB.filterFlux(Data,target)\nfilter.QA_QC()\nfilter.dir_mask('Wind dir',[[0,30],[330,360]])\nfilter.rain('Precip',thresh=1)\nfilter.MAD(z=7)\nfilter.uStar('u*',u_thresh=0.1)\n\nData[['FCO2_Clean','FCH4_Clean']] = filter.df[['FCO2','FCH4']].copy()\n\nprint(Data[['FCO2_Clean','FCH4_Clean']].describe())\n\nexcludes = ['fco2','fch4']\n\nFull_inputs = []\n\nfor val in list(Data.columns):\n    exct = 0\n    for ex in excludes:\n        if ex in val.lower():\n            exct += 1\n    if exct < 1:\n        Full_inputs.append(val)\n\nFull_inputs\n\n               FCO2          FCH4\ncount  33385.000000  32951.000000\nmean      -0.457040     49.597336\nstd        3.770148     66.645355\nmin      -45.689865   -198.555832\n25%       -1.767280      8.693725\n50%       -0.121570     29.436230\n75%        0.718945     87.813492\nmax       49.698837    695.056885\n         FCO2_Clean    FCH4_Clean\ncount  14123.000000  10777.000000\nmean      -0.828791     20.652699\nstd        1.605370     17.728533\nmin       -3.887600    -63.525269\n25%       -2.137111      7.688650\n50%       -0.834086     16.143156\n75%        0.417498     31.751116\nmax        4.002227     64.322365\n\n\n['T air',\n 'RH',\n 'PPFD',\n 'Precip',\n 'u*',\n 'T soil 5cm',\n 'T soil 10cm',\n 'T soil 30cm',\n 'Wind speed',\n 'Wind dir',\n 'Water table',\n 'VPD',\n 'Rand']"
   },
   {
     "objectID": "NN_for_EC.html#build-and-train-model",
     "href": "NN_for_EC.html#build-and-train-model",
     "title": "Neural Network Applications for Eddy Covariance",
     "section": "Build and train model",
-    "text": "Build and train model\n\nimportlib.reload(NNetFuncs)\n\nRun = 'Full_Model'\n\ndef Build_Train_Eval(Run,print_sum=False):\n\n    config = Run['config']\n    Training = Run['Training']\n\n    NNetFuncs.make_Dense_model(config,print_sum=print_sum)\n    NNetFuncs.train_model(config,Training)\n    \n    Eval = Run['Evaluation']\n    _=NNetFuncs.run_Model(config,Eval)"
+    "text": "Build and train model\n\nimportlib.reload(NNetFuncs)\n\nRun = 'Full_Model'\n\ndef Build_Train_Eval(Run,print_sum=False):\n\n    config = Run['config']\n    Training = Run['Training']\n    \n    NNetFuncs.make_Dense_model(config,print_sum=print_sum)\n    NNetFuncs.train_model(config,Training)\n    \n    Eval = Run['Evaluation']\n    _=NNetFuncs.run_Model(config,Eval)\n\nBuild_Train_Eval(Model_Runs[Run],print_sum=True)\n\nModel: \"Full_Model\"\n_________________________________________________________________\n Layer (type)                Output Shape              Param #   \n=================================================================\n input_1 (InputLayer)        [(None, 13)]              0         \n                                                                 \n normalization (Normalizatio  (None, 13)               0         \n n)                                                              \n                                                                 \n dense (Dense)               (None, 130)               1820      \n                                                                 \n dense_1 (Dense)             (None, 1)                 131       \n                                                                 \n=================================================================\nTotal params: 1,951\nTrainable params: 1,951\nNon-trainable params: 0\n_________________________________________________________________\nNone\nTraining Time:\n 8.1  Seconds\nNN Model\n Validation metrics (ensemble mean): \nr2 =  0.8943 \nRMSE =  0.51684\nRun Time:\n 0.4  Seconds\n2 models\nMean epochs/model:  20.5"
   },
   {
     "objectID": "about_BU.html",
@@ -166,5 +166,33 @@
     "title": "Neural Network Applications for Eddy Covariance",
     "section": "Questions",
     "text": "Questions"
+  },
+  {
+    "objectID": "about.html#prune-a-model",
+    "href": "about.html#prune-a-model",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Prune a Model",
+    "text": "Prune a Model\nCalculate partial first derivative of the output with respect to each input over test data domain.\n\nRelative Influence (RI): Normalized Sum of squared derivatives (SSD)\nIteratively prune inputs with RI below a reference threshold\n\nRandom input assess base-level performance\n\nTrain final model without random scalar"
+  },
+  {
+    "objectID": "about.html#pruning-inputs",
+    "href": "about.html#pruning-inputs",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Pruning Inputs",
+    "text": "Pruning Inputs\nCalculate partial first derivative of the output with respect to each input over test data domain.\n\nRelative Influence (RI) of inputs\n\nNormalized Sum of squared derivatives (SSD)\n\nIteratively remove inputs with RI below a threshold\n\nUse a Random scalar input to inform threshold\n\nTrain final model without random scalar"
+  },
+  {
+    "objectID": "about.html#before-and-after-pruning-a-fco2-model",
+    "href": "about.html#before-and-after-pruning-a-fco2-model",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Before and After Pruning a FCO2 Model",
+    "text": "Before and After Pruning a FCO2 Model"
+  },
+  {
+    "objectID": "about.html#before-and-after-pruning",
+    "href": "about.html#before-and-after-pruning",
+    "title": "A Framework for Applying Neural Networks to Eddy Covariance Data",
+    "section": "Before and After Pruning",
+    "text": "Before and After Pruning"
   }
 ]
