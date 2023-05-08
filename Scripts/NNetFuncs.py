@@ -14,6 +14,7 @@ from scipy import stats
 import tensorflow as tf
 from sklearn import metrics
 from tensorflow import keras
+from sklearn.utils import shuffle
 from keras.models import model_from_json
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
@@ -21,12 +22,12 @@ from sklearn.model_selection import train_test_split
 def clean_dir(Base,dirname):
     if os.path.isdir(f'Models/{Base}') == False:
         os.mkdir(f'Models/{Base}')
+    # else:
+    if os.path.isdir(f'Models/{Base}/{dirname}') == True:
+        shutil.rmtree(f'Models/{Base}/{dirname}')
+        os.mkdir(f'Models/{Base}/{dirname}')
     else:
-        if os.path.isdir(f'Models/{Base}/{dirname}') == True:
-            shutil.rmtree(f'Models/{Base}/{dirname}')
-            os.mkdir(f'Models/{Base}/{dirname}')
-        else:
-            os.mkdir(f'Models/{Base}/{dirname}')
+        os.mkdir(f'Models/{Base}/{dirname}')
 
     # if os.path.isdir(f'Models/{Base}/{dirname}'):
     #     for (_, _, filenames) in os.walk(dirname):
@@ -73,7 +74,8 @@ def train_model(config,Data):
             keras.callbacks.CSVLogger(f"Models/{config['Base']}/{config['Name']}/training{i}.log")
         ]
         model.compile(optimizer="adam",loss="mean_squared_error")
-        X,X_test,Y,Y_test = train_test_split(Data['X'],Data['Y'],random_state=i)
+        X,X_test,Y,Y_test = train_test_split(Data['X'],Data['Y'],random_state=42)
+        X,Y = shuffle(Data['X'],Data['Y'],random_state=i)
         model.fit(X,Y,callbacks=callbacks,verbose=0,validation_split=config['validation_split'],
                   batch_size=config['batch_size'],epochs=config['epochs'])
         Test_Data={
@@ -197,24 +199,24 @@ def run_Model(config,Data):
     return (full_out)
 
 
-def Prune(Base,Name,Prune_Scale=1,Verbose=False):
+def Prune(config,Verbose=False):
     # Drop by inputs with RI below the Drop_Thresh value
     # e.g., if the lower bound of an input's 95% CI < (Drop_Thresh x upper bound "Rand")
     # Rand should be the "worst" input
 
-    RI = pd.read_csv(f"Models/{Base}/{Name}/model_RI.csv",index_col=[0])
+    RI = pd.read_csv(f"Models/{config['Base']}/{config['Name']}/model_RI.csv",index_col=[0])
     RI = RI.sort_values(by=f'RI_bar',ascending=True)
     RI['lower_bound'] = RI['RI_bar']-RI['RI_CI95']
     # RI['upper_bound'] = RI['RI_bar']+RI['RI_CI95']
     RI['Drop']=0
 
 
-    Drop_Thresh = RI['RI_bar'].nsmallest(2).sum()*Prune_Scale[0]+Prune_Scale[1]
+    Drop_Thresh = RI.loc[RI.index.isin(config['Rand_Scalars']),'RI_bar'].sum()*config['Prune_scale'][0]+config['Prune_scale'][1]
     RI.loc[RI['lower_bound']<Drop_Thresh,'Drop']=Drop_Thresh
     if Verbose == True:
-        print(RI.loc[RI['Drop']>0].round(2))
+        print(RI[['RI_bar','lower_bound','Drop']].round(2).T)
         
-    RI.to_csv(f"Models/{Base}/{Name}/model_RI.csv")
+    RI.to_csv(f"Models/{config['Base']}/{config['Name']}/model_RI.csv")
     return(RI)
 
 

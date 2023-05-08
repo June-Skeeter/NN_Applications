@@ -367,21 +367,21 @@ Burns Bog EC Station<br>Delta, BC
 <h2>Neural Networks</h2>
 <p><strong>Universal approximators</strong>: can map any continuous function to an arbitrary degree accuracy.</p>
 <ul>
+<li>With enough hidden nodes, will fit <strong>any</strong> pattern in a dataset
+<ul>
+<li>Care must be taken to ensure the patterns are real</li>
+<li>Early stopping allows</li>
+</ul></li>
 <li>Well suited for non-linear, multi-variate response functions
 <ul>
 <li>Capable <strong>interpolation</strong> and <em>extrapolation</em></li>
-</ul></li>
-<li>With enough nodes, they will fit <strong>any</strong> pattern in a dataset
-<ul>
-<li>Often treated as “black boxes”</li>
-<li>Care must be taken to ensure the patterns are real</li>
 </ul></li>
 </ul>
 </section>
 <section id="commonly-cited-limitations" class="slide level2">
 <h2>Commonly Cited Limitations</h2>
 <div class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display" data-execution_count="79">
+<div class="cell-output cell-output-display" data-execution_count="1">
 <table>
 <colgroup>
 <col style="width: 40%">
@@ -443,17 +443,18 @@ Burns Bog EC Station<br>Delta, BC
 <h2>Training Procedures</h2>
 <div class="columns">
 <div class="column" style="width:70%;">
-<p>An iterative process:</p>
 <ul>
+<li>Larger ensemble = more robust model
+<ul>
+<li>N &lt;= 10 for data exploration/pruning</li>
+</ul></li>
 <li>Three way cross-validation
 <ul>
-<li>Train/validate - random split by model</li>
-<li>Test - consistent between models</li>
+<li>Train/validate/test</li>
 </ul></li>
-<li>Larger ensemble &gt; more robust model
+<li>Early Stopping: after <strong>e</strong> epochs
 <ul>
-<li>N &lt;= 10 suitable for exploration</li>
-<li>N &gt;=30 will give best performance</li>
+<li>e = 2 for pruning stage</li>
 </ul></li>
 </ul>
 </div><div class="column" style="width:30%;">
@@ -467,34 +468,88 @@ Burns Bog EC Station<br>Delta, BC
 <ul>
 <li><strong>Relative Influence (RI)</strong> of inputs
 <ul>
-<li>Normalized Sum of squared derivatives (SSD)</li>
+<li>Normalized sum of squared derivatives (SSD)</li>
 </ul></li>
 <li>Iteratively remove inputs with RI below a threshold
 <ul>
-<li>Use a Random scalar input to inform threshold</li>
+<li>Use set of random scalars inputs to determine threshold
+<ul>
+<li>e.g., a float [0-1], a skewed float [0-1]<sup>.25</sup>, and a binary integer (0/1)</li>
 </ul></li>
-<li>Train final model without random scalar</li>
+</ul></li>
 </ul>
 </section>
-<section id="before-and-after-pruning" class="slide level2">
-<h2>Before and After Pruning</h2>
+<section id="before-and-after-pruning-fco2" class="slide level2">
+<h2>Before and After Pruning FCO<sub>2</sub></h2>
 <div class="cell quarto-layout-panel" data-execution_count="2">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/ri-of-models-output-1.png" id="ri-of-models" width="2967"></p>
+<p><img data-src="about_files/figure-revealjs/ri-of-fco2-models-output-1.png" id="ri-of-fco2-models" width="2969"></p>
 </div>
 </div>
 </div>
 </section>
-<section id="model-inspection" class="slide level2">
-<h2>Model Inspection</h2>
+<section id="the-final-model" class="slide level2">
+<h2>The Final Model</h2>
+<p>Once pruning is complete, re-train the final production level model, excluding the random scalars</p>
+<ul>
+<li>Increase the ensemble size (e.g., N =30)
+<ul>
+<li>Could increase early stopping criteria (e.g., e = 10)</li>
+<li>Larger e drastically increases training</li>
+</ul></li>
+<li>Plot the model derivatives as a final check
+<ul>
+<li>If derivatives look implausible
+<ul>
+<li>Adjust inputs/parameters and try again</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="plotting-derivatives" class="slide level2">
+<h2>Plotting Derivatives</h2>
+<p>Helps ensure model responses are physically plausible</p>
+<ul>
+<li>An <strong>essential step</strong> and <strong>key advantage</strong> of NN models</li>
+<li>Raw derivatives show true feature responses</li>
+<li>Normalized derivatives scaled by input variance
+<ul>
+<li>Relative input effects on common scale</li>
+<li>What the model “sees”</li>
+</ul></li>
+<li>95% confidence intervals around derivatives indicate modeled confidence in relationships</li>
+</ul>
+</section>
+<section id="partial-derivatives-of-fco2" class="slide level2">
+<h2>Partial Derivatives of FCO<sub>2</sub></h2>
+<div class="cell quarto-layout-panel" data-execution_count="3">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/derivatives-of-final-fco2-model-output-1.png" id="derivatives-of-final-fco2-model" width="2968"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="normalized-derivatives-of-fco2" class="slide level2">
+<h2>Normalized Derivatives of FCO<sub>2</sub></h2>
+<div class="cell quarto-layout-panel" data-execution_count="4">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/normalized-derivatives-of-final-model-output-1.png" id="normalized-derivatives-of-final-model" width="2968"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="model-performance-fco2" class="slide level2">
+<h2>Model Performance FCO<sub>2</sub></h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <p>Plot the model outputs and validation metrics calculated with the test data.</p>
 <div style="font-size: 80%;">
-<div class="cell quarto-layout-panel" data-execution_count="3">
+<div class="cell quarto-layout-panel" data-execution_count="5">
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div id="validation" class="cell-output cell-output-display quarto-layout-cell" data-execution_count="81" style="flex-basis: 100.0%;justify-content: center;">
+<div id="validation-fco2" class="cell-output cell-output-display quarto-layout-cell" data-execution_count="5" style="flex-basis: 100.0%;justify-content: center;">
 <table>
 <colgroup>
 <col style="width: 25%">
@@ -509,11 +564,11 @@ Burns Bog EC Station<br>Delta, BC
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">RMSE</td>
-<td style="text-align: left;">0.57 <span class="math inline">\(\mu mol\)</span> <span class="math inline">\(m^{-2}s^{-1}\)</span></td>
+<td style="text-align: left;">0.45 <span class="math inline">\(\mu mol\)</span> <span class="math inline">\(m^{-2}s^{-1}\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">r<sup>2</sup></td>
-<td style="text-align: left;">0.88</td>
+<td style="text-align: left;">0.89</td>
 </tr>
 </tbody>
 </table>
@@ -522,46 +577,78 @@ Burns Bog EC Station<br>Delta, BC
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell quarto-layout-panel" data-execution_count="4">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/performance-of-final-model-output-1.png" id="performance-of-final-model" width="1374"></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="plotting-derivatives" class="slide level2">
-<h2>Plotting Derivatives</h2>
-<p>Helps ensure model responses are physically plausible</p>
-<ul>
-<li>An <strong>essential step</strong> and <strong>key advantage</strong> of NN models</li>
-<li>Raw derivatives show true feature responses</li>
-<li>Normalized derivatives scaled by input variance
-<ul>
-<li>Relative effects on common scale</li>
-<li>What the model “sees”</li>
-</ul></li>
-<li>95% confidence intervals around derivatives indicate modeled confidence in relationships</li>
-</ul>
-</section>
-<section id="partial-derivatives-of-fco2" class="slide level2">
-<h2>Partial Derivatives of FCO<sub>2</sub></h2>
-<div class="cell quarto-layout-panel" data-execution_count="5">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/derivatives-of-final-model-output-1.png" id="derivatives-of-final-model" width="2947"></p>
-</div>
-</div>
-</div>
-</section>
-<section id="normalized-partial-derivatives" class="slide level2">
-<h2>Normalized Partial Derivatives</h2>
 <div class="cell quarto-layout-panel" data-execution_count="6">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/normalized-derivatives-of-final-model-output-1.png" id="normalized-derivatives-of-final-model" width="2968"></p>
+<p><img data-src="about_files/figure-revealjs/performance-of-final-fch4-model-output-1.png" id="performance-of-final-fch4-model" width="1370"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="before-and-after-pruning-fch4" class="slide level2">
+<h2>Before and After Pruning FCH<sub>4</sub></h2>
+<div class="cell quarto-layout-panel" data-execution_count="7">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/ri-of-fch4-models-output-1.png" id="ri-of-fch4-models" width="2967"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="normalized-derivatives-of-fch4" class="slide level2">
+<h2>Normalized Derivatives of FCH<sub>4</sub></h2>
+<div class="cell quarto-layout-panel" data-execution_count="8">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/derivatives-of-final-fch4-model-output-1.png" id="derivatives-of-final-fch4-model" width="2968"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="model-performance-fch4" class="slide level2">
+<h2>Model Performance FCH<sub>4</sub></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Plot the model outputs and validation metrics calculated with the test data.</p>
+<div style="font-size: 80%;">
+<div class="cell quarto-layout-panel" data-execution_count="9">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div id="validation-fch4" class="cell-output cell-output-display quarto-layout-cell" data-execution_count="9" style="flex-basis: 100.0%;justify-content: center;">
+<table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Metric</th>
+<th style="text-align: left;">Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">RMSE</td>
+<td style="text-align: left;">8.58 <span class="math inline">\(\mu mol\)</span> <span class="math inline">\(m^{-2}s^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">r<sup>2</sup></td>
+<td style="text-align: left;">0.63</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell quarto-layout-panel" data-execution_count="10">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/performance-of-final-fco2-model-output-1.png" id="performance-of-final-fco2-model" width="1397"></p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -571,31 +658,22 @@ Burns Bog EC Station<br>Delta, BC
 <ul>
 <li>Custom NN architecture: Separating input layers may allow us partition fluxes.
 <ul>
-<li>FCO<sub>2</sub> into GPP and ER</li>
-<li>FCH<sub>4</sub> into methanogenesis, methanotrophy, transport</li>
+<li>e.g., FCO<sub>2</sub> into GPP and ER</li>
 </ul></li>
 <li>Flux footprints: map response to spatial heterogenity</li>
-<li>Up scalling: in space and time</li>
-<li>u* filtering: partial derivatives could identify u* thresholds for filtering</li>
+<li>Upscaling: in space and time</li>
+<li>u* filtering: partial derivatives could identify u* thresholds</li>
+<li>Compare to process based models (e.g., CLASSIC)</li>
 </ul>
 </section></section>
-<section>
 <section id="thank-you" class="title-slide slide level1 center">
 <h1>Thank You</h1>
 <p>Questions?</p>
-</section>
-<section id="why-not-use-a-random-forest" class="slide level2">
-<h2>Why not use a Random Forest?</h2>
-<p>RF models are great! … for classifying discrete objects</p>
-<ul>
-<li>But, it’s my view that applying them to continuous data is misguided</li>
-<li>They are <a href="https://june-skeeter.github.io/NN_Applications/NN_for_EC.html#evaluate-and-prune-the-model">poorly suited</a> for interpolation and incapable of extrapolation</li>
-</ul>
 
 <div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
