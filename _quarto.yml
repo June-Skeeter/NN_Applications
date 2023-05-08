@@ -3,12 +3,13 @@ project:
   output-dir: docs
 
 website:
-  title: "Neural Network Applications for Eddy Covariance"
+  title: "Neural Networks for Eddy Covariance"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: Presentation Slides
       - href: NN_for_EC.ipynb
         text: Example Code
 

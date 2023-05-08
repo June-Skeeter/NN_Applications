@@ -28,10 +28,10 @@ author:
     url: https://github.com/June-Skeeter
     affiliations:
     - ref: UBC
-#   - name: Dr. Sara Knox
-#     email: sara.knox@ubc.ca
-#     affiliations:
-#     - ref: UBC
+  # - name: Dr. Sara Knox
+  #   email: sara.knox@ubc.ca
+  #   affiliations:
+  #   - ref: UBC
 affiliations:
     - id: UBC
       name: University British Columbia
@@ -272,14 +272,11 @@ radom_code_to_mask_text=0
 ## Normalized Derivatives of FCO<sub>2</sub>
  
 ```{python}
-#| label: Normalized Derivatives of final model
+#| label: Normalized Derivatives of final FCO2 model
 #| layout-ncol: 1
 #| warning: False
 
 import numpy as np
-
-# Max=4
-# Top = RI.sort_values(by=f'RI_bar',ascending=False).index[:Max]
 
 cols = 2
 # npi=len(RI.index)
@@ -352,7 +349,7 @@ Markdown(tabulate(
 
 df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
 
-unit = '$\mu mol m^{-2} s^{-1}$'
+# unit = '$\mu mol m^{-2} s^{-1}$'
 
 fig,ax=plt.subplots(figsize=(5,5))
 ax = PlotHelpers.make1_1_Plot(ax,df,'target','y_bar',unit=unit)
@@ -465,7 +462,7 @@ Plot the model outputs and validation metrics calculated with the test data.
 #| tbl-colwidths: [25,75]
 
 
-unit = '$\mu mol$ $m^{-2}s^{-1}$'
+unit = '$\nmol$ $m^{-2}s^{-1}$'
 
 x,y='target','y_bar'
 r2 = str(np.round(metrics.r2_score(df[x],df[y]),2))
@@ -494,7 +491,7 @@ Markdown(tabulate(
 
 df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
 
-unit = '$\mu mol m^{-2} s^{-1}$'
+# unit = '$\mu mol m^{-2} s^{-1}$'
 
 fig,ax=plt.subplots(figsize=(5,5))
 ax = PlotHelpers.make1_1_Plot(ax,df,'target','y_bar',unit=unit)

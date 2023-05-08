@@ -1,5 +1,5 @@
 ---
-title: "NN_Applications"
+title: "A Framework for Applying Neural Networks to Eddy Covariance Data"
 author:
   - name: Dr. June Skeeter
     orcid: 0000-0002-7051-343X
@@ -7,9 +7,9 @@ author:
     url: https://github.com/June-Skeeter
     affiliations:
     - ref: UBC
-  - name: Dr. Sara Knox
-    affiliations:
-    - ref: UBC
+  # - name: Dr. Sara Knox
+  #   affiliations:
+  #   - ref: UBC
 affiliations:
     - id: UBC
       name: University of British Columbia
