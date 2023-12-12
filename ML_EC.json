@@ -1,0 +1,2436 @@
+[
+	{
+		"id": "http://zotero.org/users/2672135/items/KJ23UEJ6",
+		"type": "article-journal",
+		"container-title": "International Journal of Sustainable Energy",
+		"DOI": "10.1080/14786451.2020.1758104",
+		"ISSN": "1478-6451",
+		"issue": "8",
+		"journalAbbreviation": "null",
+		"note": "publisher: Taylor & Francis",
+		"page": "779-803",
+		"title": "Most relevant input parameters selection for 10-min global solar irradiation estimation on arbitrary inclined plane using neural networks",
+		"URL": "https://doi.org/10.1080/14786451.2020.1758104",
+		"volume": "39",
+		"author": [
+			{
+				"family": "Amiri",
+				"given": "Billel"
+			},
+			{
+				"family": "Dizène",
+				"given": "Rabah"
+			},
+			{
+				"family": "Dahmani",
+				"given": "Kahina"
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"2020",
+					9,
+					13
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/ZUU4DG8K",
+		"type": "article-journal",
+		"abstract": "This paper evaluates the four leading techniques proposed in the literature for construction of prediction intervals (PIs) for neural network point forecasts. The delta, Bayesian, bootstrap, and mean-variance estimation (MVE) methods are reviewed and their performance for generating high-quality PIs is compared. PI-based measures are proposed and applied for the objective and quantitative assessment of each method's performance. A selection of 12 synthetic and real-world case studies is used to examine each method's performance for PI construction. The comparison is performed on the basis of the quality of generated PIs, the repeatability of the results, the computational requirements and the PIs variability with regard to the data uncertainty. The obtained results in this paper indicate that: 1) the delta and Bayesian methods are the best in terms of quality and repeatability, and 2) the MVE and bootstrap methods are the best in terms of low computational load and the width variability of PIs. This paper also introduces the concept of combinations of PIs, and proposes a new method for generating combined PIs using the traditional PIs. Genetic algorithm is applied for adjusting the combiner parameters through minimization of a PI-based cost function subject to two sets of restrictions. It is shown that the quality of PIs produced by the combiners is dramatically better than the quality of PIs obtained from each individual method.",
+		"container-title": "IEEE Transactions on Neural Networks",
+		"DOI": "10.1109/TNN.2011.2162110",
+		"ISSN": "1941-0093",
+		"issue": "9",
+		"note": "event-title: IEEE Transactions on Neural Networks",
+		"page": "1341-1356",
+		"source": "IEEE Xplore",
+		"title": "Comprehensive Review of Neural Network-Based Prediction Intervals and New Advances",
+		"volume": "22",
+		"author": [
+			{
+				"family": "Khosravi",
+				"given": "Abbas"
+			},
+			{
+				"family": "Nahavandi",
+				"given": "Saeid"
+			},
+			{
+				"family": "Creighton",
+				"given": "Doug"
+			},
+			{
+				"family": "Atiya",
+				"given": "Amir F."
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"2011",
+					9
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/9HRJW6E2",
+		"type": "article-journal",
+		"abstract": "Recently flux tower data have become available for a variety of ecosystems under different climatic and edaphic conditions. Although Flux tower data represent point measurements with a footprint of typically 1 km × 1 km they can be used to validate models and to spatialize biospheric fluxes at regional and continental scales. In this paper we present a study where biospheric flux data collected in the EUROFLUX project were used to train a neural network simulator to provide spatial (1 km × 1 km) and temporal (weekly) estimates of carbon fluxes of European forests at continental scale. The novelty of the approach is that flux data were used to constrain and parameterize the neural network structure using a limited number of input driving variables. The overall European carbon uptake from this analysis was 0.47 Gt C yr−1 with distinctive differences between boreal and temperate regions. The length of the growing season is longer in the south of Europe (about 32 weeks), compared with north and central Europe, which have a similar length-growing season (about 27 weeks). A peak in respiration was depicted in spring at continental scale as a coherent signal which parallel the construction respiration increase at the onset of the season as usually shown by leaf level measurements.",
+		"container-title": "Global Change Biology",
+		"DOI": "10.1046/j.1365-2486.2003.00609.x",
+		"ISSN": "1365-2486",
+		"issue": "4",
+		"language": "en",
+		"page": "525-535",
+		"source": "Wiley Online Library",
+		"title": "A new assessment of European forests carbon exchanges by eddy fluxes and artificial neural network spatialization",
+		"URL": "http://onlinelibrary.wiley.com/doi/10.1046/j.1365-2486.2003.00609.x/abstract",
+		"volume": "9",
+		"author": [
+			{
+				"family": "Papale",
+				"given": "Dario"
+			},
+			{
+				"family": "Valentini",
+				"given": "Riccardo"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2016",
+					3,
+					2
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2003",
+					4,
+					1
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/U77RUHIP",
+		"type": "article-journal",
+		"abstract": "We review 15 techniques for estimating missing values of net ecosystem CO2 exchange (NEE) in eddy covariance time series and evaluate their performance for different artificial gap scenarios based on a set of 10 benchmark datasets from six forested sites in Europe.\n\nThe goal of gap filling is the reproduction of the NEE time series and hence this present work focuses on estimating missing NEE values, not on editing or the removal of suspect values in these time series due to systematic errors in the measurements (e.g., nighttime flux, advection). The gap filling was examined by generating 50 secondary datasets with artificial gaps (ranging in length from single half-hours to 12 consecutive days) for each benchmark dataset and evaluating the performance with a variety of statistical metrics. The performance of the gap filling varied among sites and depended on the level of aggregation (native half-hourly time step versus daily), long gaps were more difficult to fill than short gaps, and differences among the techniques were more pronounced during the day than at night.\n\nThe non-linear regression techniques (NLRs), the look-up table (LUT), marginal distribution sampling (MDS), and the semi-parametric model (SPM) generally showed good overall performance. The artificial neural network based techniques (ANNs) were generally, if only slightly, superior to the other techniques. The simple interpolation technique of mean diurnal variation (MDV) showed a moderate but consistent performance. Several sophisticated techniques, the dual unscented Kalman filter (UKF), the multiple imputation method (MIM), the terrestrial biosphere model (BETHY), but also one of the ANNs and one of the NLRs showed high biases which resulted in a low reliability of the annual sums, indicating that additional development might be needed. An uncertainty analysis comparing the estimated random error in the 10 benchmark datasets with the artificial gap residuals suggested that the techniques are already at or very close to the noise limit of the measurements. Based on the techniques and site data examined here, the effect of gap filling on the annual sums of NEE is modest, with most techniques falling within a range of ±25 g C m−2 year−1.",
+		"container-title": "Agricultural and Forest Meteorology",
+		"DOI": "10.1016/j.agrformet.2007.08.011",
+		"ISSN": "0168-1923",
+		"issue": "3–4",
+		"journalAbbreviation": "Agricultural and Forest Meteorology",
+		"page": "209-232",
+		"source": "ScienceDirect",
+		"title": "Comprehensive comparison of gap-filling techniques for eddy covariance net carbon fluxes",
+		"URL": "http://www.sciencedirect.com/science/article/pii/S016819230700216X",
+		"volume": "147",
+		"author": [
+			{
+				"family": "Moffat",
+				"given": "Antje M."
+			},
+			{
+				"family": "Papale",
+				"given": "Dario"
+			},
+			{
+				"family": "Reichstein",
+				"given": "Markus"
+			},
+			{
+				"family": "Hollinger",
+				"given": "David Y."
+			},
+			{
+				"family": "Richardson",
+				"given": "Andrew D."
+			},
+			{
+				"family": "Barr",
+				"given": "Alan G."
+			},
+			{
+				"family": "Beckstein",
+				"given": "Clemens"
+			},
+			{
+				"family": "Braswell",
+				"given": "Bobby H."
+			},
+			{
+				"family": "Churkina",
+				"given": "Galina"
+			},
+			{
+				"family": "Desai",
+				"given": "Ankur R."
+			},
+			{
+				"family": "Falge",
+				"given": "Eva"
+			},
+			{
+				"family": "Gove",
+				"given": "Jeffrey H."
+			},
+			{
+				"family": "Heimann",
+				"given": "Martin"
+			},
+			{
+				"family": "Hui",
+				"given": "Dafeng"
+			},
+			{
+				"family": "Jarvis",
+				"given": "Andrew J."
+			},
+			{
+				"family": "Kattge",
+				"given": "Jens"
+			},
+			{
+				"family": "Noormets",
+				"given": "Asko"
+			},
+			{
+				"family": "Stauch",
+				"given": "Vanessa J."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2016",
+					3,
+					1
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2007",
+					12,
+					10
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/2357MC58",
+		"type": "book",
+		"abstract": "The methodology used to construct tree structured rules is the focus of this monograph. Unlike many other statistical procedures, which moved from pencil and paper to calculators, this text's use of trees was unthinkable before computers. Both the practical and theoretical sides have been developed in the authors' study of tree methods. Classification and Regression Trees reflects these two sides, covering the use of trees as a data analysis method, and in a more mathematical framework, proving some of their fundamental properties.",
+		"ISBN": "978-0-412-04841-8",
+		"language": "en",
+		"number-of-pages": "372",
+		"publisher": "Taylor & Francis",
+		"source": "Google Books",
+		"title": "Classification and Regression Trees",
+		"author": [
+			{
+				"family": "Breiman",
+				"given": "Leo"
+			},
+			{
+				"family": "Friedman",
+				"given": "Jerome"
+			},
+			{
+				"family": "Stone",
+				"given": "Charles J."
+			},
+			{
+				"family": "Olshen",
+				"given": "R. A."
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"1984",
+					1,
+					1
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/UQMS2AWA",
+		"type": "article-journal",
+		"abstract": "Understanding and modeling ecosystem responses to their climatic controls is one of the major challenges for predicting the effects of global change. Usually, the responses are implemented in models as parameterized functional relationships of a fixed type. In contrast, the inductive approach presented here based on artificial neural networks (ANNs) allows the relationships to be extracted directly from the data. It has been developed to explore large, fragmentary, noisy, and multidimensional datasets, such as the carbon fluxes measured at the ecosystem level with the eddy covariance technique. To illustrate this, our approach has been systematically applied to the daytime carbon flux dataset of the deciduous broadleaf forest Hainich in Germany. The total explainable variability of the half-hourly carbon fluxes from the driving climatic variables was 93.1%, showing the excellent data mining capability of the ANNs. Total photosynthetic photon flux density was identified as the dominant control of the daytime response, followed by the diffuse radiation. The vapor pressure deficit was the most important nonradiative control. From the ANNs, we were also able to deduce and visualize the dependencies and sensitivities of the response to its climatic controls. With respect to diffuse radiation, the daytime carbon response showed no saturation and the light use efficiency was three times greater for diffuse compared with direct radiation. However, with less potential radiation reaching the forest, the overall effect of diffuse radiation was slightly negative. The optimum uptake of carbon occurred at diffuse fractions between 30% and 40%. By identifying the hierarchy of the climatic controls of the ecosystem response as well as their multidimensional functional relationships, our inductive approach offers a direct interface to the data. This provides instant insight in the underlying ecosystem physiology and links the observational relationships to their representation in the modeling world.",
+		"container-title": "Global Change Biology",
+		"DOI": "10.1111/j.1365-2486.2010.02171.x",
+		"ISSN": "1365-2486",
+		"issue": "10",
+		"language": "en",
+		"page": "2737-2749",
+		"source": "Wiley Online Library",
+		"title": "Characterization of ecosystem responses to climatic controls using artificial neural networks",
+		"URL": "http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2486.2010.02171.x/abstract",
+		"volume": "16",
+		"author": [
+			{
+				"family": "Moffat",
+				"given": "Antje M."
+			},
+			{
+				"family": "Beckstein",
+				"given": "Clemens"
+			},
+			{
+				"family": "Churkina",
+				"given": "Galina"
+			},
+			{
+				"family": "Mund",
+				"given": "Martina"
+			},
+			{
+				"family": "Heimann",
+				"given": "Martin"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2017",
+					4,
+					18
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2010",
+					10,
+					1
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/RJKV2HKE",
+		"type": "article-journal",
+		"container-title": "Biogeosciences",
+		"DOI": "10.5194/bg-10-8185-2013",
+		"ISSN": "1726-4189",
+		"issue": "12",
+		"language": "en",
+		"page": "8185-8200",
+		"source": "CrossRef",
+		"title": "Testing the applicability of neural networks as a gap-filling method using CH4 flux data from high latitude wetlands",
+		"URL": "http://www.biogeosciences.net/10/8185/2013/",
+		"volume": "10",
+		"author": [
+			{
+				"family": "Dengel",
+				"given": "S."
+			},
+			{
+				"family": "Zona",
+				"given": "D."
+			},
+			{
+				"family": "Sachs",
+				"given": "T."
+			},
+			{
+				"family": "Aurela",
+				"given": "M."
+			},
+			{
+				"family": "Jammet",
+				"given": "M."
+			},
+			{
+				"family": "Parmentier",
+				"given": "F. J. W."
+			},
+			{
+				"family": "Oechel",
+				"given": "W."
+			},
+			{
+				"family": "Vesala",
+				"given": "T."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2017",
+					4,
+					18
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2013",
+					12,
+					11
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/LNAJVBU4",
+		"type": "webpage",
+		"container-title": "comp.ai.neural-nets FAQ",
+		"title": "comp.ai.neural-nets FAQ, Part 3 of 7: GeneralizationSection - How many hidden units should I use?",
+		"URL": "http://www.faqs.org/faqs/ai-faq/neural-nets/part3/section-10.html",
+		"author": [
+			{
+				"family": "Sarle",
+				"given": "Warren S."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2020",
+					7,
+					22
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2014"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/2XPHHLDT",
+		"type": "article-journal",
+		"container-title": "Machine learning",
+		"issue": "1",
+		"note": "publisher: Springer",
+		"page": "5–32",
+		"source": "Google Scholar",
+		"title": "Random forests",
+		"volume": "45",
+		"author": [
+			{
+				"family": "Breiman",
+				"given": "Leo"
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"2001"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/FF46QLTW",
+		"type": "article-journal",
+		"abstract": "Methane fluxes on an active flood plain situated in the Siberian Lena River Delta were studied applying the eddy covariance method. During the growing season, the observed fluxes exhibited a great deal of temporal variability, which was largely the result of the pronounced spatial variability of soil and vegetation characteristics within the footprint. Explaining this variability was based on three data-driven modelling approaches: the automatically operating algorithms stepwise regression as well as neural network, and a mechanistic model, which utilised exponential relationships between the methane flux and both flux drivers soil temperature and friction velocity. A substantial improvement in model performance was achieved by applying footprint information in the form of relative contributions of three vegetation classes to the flux signal. This aspect indicates that the vegetation served as an integrated proxy for flux drivers, whose characteristics permanently varied according to the shifting source area. The neural network performed best in explaining the variability of the observed methane fluxes. However, validating the models’ generalisability revealed that the mechanistic model provided the most predictive power suggesting that this model best captured the causality between the methane flux and its drivers. After integrating the gap-filled time series, all models yielded footprint budgets that were similar in magnitude. These budgets, however, lacked representativity due to the sensor location bias, i.e. their strong dependence on tower location, measurement height and wind field conditions. Thus, an unbiased budget of the total area of the flood plain was estimated utilising the mechanistic model. Initially, a downscaling procedure partitioned the observed flux with a seasonal mean of 0.012 μmol m-2 s-1 into three individual vegetation class fluxes accounting for shrubs (0.0004 μmol m-2 s-1), sedges (0.052 μmol m-2 s-1) and intermediate vegetation (0.018 μmol m-2 s-1). These decomposed ﬂuxes in turn formed the basis – in conjunction with a classiﬁed high-resolution orthomosaic of the ﬂood plain – for the vegetation class area-weighted upscaling. Alternatively, the straightforward upscaling of the footprint budgets (without the preceding downscaling) yielded budgets that underestimated the methane source strength of the flood plain by roughly 42 %. Hence, the application of fine-scale information on surface characteristics is crucial for both modelling methane flux dynamics and adequately estimating budgets of heterogeneous ecosystems being abundant in the tundra biome.",
+		"container-title": "Agricultural and Forest Meteorology",
+		"DOI": "10.1016/j.agrformet.2018.06.026",
+		"ISSN": "0168-1923",
+		"journalAbbreviation": "Agricultural and Forest Meteorology",
+		"language": "en",
+		"page": "243-255",
+		"source": "ScienceDirect",
+		"title": "Scaling and balancing methane fluxes in a heterogeneous tundra ecosystem of the Lena River Delta",
+		"URL": "http://www.sciencedirect.com/science/article/pii/S016819231830217X",
+		"volume": "266-267",
+		"author": [
+			{
+				"family": "Rößger",
+				"given": "Norman"
+			},
+			{
+				"family": "Wille",
+				"given": "Christian"
+			},
+			{
+				"family": "Veh",
+				"given": "Georg"
+			},
+			{
+				"family": "Boike",
+				"given": "Julia"
+			},
+			{
+				"family": "Kutzbach",
+				"given": "Lars"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2020",
+					1,
+					27
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2019",
+					3,
+					15
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/C3285DGT",
+		"type": "article-journal",
+		"abstract": "In most applications of the multilayer perceptron (MLP) the main objective is to maximize the generalization ability of the network. We show that this ability is related to the sensitivity of the output of the MLP to small input changes. Several criteria have been proposed for the evaluation of the sensitivity. We propose a new index and present a way for improving these sensitivity criteria. Some numerical experiments allow a first comparison of the efficiencies of these criteria.",
+		"container-title": "Neural Processing Letters",
+		"DOI": "10.1007/BF02309007",
+		"ISSN": "1573-773X",
+		"issue": "6",
+		"journalAbbreviation": "Neural Process Lett",
+		"language": "en",
+		"page": "1-4",
+		"source": "Springer Link",
+		"title": "Use of some sensitivity criteria for choosing networks with good generalization ability",
+		"URL": "https://doi.org/10.1007/BF02309007",
+		"volume": "2",
+		"author": [
+			{
+				"family": "Dimopoulos",
+				"given": "Yannis"
+			},
+			{
+				"family": "Bourret",
+				"given": "Paul"
+			},
+			{
+				"family": "Lek",
+				"given": "Sovan"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2019",
+					12,
+					17
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"1995",
+					12,
+					1
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/ZAGDPF2X",
+		"type": "article-journal",
+		"abstract": "Convinced by the predictive quality of artificial neural network (ANN) models in ecology, we have turned our interests to their explanatory capacities. Seven methods which can give the relative contribution and/or the contribution profile of the input factors were compared: (i) the ‘PaD’ (for Partial Derivatives) method consists in a calculation of the partial derivatives of the output according to the input variables; (ii) the ‘Weights’ method is a computation using the connection weights; (iii) the ‘Perturb’ method corresponds to a perturbation of the input variables; (iv) the ‘Profile’ method is a successive variation of one input variable while the others are kept constant at a fixed value; (v) the ‘classical stepwise’ method is an observation of the change in the error value when an adding (forward) or an elimination (backward) step of the input variables is operated; (vi) ‘Improved stepwise a’ uses the same principle as the classical stepwise, but the elimination of the input occurs when the network is trained, the connection weights corresponding to the input variable studied is also eliminated; (vii) ‘Improved stepwise b’ involves the network being trained and fixed step by step, one input variable at its mean value to note the consequences on the error. The data tested in this study concerns the prediction of the density of brown trout spawning redds using habitat characteristics. The PaD method was found to be the most useful as it gave the most complete results, followed by the Profile method that gave the contribution profile of the input variables. The Perturb method allowed a good classification of the input parameters as well as the Weights method that has been simplified but these two methods lack stability. Next came the two improved stepwise methods (a and b) that both gave exactly the same result but the contributions were not sufficiently expressed. Finally, the classical stepwise methods gave the poorest results.",
+		"collection-title": "Modelling the structure of acquatic communities: concepts, methods and problems.",
+		"container-title": "Ecological Modelling",
+		"DOI": "10.1016/S0304-3800(02)00257-0",
+		"ISSN": "0304-3800",
+		"issue": "3",
+		"journalAbbreviation": "Ecological Modelling",
+		"language": "en",
+		"page": "249-264",
+		"source": "ScienceDirect",
+		"title": "Review and comparison of methods to study the contribution of variables in artificial neural network models",
+		"URL": "http://www.sciencedirect.com/science/article/pii/S0304380002002570",
+		"volume": "160",
+		"author": [
+			{
+				"family": "Gevrey",
+				"given": "Muriel"
+			},
+			{
+				"family": "Dimopoulos",
+				"given": "Ioannis"
+			},
+			{
+				"family": "Lek",
+				"given": "Sovan"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2019",
+					12,
+					15
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2003",
+					2,
+					15
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/CSK4KGXD",
+		"type": "book",
+		"event-place": "New York, NY, USA",
+		"ISBN": "978-0-442-01310-3",
+		"publisher": "John Wiley & Sons, Inc.",
+		"publisher-place": "New York, NY, USA",
+		"source": "ACM Digital Library",
+		"title": "Neural Networks for Statistical Modeling",
+		"author": [
+			{
+				"family": "Smith",
+				"given": "Murray"
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"1993"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/93JHPD5H",
+		"type": "article-journal",
+		"container-title": "Neural networks",
+		"issue": "2",
+		"page": "251–257",
+		"source": "Google Scholar",
+		"title": "Approximation capabilities of multilayer feedforward networks",
+		"volume": "4",
+		"author": [
+			{
+				"family": "Hornik",
+				"given": "Kurt"
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"1991"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/3I6X7B3L",
+		"type": "article-journal",
+		"abstract": "The need for carbon dioxide (CO2) flux estimations covering larger areas and the limitations of the point eddy covariance technique to address this requirement necessitates the modeling of CO2 flux from other micrometeorological variables. The non-linearity of the relationship between CO2 flux and other micrometeorological flux parameters such as energy fluxes limits the applicability of carbon flux models to accurately estimate the flux dynamics. Black box models such as the artificial neural network (ANN) provide a mathematically flexible structure to identify the complex non-linear relationship between inputs and outputs without attempting to explain the nature of the phenomena. A multilayer perceptron ANN technique with an error back propagation algorithm was applied to a CO2 flux simulation study on three different ecosystems (forest, grassland and wheat). Energy fluxes (net radiation, latent heat, sensible heat and soil heat flux) and temperature (air and soil) were used to train the ANN and predict the flux of CO2. Diurnal hourly fluxes data from 15 days of observations were divided into training and testing. Results of the CO2 flux simulation show that the technique can successfully predict the observed values with R2 values between 0.75 and 0.94. Predictions from the forest and wheat field show higher promise than the grassland site. The technique is reliable, efficient and highly significant to estimate regional or global CO2 fluxes from point measurements and understand the spatiotemporal budget of the CO2 fluxes.",
+		"container-title": "Ecological Modelling",
+		"DOI": "10.1016/j.ecolmodel.2005.03.014",
+		"ISSN": "0304-3800",
+		"issue": "3",
+		"journalAbbreviation": "Ecological Modelling",
+		"page": "305-314",
+		"source": "ScienceDirect",
+		"title": "Artificial neural network application for multi-ecosystem carbon flux simulation",
+		"URL": "http://www.sciencedirect.com/science/article/pii/S0304380005002061",
+		"volume": "189",
+		"author": [
+			{
+				"family": "Melesse",
+				"given": "Assefa M."
+			},
+			{
+				"family": "Hanley",
+				"given": "Rodney S."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2019",
+					4,
+					1
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2005",
+					12,
+					10
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/T8X3WEEF",
+		"type": "article-journal",
+		"abstract": "Eddy covariance flux towers measure net exchange of land–atmosphere flux. For the flux of carbon dioxide, this net ecosystem exchange (NEE) is governed by two processes, gross primary production (GPP) and a sum of autotrophic and heterotrophic respiration components known as ecosystem respiration (RE). A number of statistical flux-partitioning methods, often developed to fill missing NEE data, can also be used to estimate GPP and RE from NEE time series. Here we present results of the first comprehensive, multi-site comparison of these partitioning methods. An initial test was performed with a subset of methods in retrieving GPP and RE from NEE generated by an ecosystem model, which was also degraded with realistic noise. All methods produced GPP and RE estimates that were highly correlated with the synthetic data at the daily and annual timescales, but most were biased low, including a parameter inversion of the original model. We then applied 23 different methods to 10 site years of temperate forest flux data, including 10 different artificial gap scenarios (10% removal of observations), in order to investigate the effects of partitioning method choice, data gaps, and intersite variability on estimated GPP and RE. Most methods differed by less than 10% in estimates of both GPP and RE. Gaps added an additional 6–7% variability, but did not result in additional bias. ANOVA showed that most methods were consistent in identifying differences in GPP and RE across sites, leading to increased confidence in previously published multi-site comparisons and syntheses. Several methods produced outliers at some sites, and some methods were systematically biased against the ensemble mean. Larger model spread was found for Mediterranean sites compared to temperate or boreal sites. For both real and synthetic data, high variability was found in modeling of the diurnal RE cycle, suggesting that additional study of diurnal RE mechanisms could help to improve partitioning algorithms.",
+		"container-title": "Agricultural and Forest Meteorology",
+		"DOI": "10.1016/j.agrformet.2007.11.012",
+		"ISSN": "0168-1923",
+		"issue": "6",
+		"journalAbbreviation": "Agricultural and Forest Meteorology",
+		"page": "821-838",
+		"source": "ScienceDirect",
+		"title": "Cross-site evaluation of eddy covariance GPP and RE decomposition techniques",
+		"URL": "http://www.sciencedirect.com/science/article/pii/S0168192307003000",
+		"volume": "148",
+		"author": [
+			{
+				"family": "Desai",
+				"given": "Ankur R."
+			},
+			{
+				"family": "Richardson",
+				"given": "Andrew D."
+			},
+			{
+				"family": "Moffat",
+				"given": "Antje M."
+			},
+			{
+				"family": "Kattge",
+				"given": "Jens"
+			},
+			{
+				"family": "Hollinger",
+				"given": "David Y."
+			},
+			{
+				"family": "Barr",
+				"given": "Alan"
+			},
+			{
+				"family": "Falge",
+				"given": "Eva"
+			},
+			{
+				"family": "Noormets",
+				"given": "Asko"
+			},
+			{
+				"family": "Papale",
+				"given": "Dario"
+			},
+			{
+				"family": "Reichstein",
+				"given": "Markus"
+			},
+			{
+				"family": "Stauch",
+				"given": "Vanessa J."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2019",
+					4,
+					1
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2008",
+					6,
+					30
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/GW658RAB",
+		"type": "article-journal",
+		"abstract": "Time series of wetland methane fluxes measured by eddy covariance require gap-filling to estimate daily, seasonal, and annual emissions. Gap-filling methane fluxes is challenging because of high variability and complex responses to multiple drivers. To date, there is no widely established gap-filling standard for wetland methane fluxes, with regards both to the best model algorithms and predictors. This study synthesizes results of different gap-filling methods systematically applied at 17 wetland sites spanning boreal to tropical regions and including all major wetland classes and two rice paddies. Procedures are proposed for: 1) creating realistic artificial gap scenarios, 2) training and evaluating gap-filling models without overstating performance, and 3) predicting half-hourly methane fluxes and annual emissions with realistic uncertainty estimates. Performance is compared between a conventional method (marginal distribution sampling) and four machine learning algorithms. The conventional method achieved similar median performance as the machine learning models but was worse than the best machine learning models and relatively insensitive to predictor choices. Of the machine learning models, decision tree algorithms performed the best in cross-validation experiments, even with a baseline predictor set, and artificial neural networks showed comparable performance when using all predictors. Soil temperature was frequently the most important predictor whilst water table depth was important at sites with substantial water table fluctuations, highlighting the value of data on wetland soil conditions. Raw gap-filling uncertainties from the machine learning models were underestimated and we propose a method to calibrate uncertainties to observations. The python code for model development, evaluation, and uncertainty estimation is publicly available. This study outlines a modular and robust machine learning workflow and makes recommendations for, and evaluates an improved baseline of, methane gap-filling models that can be implemented in multi-site syntheses or standardized products from regional and global flux networks (e.g., FLUXNET).",
+		"container-title": "Agricultural and Forest Meteorology",
+		"DOI": "10.1016/j.agrformet.2021.108528",
+		"ISSN": "0168-1923",
+		"journalAbbreviation": "Agricultural and Forest Meteorology",
+		"language": "en",
+		"page": "108528",
+		"source": "ScienceDirect",
+		"title": "Gap-filling eddy covariance methane fluxes: Comparison of machine learning model predictions and uncertainties at FLUXNET-CH4 wetlands",
+		"title-short": "Gap-filling eddy covariance methane fluxes",
+		"URL": "https://www.sciencedirect.com/science/article/pii/S0168192321002124",
+		"volume": "308-309",
+		"author": [
+			{
+				"family": "Irvin",
+				"given": "Jeremy"
+			},
+			{
+				"family": "Zhou",
+				"given": "Sharon"
+			},
+			{
+				"family": "McNicol",
+				"given": "Gavin"
+			},
+			{
+				"family": "Lu",
+				"given": "Fred"
+			},
+			{
+				"family": "Liu",
+				"given": "Vincent"
+			},
+			{
+				"family": "Fluet-Chouinard",
+				"given": "Etienne"
+			},
+			{
+				"family": "Ouyang",
+				"given": "Zutao"
+			},
+			{
+				"family": "Knox",
+				"given": "Sara Helen"
+			},
+			{
+				"family": "Lucas-Moffat",
+				"given": "Antje"
+			},
+			{
+				"family": "Trotta",
+				"given": "Carlo"
+			},
+			{
+				"family": "Papale",
+				"given": "Dario"
+			},
+			{
+				"family": "Vitale",
+				"given": "Domenico"
+			},
+			{
+				"family": "Mammarella",
+				"given": "Ivan"
+			},
+			{
+				"family": "Alekseychik",
+				"given": "Pavel"
+			},
+			{
+				"family": "Aurela",
+				"given": "Mika"
+			},
+			{
+				"family": "Avati",
+				"given": "Anand"
+			},
+			{
+				"family": "Baldocchi",
+				"given": "Dennis"
+			},
+			{
+				"family": "Bansal",
+				"given": "Sheel"
+			},
+			{
+				"family": "Bohrer",
+				"given": "Gil"
+			},
+			{
+				"family": "Campbell",
+				"given": "David I"
+			},
+			{
+				"family": "Chen",
+				"given": "Jiquan"
+			},
+			{
+				"family": "Chu",
+				"given": "Housen"
+			},
+			{
+				"family": "Dalmagro",
+				"given": "Higo J"
+			},
+			{
+				"family": "Delwiche",
+				"given": "Kyle B"
+			},
+			{
+				"family": "Desai",
+				"given": "Ankur R"
+			},
+			{
+				"family": "Euskirchen",
+				"given": "Eugenie"
+			},
+			{
+				"family": "Feron",
+				"given": "Sarah"
+			},
+			{
+				"family": "Goeckede",
+				"given": "Mathias"
+			},
+			{
+				"family": "Heimann",
+				"given": "Martin"
+			},
+			{
+				"family": "Helbig",
+				"given": "Manuel"
+			},
+			{
+				"family": "Helfter",
+				"given": "Carole"
+			},
+			{
+				"family": "Hemes",
+				"given": "Kyle S"
+			},
+			{
+				"family": "Hirano",
+				"given": "Takashi"
+			},
+			{
+				"family": "Iwata",
+				"given": "Hiroki"
+			},
+			{
+				"family": "Jurasinski",
+				"given": "Gerald"
+			},
+			{
+				"family": "Kalhori",
+				"given": "Aram"
+			},
+			{
+				"family": "Kondrich",
+				"given": "Andrew"
+			},
+			{
+				"family": "Lai",
+				"given": "Derrick YF"
+			},
+			{
+				"family": "Lohila",
+				"given": "Annalea"
+			},
+			{
+				"family": "Malhotra",
+				"given": "Avni"
+			},
+			{
+				"family": "Merbold",
+				"given": "Lutz"
+			},
+			{
+				"family": "Mitra",
+				"given": "Bhaskar"
+			},
+			{
+				"family": "Ng",
+				"given": "Andrew"
+			},
+			{
+				"family": "Nilsson",
+				"given": "Mats B"
+			},
+			{
+				"family": "Noormets",
+				"given": "Asko"
+			},
+			{
+				"family": "Peichl",
+				"given": "Matthias"
+			},
+			{
+				"family": "Rey-Sanchez",
+				"given": "A. Camilo"
+			},
+			{
+				"family": "Richardson",
+				"given": "Andrew D"
+			},
+			{
+				"family": "Runkle",
+				"given": "Benjamin RK"
+			},
+			{
+				"family": "Schäfer",
+				"given": "Karina VR"
+			},
+			{
+				"family": "Sonnentag",
+				"given": "Oliver"
+			},
+			{
+				"family": "Stuart-Haëntjens",
+				"given": "Ellen"
+			},
+			{
+				"family": "Sturtevant",
+				"given": "Cove"
+			},
+			{
+				"family": "Ueyama",
+				"given": "Masahito"
+			},
+			{
+				"family": "Valach",
+				"given": "Alex C"
+			},
+			{
+				"family": "Vargas",
+				"given": "Rodrigo"
+			},
+			{
+				"family": "Vourlitis",
+				"given": "George L"
+			},
+			{
+				"family": "Ward",
+				"given": "Eric J"
+			},
+			{
+				"family": "Wong",
+				"given": "Guan Xhuan"
+			},
+			{
+				"family": "Zona",
+				"given": "Donatella"
+			},
+			{
+				"family": "Alberto",
+				"given": "Ma. Carmelita R"
+			},
+			{
+				"family": "Billesbach",
+				"given": "David P"
+			},
+			{
+				"family": "Celis",
+				"given": "Gerardo"
+			},
+			{
+				"family": "Dolman",
+				"given": "Han"
+			},
+			{
+				"family": "Friborg",
+				"given": "Thomas"
+			},
+			{
+				"family": "Fuchs",
+				"given": "Kathrin"
+			},
+			{
+				"family": "Gogo",
+				"given": "Sébastien"
+			},
+			{
+				"family": "Gondwe",
+				"given": "Mangaliso J"
+			},
+			{
+				"family": "Goodrich",
+				"given": "Jordan P"
+			},
+			{
+				"family": "Gottschalk",
+				"given": "Pia"
+			},
+			{
+				"family": "Hörtnagl",
+				"given": "Lukas"
+			},
+			{
+				"family": "Jacotot",
+				"given": "Adrien"
+			},
+			{
+				"family": "Koebsch",
+				"given": "Franziska"
+			},
+			{
+				"family": "Kasak",
+				"given": "Kuno"
+			},
+			{
+				"family": "Maier",
+				"given": "Regine"
+			},
+			{
+				"family": "Morin",
+				"given": "Timothy H"
+			},
+			{
+				"family": "Nemitz",
+				"given": "Eiko"
+			},
+			{
+				"family": "Oechel",
+				"given": "Walter C"
+			},
+			{
+				"family": "Oikawa",
+				"given": "Patricia Y"
+			},
+			{
+				"family": "Ono",
+				"given": "Keisuke"
+			},
+			{
+				"family": "Sachs",
+				"given": "Torsten"
+			},
+			{
+				"family": "Sakabe",
+				"given": "Ayaka"
+			},
+			{
+				"family": "Schuur",
+				"given": "Edward A"
+			},
+			{
+				"family": "Shortt",
+				"given": "Robert"
+			},
+			{
+				"family": "Sullivan",
+				"given": "Ryan C"
+			},
+			{
+				"family": "Szutu",
+				"given": "Daphne J"
+			},
+			{
+				"family": "Tuittila",
+				"given": "Eeva-Stiina"
+			},
+			{
+				"family": "Varlagin",
+				"given": "Andrej"
+			},
+			{
+				"family": "Verfaillie",
+				"given": "Joeseph G"
+			},
+			{
+				"family": "Wille",
+				"given": "Christian"
+			},
+			{
+				"family": "Windham-Myers",
+				"given": "Lisamarie"
+			},
+			{
+				"family": "Poulter",
+				"given": "Benjamin"
+			},
+			{
+				"family": "Jackson",
+				"given": "Robert B"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					1,
+					2
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2021",
+					10,
+					15
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/6B77LYMW",
+		"type": "article-journal",
+		"abstract": "We propose a gap-filling model for carbon dioxide fluxes measured by eddy covariance (EC) that combines the flux variance similarity (FVS) partitioning approach with the artificial neural network (ANN) technique (FVS–ANN). 18 years of EC-measured net ecosystem production (NEP) of a Douglas-fir (Pseudotsuga menziesii) stand in British Columbia, Canada were used. FVS-partitioned fluxes were used as a training dataset for ANNs based on the environmental variables to model missing respiration and photosynthesis values. Results from the FVS–ANN model were compared with three established models using different partitioning and gap-filling approaches, namely the nighttime relationship, the daytime intercept, and an ANN-based model informed by the nighttime relationship (ANN–nighttime). In the gap-filled long-term NEP record, the 18-year mean NEP values were similar (between 225 and 239 gC m−2 year−1) and individual years showed small differences in annual NEP among the four models, demonstrating the reliability of estimated NEP when any of the models were used for gap-filling. However, the largest differences in annual gap-filled photosynthesis and respiration estimates among the four models in a given year were as large as 813 and 835 gC m−2 year−1, respectively. The FVS–ANN model consistently resulted in the smallest annual photosynthesis and respiration estimates, while the nighttime-based models resulted in the highest photosynthesis and respiration. The differences between the FVS–ANN and any of the other three models are explained by the different definitions of partitioned fluxes (i.e., values from the FVS–ANN are smaller than the other three models by leaf respiration). However, the differences may also be partly due to light inhibition of daytime respiration, which is known as the Kok effect that is believed to be adequately considered in the new FVS–ANN combination and partially in the daytime intercept model, but not in the other two models. The results suggest that previous EC-based estimates of global photosynthesis and respiration obtained by using nighttime relationships are potentially biased high.",
+		"container-title": "Agricultural and Forest Meteorology",
+		"DOI": "10.1016/j.agrformet.2021.108382",
+		"ISSN": "0168-1923",
+		"journalAbbreviation": "Agricultural and Forest Meteorology",
+		"language": "en",
+		"page": "108382",
+		"source": "ScienceDirect",
+		"title": "Combining flux variance similarity partitioning with artificial neural networks to gap-fill measurements of net ecosystem production of a Pacific Northwest Douglas-fir stand",
+		"URL": "https://www.sciencedirect.com/science/article/pii/S0168192321000654",
+		"volume": "303",
+		"author": [
+			{
+				"family": "Lee",
+				"given": "Sung-Ching"
+			},
+			{
+				"family": "Christen",
+				"given": "Andreas"
+			},
+			{
+				"family": "Black",
+				"given": "T. Andrew"
+			},
+			{
+				"family": "Jassal",
+				"given": "Rachhpal S."
+			},
+			{
+				"family": "Briegel",
+				"given": "Ferdinand"
+			},
+			{
+				"family": "Nesic",
+				"given": "Zoran"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					1,
+					9
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2021",
+					6,
+					15
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/DNC2FQC8",
+		"type": "article-journal",
+		"abstract": "We present 6.5 years of eddy covariance measurements of fluxes of methane (FCH4) and carbon dioxide (FCO2) from a flooded rice paddy in Northern California, USA. A pronounced warming trend throughout the study associated with drought and record high temperatures strongly influenced carbon (C) budgets and provided insights into biophysical controls of FCO2 and FCH4. Wavelet analysis indicated that photosynthesis (gross ecosystem production, GEP) induced the diel pattern in FCH4, but soil temperature (Ts) modulated its amplitude. Forward stepwise linear models and neural networking modeling were used to assess the variables regulating seasonal FCH4. As expected due to their competence in modeling nonlinear relationships, neural network models explained considerably more of the variance in daily average FCH4 than linear models. During the growing season, GEP and water levels typically explained most of the variance in daily average FCH4. However, Ts explained much of the interannual variability in annual and growing season CH4 sums. Higher Ts also increased the annual and growing season ratio of FCH4 to GEP. The observation that the FCH4 to GEP ratio scales predictably with Ts may help improve global estimates of FCH4 from rice agriculture. Additionally, Ts strongly influenced ecosystem respiration, resulting in large interannual variability in the net C budget at the paddy, emphasizing the need for long-term measurements particularly under changing climatic conditions.",
+		"container-title": "Journal of Geophysical Research: Biogeosciences",
+		"DOI": "10.1002/2015JG003247",
+		"ISSN": "2169-8961",
+		"issue": "3",
+		"language": "en",
+		"note": "_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1002/2015JG003247",
+		"page": "978-1001",
+		"source": "Wiley Online Library",
+		"title": "Biophysical controls on interannual variability in ecosystem-scale CO2 and CH4 exchange in a California rice paddy",
+		"URL": "https://onlinelibrary.wiley.com/doi/abs/10.1002/2015JG003247",
+		"volume": "121",
+		"author": [
+			{
+				"family": "Knox",
+				"given": "Sara Helen"
+			},
+			{
+				"family": "Matthes",
+				"given": "Jaclyn Hatala"
+			},
+			{
+				"family": "Sturtevant",
+				"given": "Cove"
+			},
+			{
+				"family": "Oikawa",
+				"given": "Patricia Y."
+			},
+			{
+				"family": "Verfaillie",
+				"given": "Joseph"
+			},
+			{
+				"family": "Baldocchi",
+				"given": "Dennis"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					1,
+					9
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2016"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/AXF9R8UF",
+		"type": "article-journal",
+		"abstract": "With the recent availability of large amounts of data from the global flux towers across different terrestrial ecosystems based on the eddy covariance technique, the use of data-driven techniques has been viable. In this study, two advanced techniques, namely adaptive neuro-fuzzy inference system (ANFIS) and extreme learning machine (ELM), were developed and investigated for their viability in estimating daily carbon fluxes at the ecosystem level. All the data used in this study were based upon the long-term chronosequence observations derived from the flux towers in eight forest ecosystems. Both ANFIS and ELM methods were further compared with the most widely used artificial neural network (ANN) and support vector machine (SVM) methods. Moreover, we also focused on probing into the effects of internal parameters on their corresponding approaches. Our estimates showed that most variation in each carbon flux could be effectively explained by the developed models at almost all the sites. Moreover, the forecasting accuracy of each method was strongly dependent upon their respective internal algorithms. The best training function for ANN model can be acquired through the trial and error procedure. The SVM model with the radial basis kernel function performed considerably better than the SVM models with the polynomial and sigmoid kernel functions. The hybrid ELM models achieved similar predictive accuracy for the three fluxes and were consistently superior to the original ELM models with different transfer functions. In most instances, both the subtractive clustering and fuzzy c-means algorithms for the ANFIS models outperformed the most popular grid partitioning algorithm. It was demonstrated that the newly proposed ELM and ANFIS models were able to produce comparable estimates to the ANN and SVM models for forecasting terrestrial carbon fluxes.",
+		"container-title": "Science of The Total Environment",
+		"DOI": "10.1016/j.scitotenv.2018.01.202",
+		"ISSN": "0048-9697",
+		"journalAbbreviation": "Science of The Total Environment",
+		"language": "en",
+		"page": "78-94",
+		"source": "ScienceDirect",
+		"title": "Estimating forest carbon fluxes using four different data-driven techniques based on long-term eddy covariance measurements: Model comparison and evaluation",
+		"title-short": "Estimating forest carbon fluxes using four different data-driven techniques based on long-term eddy covariance measurements",
+		"URL": "https://www.sciencedirect.com/science/article/pii/S0048969718302432",
+		"volume": "627",
+		"author": [
+			{
+				"family": "Dou",
+				"given": "Xianming"
+			},
+			{
+				"family": "Yang",
+				"given": "Yongguo"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					1,
+					9
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2018",
+					6,
+					15
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/DX7BWRD3",
+		"type": "article-journal",
+		"abstract": "Methane flux (FCH4) measurements using the eddy covariance technique have increased over the past decade. FCH4 measurements commonly include data gaps, as is the case with CO2 and energy fluxes. However, gap-filling FCH4 data are more challenging than other fluxes due to its unique characteristics including multidriver dependency, variabilities across multiple timescales, nonstationarity, spatial heterogeneity of flux footprints, and lagged influence of biophysical drivers. Some researchers have applied a marginal distribution sampling (MDS) algorithm, a standard gap-filling method for other fluxes, to FCH4 datasets, and others have applied artificial neural networks (ANN) to resolve the challenging characteristics of FCH4. However, there is still no consensus regarding FCH4 gap-filling methods due to limited comparative research. We are not aware of the applications of machine learning (ML) algorithms beyond ANN to FCH4 datasets. Here, we compare the performance of MDS and three ML algorithms (ANN, random forest [RF], and support vector machine [SVM]) using multiple combinations of ancillary variables. In addition, we applied principal component analysis (PCA) as an input to the algorithms to address multidriver dependency of FCH4 and reduce the internal complexity of the algorithmic structures. We applied this approach to five benchmark FCH4 datasets from both natural and managed systems located in temperate and tropical wetlands and rice paddies. Results indicate that PCA improved the performance of MDS compared to traditional inputs. ML algorithms performed better when using all available biophysical variables compared to using PCA-derived inputs. Overall, RF was found to outperform other techniques for all sites. We found gap-filling uncertainty is much larger than measurement uncertainty in accumulated CH4 budget. Therefore, the approach used for FCH4 gap filling can have important implications for characterizing annual ecosystem-scale methane budgets, the accuracy of which is important for evaluating natural and managed systems and their interactions with global change processes.",
+		"container-title": "Global Change Biology",
+		"DOI": "10.1111/gcb.14845",
+		"ISSN": "1365-2486",
+		"issue": "3",
+		"language": "en",
+		"note": "_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/gcb.14845",
+		"page": "1499-1518",
+		"source": "Wiley Online Library",
+		"title": "Gap-filling approaches for eddy covariance methane fluxes: A comparison of three machine learning algorithms and a traditional method with principal component analysis",
+		"title-short": "Gap-filling approaches for eddy covariance methane fluxes",
+		"URL": "https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.14845",
+		"volume": "26",
+		"author": [
+			{
+				"family": "Kim",
+				"given": "Yeonuk"
+			},
+			{
+				"family": "Johnson",
+				"given": "Mark S."
+			},
+			{
+				"family": "Knox",
+				"given": "Sara H."
+			},
+			{
+				"family": "Black",
+				"given": "T. Andrew"
+			},
+			{
+				"family": "Dalmagro",
+				"given": "Higo J."
+			},
+			{
+				"family": "Kang",
+				"given": "Minseok"
+			},
+			{
+				"family": "Kim",
+				"given": "Joon"
+			},
+			{
+				"family": "Baldocchi",
+				"given": "Dennis"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					1,
+					9
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2020"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/2JIFD2NQ",
+		"type": "article-journal",
+		"abstract": "Abstract This paper describes the formation of, and initial results for, a new FLUXNET coordination network for ecosystem-scale methane (CH4) measurements at 60 sites globally, organized by the Global Carbon Project in partnership with other initiatives and regional flux tower networks. The objectives of the effort are presented along with an overview of the coverage of eddy covariance (EC) CH4 flux measurements globally, initial results comparing CH4 fluxes across the sites, and future research directions and needs. Annual estimates of net CH4 fluxes across sites ranged from −0.2 ± 0.02 g C m–2 yr–1 for an upland forest site to 114.9 ± 13.4 g C m–2 yr–1 for an estuarine freshwater marsh, with fluxes exceeding 40 g C m–2 yr–1 at multiple sites. Average annual soil and air temperatures were found to be the strongest predictor of annual CH4 flux across wetland sites globally. Water table position was positively correlated with annual CH4 emissions, although only for wetland sites that were not consistently inundated throughout the year. The ratio of annual CH4 fluxes to ecosystem respiration increased significantly with mean site temperature. Uncertainties in annual CH4 estimates due to gap-filling and random errors were on average ±1.6 g C m–2 yr–1 at 95% confidence, with the relative error decreasing exponentially with increasing flux magnitude across sites. Through the analysis and synthesis of a growing EC CH4 flux database, the controls on ecosystem CH4 fluxes can be better understood, used to inform and validate Earth system models, and reconcile differences between land surface model- and atmospheric-based estimates of CH4 emissions.",
+		"container-title": "Bulletin of the American Meteorological Society",
+		"DOI": "10.1175/BAMS-D-18-0268.1",
+		"ISSN": "0003-0007, 1520-0477",
+		"issue": "12",
+		"language": "EN",
+		"note": "publisher: American Meteorological Society\nsection: Bulletin of the American Meteorological Society",
+		"page": "2607-2632",
+		"source": "journals.ametsoc.org",
+		"title": "FLUXNET-CH4 Synthesis Activity: Objectives, Observations, and Future Directions",
+		"title-short": "FLUXNET-CH4 Synthesis Activity",
+		"URL": "https://journals.ametsoc.org/view/journals/bams/100/12/bams-d-18-0268.1.xml",
+		"volume": "100",
+		"author": [
+			{
+				"family": "Knox",
+				"given": "Sara H."
+			},
+			{
+				"family": "Jackson",
+				"given": "Robert B."
+			},
+			{
+				"family": "Poulter",
+				"given": "Benjamin"
+			},
+			{
+				"family": "McNicol",
+				"given": "Gavin"
+			},
+			{
+				"family": "Fluet-Chouinard",
+				"given": "Etienne"
+			},
+			{
+				"family": "Zhang",
+				"given": "Zhen"
+			},
+			{
+				"family": "Hugelius",
+				"given": "Gustaf"
+			},
+			{
+				"family": "Bousquet",
+				"given": "Philippe"
+			},
+			{
+				"family": "Canadell",
+				"given": "Josep G."
+			},
+			{
+				"family": "Saunois",
+				"given": "Marielle"
+			},
+			{
+				"family": "Papale",
+				"given": "Dario"
+			},
+			{
+				"family": "Chu",
+				"given": "Housen"
+			},
+			{
+				"family": "Keenan",
+				"given": "Trevor F."
+			},
+			{
+				"family": "Baldocchi",
+				"given": "Dennis"
+			},
+			{
+				"family": "Torn",
+				"given": "Margaret S."
+			},
+			{
+				"family": "Mammarella",
+				"given": "Ivan"
+			},
+			{
+				"family": "Trotta",
+				"given": "Carlo"
+			},
+			{
+				"family": "Aurela",
+				"given": "Mika"
+			},
+			{
+				"family": "Bohrer",
+				"given": "Gil"
+			},
+			{
+				"family": "Campbell",
+				"given": "David I."
+			},
+			{
+				"family": "Cescatti",
+				"given": "Alessandro"
+			},
+			{
+				"family": "Chamberlain",
+				"given": "Samuel"
+			},
+			{
+				"family": "Chen",
+				"given": "Jiquan"
+			},
+			{
+				"family": "Chen",
+				"given": "Weinan"
+			},
+			{
+				"family": "Dengel",
+				"given": "Sigrid"
+			},
+			{
+				"family": "Desai",
+				"given": "Ankur R."
+			},
+			{
+				"family": "Euskirchen",
+				"given": "Eugenie"
+			},
+			{
+				"family": "Friborg",
+				"given": "Thomas"
+			},
+			{
+				"family": "Gasbarra",
+				"given": "Daniele"
+			},
+			{
+				"family": "Goded",
+				"given": "Ignacio"
+			},
+			{
+				"family": "Goeckede",
+				"given": "Mathias"
+			},
+			{
+				"family": "Heimann",
+				"given": "Martin"
+			},
+			{
+				"family": "Helbig",
+				"given": "Manuel"
+			},
+			{
+				"family": "Hirano",
+				"given": "Takashi"
+			},
+			{
+				"family": "Hollinger",
+				"given": "David Y."
+			},
+			{
+				"family": "Iwata",
+				"given": "Hiroki"
+			},
+			{
+				"family": "Kang",
+				"given": "Minseok"
+			},
+			{
+				"family": "Klatt",
+				"given": "Janina"
+			},
+			{
+				"family": "Krauss",
+				"given": "Ken W."
+			},
+			{
+				"family": "Kutzbach",
+				"given": "Lars"
+			},
+			{
+				"family": "Lohila",
+				"given": "Annalea"
+			},
+			{
+				"family": "Mitra",
+				"given": "Bhaskar"
+			},
+			{
+				"family": "Morin",
+				"given": "Timothy H."
+			},
+			{
+				"family": "Nilsson",
+				"given": "Mats B."
+			},
+			{
+				"family": "Niu",
+				"given": "Shuli"
+			},
+			{
+				"family": "Noormets",
+				"given": "Asko"
+			},
+			{
+				"family": "Oechel",
+				"given": "Walter C."
+			},
+			{
+				"family": "Peichl",
+				"given": "Matthias"
+			},
+			{
+				"family": "Peltola",
+				"given": "Olli"
+			},
+			{
+				"family": "Reba",
+				"given": "Michele L."
+			},
+			{
+				"family": "Richardson",
+				"given": "Andrew D."
+			},
+			{
+				"family": "Runkle",
+				"given": "Benjamin R. K."
+			},
+			{
+				"family": "Ryu",
+				"given": "Youngryel"
+			},
+			{
+				"family": "Sachs",
+				"given": "Torsten"
+			},
+			{
+				"family": "Schäfer",
+				"given": "Karina V. R."
+			},
+			{
+				"family": "Schmid",
+				"given": "Hans Peter"
+			},
+			{
+				"family": "Shurpali",
+				"given": "Narasinha"
+			},
+			{
+				"family": "Sonnentag",
+				"given": "Oliver"
+			},
+			{
+				"family": "Tang",
+				"given": "Angela C. I."
+			},
+			{
+				"family": "Ueyama",
+				"given": "Masahito"
+			},
+			{
+				"family": "Vargas",
+				"given": "Rodrigo"
+			},
+			{
+				"family": "Vesala",
+				"given": "Timo"
+			},
+			{
+				"family": "Ward",
+				"given": "Eric J."
+			},
+			{
+				"family": "Windham-Myers",
+				"given": "Lisamarie"
+			},
+			{
+				"family": "Wohlfahrt",
+				"given": "Georg"
+			},
+			{
+				"family": "Zona",
+				"given": "Donatella"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					1,
+					9
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2019",
+					12,
+					1
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/SFCAK333",
+		"type": "article-journal",
+		"abstract": "The eddy covariance (EC) technique is used to measure the net ecosystem exchange (NEE) of CO2 between ecosystems and the atmosphere, offering a unique opportunity to study ecosystem responses to climate change. NEE is the difference between the total CO2 release due to all respiration processes (RECO), and the gross carbon uptake by photosynthesis (GPP). These two gross CO2 fluxes are derived from EC measurements by applying partitioning methods that rely on physiologically based functional relationships with a limited number of environmental drivers. However, the partitioning methods applied in the global FLUXNET network of EC observations do not account for the multiple co-acting factors that modulate GPP and RECO flux dynamics. To overcome this limitation, we developed a hybrid data-driven approach based on combined neural networks (NNC-part). NNC-part incorporates process knowledge by introducing a photosynthetic response based on the light-use efficiency (LUE) concept, and uses a comprehensive dataset of soil and micrometeorological variables as fluxes drivers. We applied the method to 36 sites from the FLUXNET2015 dataset and found a high consistency in the results with those derived from other standard partitioning methods for both GPP (R2 > .94) and RECO (R2 > .8). High consistency was also found for (a) the diurnal and seasonal patterns of fluxes and (b) the ecosystem functional responses. NNC-part performed more realistic than the traditional methods for predicting additional patterns of gross CO2 fluxes, such as: (a) the GPP response to VPD, (b) direct effects of air temperature on GPP dynamics, (c) hysteresis in the diel cycle of gross CO2 fluxes, (d) the sensitivity of LUE to the diffuse to direct radiation ratio, and (e) the post rain respiration pulse after a long dry period. In conclusion, NNC-part is a valid data-driven approach to provide GPP and RECO estimates and complementary to the existing partitioning methods.",
+		"container-title": "Global Change Biology",
+		"DOI": "10.1111/gcb.15203",
+		"ISSN": "1365-2486",
+		"issue": "9",
+		"language": "en",
+		"note": "_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/gcb.15203",
+		"page": "5235-5253",
+		"source": "Wiley Online Library",
+		"title": "Partitioning net carbon dioxide fluxes into photosynthesis and respiration using neural networks",
+		"URL": "https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.15203",
+		"volume": "26",
+		"author": [
+			{
+				"family": "Tramontana",
+				"given": "Gianluca"
+			},
+			{
+				"family": "Migliavacca",
+				"given": "Mirco"
+			},
+			{
+				"family": "Jung",
+				"given": "Martin"
+			},
+			{
+				"family": "Reichstein",
+				"given": "Markus"
+			},
+			{
+				"family": "Keenan",
+				"given": "Trevor F."
+			},
+			{
+				"family": "Camps-Valls",
+				"given": "Gustau"
+			},
+			{
+				"family": "Ogee",
+				"given": "Jerome"
+			},
+			{
+				"family": "Verrelst",
+				"given": "Jochem"
+			},
+			{
+				"family": "Papale",
+				"given": "Dario"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					1,
+					26
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2020"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/Z5P9H4W9",
+		"type": "article-journal",
+		"abstract": "Carbon dioxide (CO2) exchange of tidal brackish wetlands and how they may be affected by restoration methods are largely unknown. The New Jersey Meadowlands, a tidal brackish estuary system, have had a long history of pollution, hydrological alterations, multiple restoration and mitigation treatments since the early 1970ies. To understand the effects of restoration, net ecosystem exchange (NEE) was measured with the eddy covariance technique in three urban tidal brackish wetland sites over three years: an organic matter amended restored site, a non-amended restored site and a natural (non-restored) wetland site. Our results showed all three sites to be a CO2 source in the wintertime reverting to a weak sink of CO2 in the summer and annually to be sources of CO2 for some of the sites for some of the time. However, the amended restored wetland was found to have the highest release of CO2. Annual destructive harvest of the major species at these wetlands (Spartina ssp and Phragmites australis) did not show significant differences in the aboveground net primary productivity and leaf area over the course of this study. Overall, aboveground biomass production of the three wetlands sites was within the expected range of tidal brackish marshes, but the sites differed in their NEE, ecosystem respiration, and gross ecosystem production. This investigation suggests that CO2 uptake and potential subsequent carbon sequestration may be strongly affected by the management and restoration history of the wetlands, and in our case these wetlands are often acting as a source of CO2, and not as a sink, as may have been expected.",
+		"container-title": "Agricultural and Forest Meteorology",
+		"DOI": "10.1016/j.agrformet.2019.05.026",
+		"ISSN": "0168-1923",
+		"journalAbbreviation": "Agricultural and Forest Meteorology",
+		"language": "en",
+		"page": "223-232",
+		"source": "ScienceDirect",
+		"title": "Carbon dioxide fluxes of temperate urban wetlands with different restoration history",
+		"URL": "https://www.sciencedirect.com/science/article/pii/S0168192319301972",
+		"volume": "275",
+		"author": [
+			{
+				"family": "Schäfer",
+				"given": "K. V. R."
+			},
+			{
+				"family": "Duman",
+				"given": "T."
+			},
+			{
+				"family": "Tomasicchio",
+				"given": "K."
+			},
+			{
+				"family": "Tripathee",
+				"given": "R."
+			},
+			{
+				"family": "Sturtevant",
+				"given": "C."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					1,
+					27
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2019",
+					9,
+					15
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/J9BDM54B",
+		"type": "article-journal",
+		"abstract": "The terrestrial biosphere strongly modulates atmospheric CO2 mixing ratios, whose inexorable rise propels anthropogenic climate change. Modeling and mechanistically understanding C uptake by the terrestrial biosphere are thus of broad societal concerns. Yet despite considerable progress, scaling up point observations to landscape and larger scales continues to frustrate analyses of the anthropogenically perturbed global C cycle. While that up-scaling is our overarching motivation, here we focus on one of its elements, modeling C uptake at a given site. We devise a novel artificial neural network (ANN)-based model of C uptake at Harvard Forest that combines locally observed and remotely sensed variables. Most of our model predictors are those used by an established ecosystem C uptake model, the Vegetation Photosynthesis and Respiration Model (VPRM), easing comparisons. To those, we add observed cumulative antecedent precipitation and soil temperature. We find that model errors are much larger in winter, indicating that better understanding and modeling of respiration will likely discernibly improve model performance. Comparing the ANN and VPRM results reveals errors attributed to unrealistic treatment of temperature in the VPRM formulation, indicating that better representation of temperature dependencies is also likely to enhance model skill. By judiciously comparing VPRM and ANN errors we thus overcome ANNs' notoriety for concealing the mechanisms underlying their predictive skills. We demonstrate their ability to identify outstanding ecosystem science knowledge gaps and particularly fruitful corresponding model development directions, improving site specific and up-scaling flux modeling and understanding of the climate impacts of the northern forest.",
+		"container-title": "Journal of Geophysical Research: Biogeosciences",
+		"DOI": "10.1029/2018JG004791",
+		"ISSN": "2169-8953, 2169-8961",
+		"issue": "3",
+		"journalAbbreviation": "J. Geophys. Res. Biogeosci.",
+		"language": "en",
+		"page": "461-478",
+		"source": "DOI.org (Crossref)",
+		"title": "Listening to the Forest: An Artificial Neural Network‐Based Model of Carbon Uptake at Harvard Forest",
+		"title-short": "Listening to the Forest",
+		"URL": "https://onlinelibrary.wiley.com/doi/10.1029/2018JG004791",
+		"volume": "124",
+		"author": [
+			{
+				"family": "Eshel",
+				"given": "Gidon"
+			},
+			{
+				"family": "Dayalu",
+				"given": "Archana"
+			},
+			{
+				"family": "Wofsy",
+				"given": "Steven C."
+			},
+			{
+				"family": "Munger",
+				"given": "J. William"
+			},
+			{
+				"family": "Tziperman",
+				"given": "Eli"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					1,
+					27
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2019",
+					3
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/JBCRTGKN",
+		"type": "article-journal",
+		"abstract": "Random forest and similar Machine Learning techniques are already used to generate spatial predictions, but spatial location of points (geography) is often ignored in the modeling process. Spatial auto-correlation, especially if still existent in the cross-validation residuals, indicates that the predictions are maybe biased, and this is suboptimal. This paper presents a random forest for spatial predictions framework (RFsp) where buffer distances from observation points are used as explanatory variables, thus incorporating geographical proximity effects into the prediction process. The RFsp framework is illustrated with examples that use textbook datasets and apply spatial and spatio-temporal prediction to numeric, binary, categorical, multivariate and spatiotemporal variables. Performance of the RFsp framework is compared with the state-of-the-art kriging techniques using fivefold cross-validation with refitting. The results show that RFsp can obtain equally accurate and unbiased predictions as different versions of kriging. Advantages of using RFsp over kriging are that it needs no rigid statistical assumptions about the distribution and stationarity of the target variable, it is more flexible towards incorporating, combining and extending covariates of different types, and it possibly yields more informative maps characterizing the prediction error. RFsp appears to be especially attractive for building multivariate spatial prediction models that can be used as “knowledge engines” in various geoscience fields. Some disadvantages of RFsp are the exponentially growing computational intensity with increase of calibration data and covariates and the high sensitivity of predictions to input data quality. The key to the success of the RFsp framework might be the training data quality—especially quality of spatial sampling (to minimize extrapolation problems and any type of bias in data), and quality of model validation (to ensure that accuracy is not effected by overfitting). For many data sets, especially those with lower number of points and covariates and close-to-linear relationships, model-based geostatistics can still lead to more accurate predictions than RFsp.",
+		"container-title": "PeerJ",
+		"DOI": "10.7717/peerj.5518",
+		"journalAbbreviation": "PeerJ",
+		"page": "e5518",
+		"source": "ResearchGate",
+		"title": "Random forest as a generic framework for predictive modeling of spatial and spatio-temporal variables",
+		"volume": "6",
+		"author": [
+			{
+				"family": "Hengl",
+				"given": "Tomislav"
+			},
+			{
+				"family": "Nussbaum",
+				"given": "Madlene"
+			},
+			{
+				"family": "Wright",
+				"given": "Marvin"
+			},
+			{
+				"family": "Heuvelink",
+				"given": "Gerard"
+			},
+			{
+				"family": "Graeler",
+				"given": "Benedikt"
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"2018",
+					8,
+					29
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/6AY3445B",
+		"type": "paper-conference",
+		"abstract": "Overfitting is the most serious problem in neural network training; stopped training is the most common solution to this problem. Yet the neural network literature contains little systematic investigation of the properties of stopped training and no comparisons with statistical methods of dealing with overfitting. This paper presents the results of simulations designed to investigate these issues. Introduction  The most important unresolved problem in practical applications of feedforward neural networks (NNs) is how to determine the appropriate complexity of the network. This problem is similar to the problem of choosing the degree of smoothing in nonparametric estimation. But overfitting in NNs can have much more serious consequences than can undersmoothing in most nonparametric estimation methods. NNs, like high-order polynomials, can produce wild predictions far beyond the range of the data. There are two main approaches to controlling the complexity of a NN: model selection and re...",
+		"container-title": "Proceedings of the 27th Symposium on the Interface of Computing Science and Statistics",
+		"page": "352–360",
+		"source": "CiteSeer",
+		"title": "Stopped Training and Other Remedies for Overfitting",
+		"author": [
+			{
+				"family": "Sarle",
+				"given": "Warren S."
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"1995"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/HT3VPLIN",
+		"type": "article-journal",
+		"container-title": "Biogeosciences",
+		"DOI": "10.5194/bg-17-4421-2020",
+		"issue": "17",
+		"license": "All rights reserved",
+		"page": "4421–4441",
+		"title": "Vegetation influence and environmental controls on greenhouse gas fluxes from a drained thermokarst lake in the western Canadian Arctic",
+		"URL": "https://bg.copernicus.org/articles/17/4421/2020/",
+		"volume": "17",
+		"author": [
+			{
+				"family": "Skeeter",
+				"given": "J."
+			},
+			{
+				"family": "Christen",
+				"given": "A."
+			},
+			{
+				"family": "Laforce",
+				"given": "A.-A."
+			},
+			{
+				"family": "Humphreys",
+				"given": "E."
+			},
+			{
+				"family": "Henry",
+				"given": "G."
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"2020"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/6P59ACPN",
+		"type": "article-journal",
+		"abstract": "Machine learning (ML) is a form of artificial intelligence which is placed to transform the twenty-first century. Rapid, recent progress in its underlying architecture and algorithms and growth in the size of datasets have led to increasing computer competence across a range of fields. These include driving a vehicle, language translation, chatbots and beyond human performance at complex board games such as Go. Here, we review the fundamentals and algorithms behind machine learning and highlight specific approaches to learning and optimisation. We then summarise the applications of ML to medicine. In particular, we showcase recent diagnostic performances, and caveats, in the fields of dermatology, radiology, pathology and general microscopy.",
+		"container-title": "Biophysical Reviews",
+		"DOI": "10.1007/s12551-018-0449-9",
+		"ISSN": "1867-2450",
+		"issue": "1",
+		"journalAbbreviation": "Biophys Rev",
+		"note": "PMID: 30182201\nPMCID: PMC6381354",
+		"page": "111-118",
+		"source": "PubMed Central",
+		"title": "Machine learning: applications of artificial intelligence to imaging and diagnosis",
+		"title-short": "Machine learning",
+		"URL": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6381354/",
+		"volume": "11",
+		"author": [
+			{
+				"family": "Nichols",
+				"given": "James A."
+			},
+			{
+				"family": "Herbert Chan",
+				"given": "Hsien W."
+			},
+			{
+				"family": "Baker",
+				"given": "Matthew A. B."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					10,
+					29
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2018",
+					9,
+					4
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/XEPZB5VY",
+		"type": "article-journal",
+		"abstract": "Growing season surface–atmosphere exchange of carbon dioxide and methane were quantified at Fish Island, a wetland site in the lower northeast Mackenzie River Delta, Northwest Territories, Canada. The terrain consists of low-center polygonal tundra and is subject to infrequent flooding in high water years. Carbon dioxide and methane fluxes were continuously measured using eddy covariance and the relevance of different environmental controls were identified using neural networks. Net daily carbon dioxide uptake peaked in mid-July before gradually decreasing and transitioning to net daily emissions by September. Variations in light level and temperature were the main controls over diurnal net carbon dioxide uptake, whereas thaw depth and phenology were the main seasonal controls. Methane emissions measured at Fish Island were higher than comparable studies on river delta sites in the Arctic and were influenced by the interaction of a large number of factors including thaw and water table depth, soil temperatures, and net radiation. Spikes in methane emissions were associated with strong winds and turbulence. The Fish Island tundra was a net sink for carbon during the growing season and methane emissions only slightly reduced the overall sink strength.",
+		"container-title": "Arctic Science",
+		"DOI": "10.1139/as-2021-0034",
+		"issue": "2",
+		"license": "All rights reserved",
+		"note": "publisher: NRC Research Press",
+		"page": "471-497",
+		"source": "cdnsciencepub.com (Atypon)",
+		"title": "Controls on carbon dioxide and methane fluxes from a low-center polygonal peatland in the Mackenzie River Delta, Northwest Territories",
+		"URL": "https://cdnsciencepub.com/doi/full/10.1139/as-2021-0034",
+		"volume": "8",
+		"author": [
+			{
+				"family": "Skeeter",
+				"given": "June"
+			},
+			{
+				"family": "Christen",
+				"given": "Andreas"
+			},
+			{
+				"family": "Henry",
+				"given": "Greg H.R."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2022",
+					10,
+					31
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2022",
+					6
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/F6JDZJHB",
+		"type": "article-journal",
+		"abstract": "The impact of workstation and personal computing has important implications for the future of statistics. We argue that the capabilities of new computing environments will change methodological focus because computationally intensive algorithms free of onerous restrictions are feasible in place mathematically tractable but potentially nonrobust algorithms. Moreover electronic instrumentation allows us to collect data substantially different from traditional data collection. In particular, we argue that in place of small, low dimensional homogeneous data sets chosen according to a well designed experiment, we are more likely to see very large, high dimensional nonhomogeneous data sets collected opportunistically. We outline a comparison between traditional statistics and what we call computational statistics. We give several examples a computational statistics and complete our thesis with a discussion of the implications for graduate curricula.",
+		"container-title": "Journal of the Washington Academy of Sciences",
+		"ISSN": "0043-0439",
+		"issue": "4",
+		"note": "publisher: Washington Academy of Sciences",
+		"page": "310-322",
+		"source": "JSTOR",
+		"title": "Computational Statistics: A New Agenda for Statistical Theory and Practice",
+		"title-short": "Computational Statistics",
+		"URL": "https://www.jstor.org/stable/24536995",
+		"volume": "78",
+		"author": [
+			{
+				"family": "Wegman",
+				"given": "Edward J."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2023",
+					2,
+					28
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"1988"
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/67BY3GHF",
+		"type": "article-journal",
+		"abstract": "Continuous long-term eddy covariance (EC) measurements of CO2 fluxes (NEE) in a variety of terrestrial ecosystems are critical for investigating the impacts of climate change on ecosystem carbon cycling. However, due to a number of issues, approximately 30–60% of annual flux data obtained at EC flux sites around the world are reported as gaps. Given that the annual total NEE is mostly determined by variations in the NEE data with time scales longer than one day, we propose a novel framework to perform gap filling in NEE data based on machine learning (ML) and time series decomposition (TSD). The novel framework combines the advantages of ML models in predicting NEE with meteorological and environmental inputs and TSD methods in extracting the dominant varying trends in NEE time series. Using the NEE data from 25 AmeriFlux sites, the performance of the proposed framework is evaluated under four different artificial scenarios with gap lengths ranging in length from one hour to two months. The combined approach incorporating random forest and moving average (MA-RF) is observed to exhibit better performance than other approaches at filling NEE gaps in scenarios with different gap lengths. For the scenario with a gap length of seven days, the MA-RF improves the R2 by 34% and reduces the root mean square error (RMSE) by 55%, respectively, compared to a traditional RF-based model. The improved performance of MA-RF is most likely due to the reduction in data variability and complexity of the variations in the extracted low-frequency NEE data. Our results indicate that the proposed MA-RF framework can provide improved gap filling for NEE time series. Such improved continuous NEE data can enhance the accuracy of estimations regarding the ecosystem carbon budget.",
+		"container-title": "Remote Sensing",
+		"DOI": "10.3390/rs15102695",
+		"ISSN": "2072-4292",
+		"issue": "10",
+		"language": "en",
+		"license": "http://creativecommons.org/licenses/by/3.0/",
+		"note": "number: 10\npublisher: Multidisciplinary Digital Publishing Institute",
+		"page": "2695",
+		"source": "www.mdpi.com",
+		"title": "Eddy Covariance CO2 Flux Gap Filling for Long Data Gaps: A Novel Framework Based on Machine Learning and Time Series Decomposition",
+		"title-short": "Eddy Covariance CO2 Flux Gap Filling for Long Data Gaps",
+		"URL": "https://www.mdpi.com/2072-4292/15/10/2695",
+		"volume": "15",
+		"author": [
+			{
+				"family": "Gao",
+				"given": "Dexiang"
+			},
+			{
+				"family": "Yao",
+				"given": "Jingyu"
+			},
+			{
+				"family": "Yu",
+				"given": "Shuting"
+			},
+			{
+				"family": "Ma",
+				"given": "Yulong"
+			},
+			{
+				"family": "Li",
+				"given": "Lei"
+			},
+			{
+				"family": "Gao",
+				"given": "Zhongming"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2023",
+					7,
+					13
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2023",
+					1
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/JUPG7QRQ",
+		"type": "article-journal",
+		"abstract": "We propose a gap-filling model for carbon dioxide fluxes measured by eddy covariance (EC) that combines the flux variance similarity (FVS) partitioning approach with the artificial neural network (ANN) technique (FVS–ANN). 18 years of EC-measured net ecosystem production (NEP) of a Douglas-fir (Pseudotsuga menziesii) stand in British Columbia, Canada were used. FVS-partitioned fluxes were used as a training dataset for ANNs based on the environmental variables to model missing respiration and photosynthesis values. Results from the FVS–ANN model were compared with three established models using different partitioning and gap-filling approaches, namely the nighttime relationship, the daytime intercept, and an ANN-based model informed by the nighttime relationship (ANN–nighttime). In the gap-filled long-term NEP record, the 18-year mean NEP values were similar (between 225 and 239 gC m−2 year−1) and individual years showed small differences in annual NEP among the four models, demonstrating the reliability of estimated NEP when any of the models were used for gap-filling. However, the largest differences in annual gap-filled photosynthesis and respiration estimates among the four models in a given year were as large as 813 and 835 gC m−2 year−1, respectively. The FVS–ANN model consistently resulted in the smallest annual photosynthesis and respiration estimates, while the nighttime-based models resulted in the highest photosynthesis and respiration. The differences between the FVS–ANN and any of the other three models are explained by the different definitions of partitioned fluxes (i.e., values from the FVS–ANN are smaller than the other three models by leaf respiration). However, the differences may also be partly due to light inhibition of daytime respiration, which is known as the Kok effect that is believed to be adequately considered in the new FVS–ANN combination and partially in the daytime intercept model, but not in the other two models. The results suggest that previous EC-based estimates of global photosynthesis and respiration obtained by using nighttime relationships are potentially biased high.",
+		"container-title": "Agricultural and Forest Meteorology",
+		"DOI": "10.1016/j.agrformet.2021.108382",
+		"ISSN": "0168-1923",
+		"journalAbbreviation": "Agricultural and Forest Meteorology",
+		"language": "en",
+		"page": "108382",
+		"source": "ScienceDirect",
+		"title": "Combining flux variance similarity partitioning with artificial neural networks to gap-fill measurements of net ecosystem production of a Pacific Northwest Douglas-fir stand",
+		"URL": "https://www.sciencedirect.com/science/article/pii/S0168192321000654",
+		"volume": "303",
+		"author": [
+			{
+				"family": "Lee",
+				"given": "Sung-Ching"
+			},
+			{
+				"family": "Christen",
+				"given": "Andreas"
+			},
+			{
+				"family": "Black",
+				"given": "T. Andrew"
+			},
+			{
+				"family": "Jassal",
+				"given": "Rachhpal S."
+			},
+			{
+				"family": "Briegel",
+				"given": "Ferdinand"
+			},
+			{
+				"family": "Nesic",
+				"given": "Zoran"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2023",
+					7,
+					13
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2021",
+					6,
+					15
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/PDFUZ77X",
+		"type": "article-journal",
+		"abstract": "Heightened awareness of global change issues within both science and political communities has increased interest in using the global network of eddy covariance flux towers to more fully understand the impacts of natural and anthropogenic phenomena on the global carbon balance. Comparisons of net ecosystem exchange (FNEE) responses are being made among biome types, phenology patterns, and stress conditions. The comparisons are usually performed on annual sums of FNEE; however, the average data coverage during a year is only 65%. Therefore, robust and consistent gap filling methods are required. We review several methods of gap filling and apply them to data sets available from the EUROFLUX and AmeriFlux databases. The methods are based on mean diurnal variation (MDV), look-up tables (LookUp), and nonlinear regressions (Regr.), and the impact of different gap filling methods on the annual sum of FNEE is investigated. The difference between annual FNEE filled by MDV compared to FNEE filled by Regr. ranged from −45 to +200gCm−2 per year (MDV−Regr.). Comparing LookUp and Regr. methods resulted in a difference (LookUp−Regr.) ranging from −30 to +150gCm−2 per year. We also investigated the impact of replacing measurements at night, when turbulent mixing is insufficient. The nighttime correction for low friction velocities (u∗) shifted annual FNEE on average by +77gCm−2 per year, but in certain cases as much as +185gCm−2 per year. Our results emphasize the need to standardize gap filling-methods for improving the comparability of flux data products from regional and global flux networks.",
+		"container-title": "Agricultural and Forest Meteorology",
+		"DOI": "10.1016/S0168-1923(00)00225-2",
+		"ISSN": "0168-1923",
+		"issue": "1",
+		"journalAbbreviation": "Agricultural and Forest Meteorology",
+		"language": "en",
+		"page": "43-69",
+		"source": "ScienceDirect",
+		"title": "Gap filling strategies for defensible annual sums of net ecosystem exchange",
+		"URL": "https://www.sciencedirect.com/science/article/pii/S0168192300002252",
+		"volume": "107",
+		"author": [
+			{
+				"family": "Falge",
+				"given": "Eva"
+			},
+			{
+				"family": "Baldocchi",
+				"given": "Dennis"
+			},
+			{
+				"family": "Olson",
+				"given": "Richard"
+			},
+			{
+				"family": "Anthoni",
+				"given": "Peter"
+			},
+			{
+				"family": "Aubinet",
+				"given": "Marc"
+			},
+			{
+				"family": "Bernhofer",
+				"given": "Christian"
+			},
+			{
+				"family": "Burba",
+				"given": "George"
+			},
+			{
+				"family": "Ceulemans",
+				"given": "Reinhart"
+			},
+			{
+				"family": "Clement",
+				"given": "Robert"
+			},
+			{
+				"family": "Dolman",
+				"given": "Han"
+			},
+			{
+				"family": "Granier",
+				"given": "André"
+			},
+			{
+				"family": "Gross",
+				"given": "Patrick"
+			},
+			{
+				"family": "Grünwald",
+				"given": "Thomas"
+			},
+			{
+				"family": "Hollinger",
+				"given": "David"
+			},
+			{
+				"family": "Jensen",
+				"given": "Niels-Otto"
+			},
+			{
+				"family": "Katul",
+				"given": "Gabriel"
+			},
+			{
+				"family": "Keronen",
+				"given": "Petri"
+			},
+			{
+				"family": "Kowalski",
+				"given": "Andrew"
+			},
+			{
+				"family": "Lai",
+				"given": "Chun Ta"
+			},
+			{
+				"family": "Law",
+				"given": "Beverley E."
+			},
+			{
+				"family": "Meyers",
+				"given": "Tilden"
+			},
+			{
+				"family": "Moncrieff",
+				"given": "John"
+			},
+			{
+				"family": "Moors",
+				"given": "Eddy"
+			},
+			{
+				"family": "Munger",
+				"given": "J. William"
+			},
+			{
+				"family": "Pilegaard",
+				"given": "Kim"
+			},
+			{
+				"family": "Rannik",
+				"given": "Üllar"
+			},
+			{
+				"family": "Rebmann",
+				"given": "Corinna"
+			},
+			{
+				"family": "Suyker",
+				"given": "Andrew"
+			},
+			{
+				"family": "Tenhunen",
+				"given": "John"
+			},
+			{
+				"family": "Tu",
+				"given": "Kevin"
+			},
+			{
+				"family": "Verma",
+				"given": "Shashi"
+			},
+			{
+				"family": "Vesala",
+				"given": "Timo"
+			},
+			{
+				"family": "Wilson",
+				"given": "Kell"
+			},
+			{
+				"family": "Wofsy",
+				"given": "Steve"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2023",
+					7,
+					13
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2001",
+					3,
+					1
+				]
+			]
+		}
+	},
+	{
+		"id": "http://zotero.org/users/2672135/items/U8KSWPC2",
+		"type": "book",
+		"abstract": "Eddy covariance method is a modern high-precision technique for direct measurements of the movement of gases, water vapor, heat, and momentum between the surface and the atmosphere. It is used for measurements of carbon sequestration and emission rates in natural, agricultural, industrial, and urban environments, atmospheric exchange rates of greenhouse gases, direct mea­surements of evapotranspirative water loss, heat exchange, turbulence rates, and momentum fluxes. The wide range of applications includes numerous fundamental and applied sciences, regulatory and industrial monitoring, multiple aspects of agricultural management, as well as carbon trading and offsets, corporate sustainability and neutrality, among many others. The book “Eddy Covariance Method for Scientific, Regulatory, and Commercial Applications” has been created to familiarize the reader with the general theoretical principles, requirements, applica­tions, planning, processing, and analysis steps of the eddy covariance method. It is intended to assist readers in furthering their understanding of the method and provide refer­ences such as academic textbooks, flux network guidelines, and journal papers. In particular, it is designed to help scientific, industrial, agricultural, and regulatory projects and monitoring programs with experiment design and field deployment of the eddy covariance method. Some of the topics covered in “Eddy Covariance Method for Scientific, Regulatory, and Commercial Applications” include: ·                 Overview of eddy covariance principles ·                 Planning and design of an eddy covariance experiment ·                 Implementation of an eddy covariance experiment ·                 Processing and analysis of eddy covariance data ·                 Networking multiple flux stations ·                 Alternative flux methods ·                 Useful resources, training and knowledge base ·                 Example of planning, design and implementation of a comprehensive automated flux station",
+		"ISBN": "978-0-578-97714-0",
+		"language": "en",
+		"note": "Google-Books-ID: Ll83zwEACAAJ",
+		"number-of-pages": "702",
+		"publisher": "LI-COR Biosciences",
+		"source": "Google Books",
+		"title": "Eddy Covariance Method For Scientific, Regulatory, and Commercial Applications",
+		"author": [
+			{
+				"family": "Burba",
+				"given": "George"
+			}
+		],
+		"issued": {
+			"date-parts": [
+				[
+					"2022",
+					9,
+					6
+				]
+			]
+		}
+	}
+]

@@ -1,0 +1,524 @@
+---
+title: "A Framework for Applying Neural Networks to Eddy Covariance Data"
+# format:
+#   html:
+jupyter: python3
+echo: false
+fig-dpi: 300
+format: pptx
+  # revealjs:
+  #   code-fold: true
+  #   controls: true
+  #   navigation-mode: linear
+  #   controls-layout: bottom-right
+  #   controls-tutorial: true
+  #   # margin: 0.05
+  #   # width: 1200
+  #   # css: style.css
+  #   slide-number: true
+  #   show-slide-number: all
+  #   pdfMaxPagesPerSlide: 1
+  # # pdf:
+  # #   code-fold: true
+  
+author:
+  - name: Dr. June Skeeter
+    # orcid: 0000-0002-7051-343X
+    email: june.skeeter@ubc.ca
+    url: https://github.com/June-Skeeter
+    affiliations:
+    - ref: UBC
+  # - name: Dr. Sara Knox
+  #   email: sara.knox@ubc.ca
+  #   affiliations:
+  #   - ref: UBC
+affiliations:
+    - id: UBC
+      name: University British Columbia
+      department: Department Geography
+      address: 1984 West Mall
+      city: Vancouver, BC, Canada
+      postal-code: V6T 1Z2
+keywords: [Eddy Covariance, Micrometeorology, Neural Networks, Modelling]
+
+---
+
+## Eddy Covariance
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Semi-continuous, ecosystem-scale measurements of energy, water, and trace gas fluxes.
+
+* Noisy, voluminous data sets
+  * Frequent gaps
+  * Observational bias
+* Well suited for machine learning!
+
+:::
+
+::: {.column width="50%"}
+
+![Burns Bog EC Station, Delta BC](images/BB1_System.jpg)
+
+<!-- <img src="images/BB1_System.jpg" alt="your-image-description" style="border: 2px solid  black;">
+
+<h3>Burns Bog EC Station<br>Delta, BC</h3> -->
+
+:::
+
+::::
+
+
+## Neural Networks
+
+**Universal approximators**: can map any continuous function to an arbitrary degree accuracy.
+
+* With enough hidden nodes, will fit **any** pattern in a dataset
+  * Care must be taken to ensure the patterns are real
+  * Early stopping allows 
+
+* Well suited for non-linear, multi-variate response functions
+  * Capable **interpolation** and *extrapolation*
+
+
+## Commonly Cited Limitations
+
+```{python}
+#| tbl-colwidths: [40,60]
+
+import numpy as np
+import pandas as pd
+from sklearn import metrics
+from tabulate import tabulate
+from IPython.display import Markdown
+
+df = pd.read_csv('About.csv',sep='|',index_col='Drawback')
+Markdown(tabulate(
+  df, 
+  headers=["Issue", "Solutions"]
+))
+
+```
+
+# Objective
+
+Provide a framework for applying NN models to EC data for descriptive analysis and inferential modelling. 
+ 
+* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has functional examples that can be used to apply NN models.
+  * Runs in Python and Tensorflow
+    * *GPU support not required*
+
+## Example Data
+
+:::: {.columns}
+
+::: {.column width="45%"}
+
+Burns Bog EC station
+
+* Harvested peatland undergoing active restoration
+* 8+ years of meteorological & flux (CO<sub>2</sub> and CH<sub>4</sub>) data
+
+:::
+
+::: {.column width="55%"}
+
+
+<img src="images/BB1.jpg" alt="your-image-description" style="border: 2px solid  black; width: 100%">
+
+:::
+::::
+
+
+## Training Procedures
+
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+* Larger ensemble = more robust model
+  * N <= 10 for data exploration/pruning
+* Three way cross-validation
+  * Train/validate/test
+* Early Stopping: after **e** epochs
+  * e = 2 for pruning stage
+
+:::
+
+::: {.column width="30%"}
+
+<img src="images/NN_Workflows.png" alt="your-image-description">
+
+
+:::
+
+::::
+
+## Pruning Inputs
+
+Calculate partial first derivative of the output with respect to each input over test data domain.
+
+* **Relative Influence (RI)** of inputs
+  * Normalized sum of squared derivatives (SSD)
+
+* Iteratively remove inputs with RI below a threshold
+  * Use set of random scalars inputs to determine threshold
+    * e.g., a float [0-1], a skewed float [0-1]<sup>.25</sup>, and a binary integer (0/1)
+
+## Before and After Pruning FCO<sub>2</sub>
+
+```{python}
+#| label: RI of FCO2 models
+#| layout-ncol: 1
+#| warning: False
+import pandas as pd
+import matplotlib.pyplot as plt
+from Scripts import MiscFuncs,PlotHelpers
+
+fig,ax=plt.subplots(1,2,sharey=True,sharex=True)
+
+Base = 'FCO2'
+Full = 'Full'
+Name = f'{Full}_Model_{Base}'
+RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
+RI = RI.sort_values(by=f'RI_bar',ascending=True)
+PlotHelpers.makeRI_plot(ax[0],RI,Title='Over-Parametrized Model for FCO$_2$')
+
+Final='Final'
+Name = f'{Final}_Model_{Base}'
+RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
+RI = RI.sort_values(by=f'RI_bar',ascending=True)
+PlotHelpers.makeRI_plot(ax[1],RI,Title='Pruned Model for FCO$_2$')
+ax[1].set_ylabel('')
+plt.tight_layout()
+
+```
+
+## The Final Model
+
+Once pruning is complete, re-train the final production level model, excluding the random scalars
+
+* Increase the ensemble size (e.g., N =30)
+  * Could increase early stopping criteria (e.g., e = 10)
+  * Larger e drastically increases training
+* Plot the model derivatives as a final check
+  * If derivatives look implausible 
+    * Adjust inputs/parameters and try again
+
+
+## Plotting Derivatives
+    
+Helps ensure model responses are physically plausible
+
+* An **essential step** and **key advantage** of NN models
+* Raw derivatives show true feature responses
+* Normalized derivatives scaled by input variance
+  * Relative input effects on common scale
+  * What the model "sees"
+* 95% confidence intervals around derivatives indicate modeled confidence in relationships
+
+
+## Partial Derivatives of FCO<sub>2</sub>
+ 
+ 
+```{python}
+#| label: Derivatives of final FCO2 model
+#| layout-ncol: 1
+#| warning: False
+
+Base = 'FCO2'
+
+Name = f'{Final}_Model_{Base}'
+
+RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
+RI = RI.sort_values(by=f'RI_bar',ascending=True)
+df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
+
+# Max=4
+#RI.sort_values(by=f'RI_bar',ascending=False).index[:Max]
+
+Show = ['PPFD','T air']
+
+cols = 2
+npi=len(RI.index)
+rows = int(np.ceil(len(Show)/cols))
+
+fig,axes=plt.subplots(rows,cols)
+
+axes = axes.flatten()
+
+mod = ''
+
+for i,xi in enumerate(Show):
+    df_int = MiscFuncs.byInterval(df,f'{xi}',[f'dy_d{xi}{mod}'],bins=50)
+    PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    axes[i].set_title(xi)
+
+plt.tight_layout()
+
+axes[i].get_ylabel()
+
+for ax in axes:
+    l = ax.get_ylabel()
+    ax.set_ylabel(l.split('_norm')[0].replace('_',' / ').replace('y','FCO2'))
+
+
+radom_code_to_mask_text=0
+
+```
+
+## Normalized Derivatives of FCO<sub>2</sub>
+ 
+```{python}
+#| label: Normalized Derivatives of final FCO2 model
+#| layout-ncol: 1
+#| warning: False
+
+import numpy as np
+
+cols = 2
+# npi=len(RI.index)
+rows = int(np.ceil(len(Show)/cols))
+
+fig,axes=plt.subplots(rows,cols,sharey=True,sharex=True)
+
+axes = axes.flatten()
+
+mod = '_norm'
+
+for i,xi in enumerate(Show):
+    axes[i].axvspan(0,0,edgecolor='k',linewidth=1.5)
+    df_int = MiscFuncs.byInterval(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],bins=50)
+    PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    axes[i].set_title(xi)
+plt.tight_layout()
+axes[i].get_ylabel()
+for ax in axes:
+    l = ax.get_ylabel()
+    ax.set_ylabel(l.split('_')[0]+'/dx')
+
+```
+
+
+## Model Performance FCO<sub>2</sub>
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Plot the model outputs and validation metrics calculated with the test data.
+
+::: {style="font-size: 80%;"}
+
+```{python}
+#| label: Validation FCO2
+#| layout-ncol: 1
+#| warning: False
+#| tbl-colwidths: [25,75]
+
+
+unit = '$\mu mol$ $m^{-2}s^{-1}$'
+
+x,y='target','y_bar'
+r2 = str(np.round(metrics.r2_score(df[x],df[y]),2))
+RMSE = str(np.round(metrics.mean_squared_error(df[x],df[y])**.5,2))+f' {unit}'
+
+m = pd.DataFrame(index=['RMSE','r<sup>2</sup>'],data={'Metrics':[RMSE,r2]})
+Markdown(tabulate(
+  m, 
+  headers=["Metric", "Score"]
+))
+
+
+```
+
+:::
+
+:::
+
+::: {.column width="50%"}
+
+
+```{python}
+#| label: Performance of final FCH4 model
+#| layout-ncol: 1
+#| warning: False
+
+df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
+
+# unit = '$\mu mol m^{-2} s^{-1}$'
+
+fig,ax=plt.subplots(figsize=(5,5))
+ax = PlotHelpers.make1_1_Plot(ax,df,'target','y_bar',unit=unit)
+ax.set_ylabel('NN Estimate')
+ax.set_xlabel('EC Observation')
+ax.set_title('')
+radom_code_to_mask_text=0
+
+```
+
+
+:::
+
+::::
+
+
+## Before and After Pruning FCH<sub>4</sub>
+
+```{python}
+#| label: RI of FCH4 models
+#| layout-ncol: 1
+#| warning: False
+import pandas as pd
+import matplotlib.pyplot as plt
+from Scripts import MiscFuncs,PlotHelpers
+
+fig,ax=plt.subplots(1,2,sharey=True,sharex=True)
+
+Base = 'FCH4'
+Name = f'{Full}_Model_{Base}'
+RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
+RI = RI.sort_values(by=f'RI_bar',ascending=True)
+PlotHelpers.makeRI_plot(ax[0],RI,Title='Over-Parametrized Model for FCH$_4$')
+
+Name = f'{Final}_Model_{Base}'
+RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
+RI = RI.sort_values(by=f'RI_bar',ascending=True)
+PlotHelpers.makeRI_plot(ax[1],RI,Title='Pruned Model for FCH$_4$')
+ax[1].set_ylabel('')
+plt.tight_layout()
+
+```
+
+
+
+## Normalized Derivatives of FCH<sub>4</sub>
+ 
+ 
+```{python}
+#| label: Derivatives of final FCH4 model
+#| layout-ncol: 1
+#| warning: False
+
+Base = 'FCH4'
+
+Name = f'{Final}_Model_{Base}'
+
+RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
+RI = RI.sort_values(by=f'RI_bar',ascending=True)
+df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
+
+# Max=4
+#RI.sort_values(by=f'RI_bar',ascending=False).index[:Max]
+
+Show = ['T soil 50cm','Water table']
+
+cols = 2
+npi=len(RI.index)
+rows = int(np.ceil(len(Show)/cols))
+
+fig,axes=plt.subplots(rows,cols)
+
+axes = axes.flatten()
+
+mod = '_norm'
+
+for i,xi in enumerate(Show):
+    df_int = MiscFuncs.byInterval(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],bins=50)
+    PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    axes[i].set_title(xi)
+
+plt.tight_layout()
+
+axes[i].get_ylabel()
+
+for ax in axes:
+    l = ax.get_ylabel()
+    ax.set_ylabel(l.split('_norm')[0].replace('_',' / ').replace('y','FCO2'))
+
+
+radom_code_to_mask_text=0
+
+```
+
+## Model Performance FCH<sub>4</sub>
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Plot the model outputs and validation metrics calculated with the test data.
+
+::: {style="font-size: 80%;"}
+
+```{python}
+#| label: Validation FCH4
+#| layout-ncol: 1
+#| warning: False
+#| tbl-colwidths: [25,75]
+
+
+unit = '$\nmol$ $m^{-2}s^{-1}$'
+
+x,y='target','y_bar'
+r2 = str(np.round(metrics.r2_score(df[x],df[y]),2))
+RMSE = str(np.round(metrics.mean_squared_error(df[x],df[y])**.5,2))+f' {unit}'
+
+m = pd.DataFrame(index=['RMSE','r<sup>2</sup>'],data={'Metrics':[RMSE,r2]})
+Markdown(tabulate(
+  m, 
+  headers=["Metric", "Score"]
+))
+
+
+```
+
+:::
+
+:::
+
+::: {.column width="50%"}
+
+
+```{python}
+#| label: Performance of final FCO2 model
+#| layout-ncol: 1
+#| warning: False
+
+df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
+
+# unit = '$\mu mol m^{-2} s^{-1}$'
+
+fig,ax=plt.subplots(figsize=(5,5))
+ax = PlotHelpers.make1_1_Plot(ax,df,'target','y_bar',unit=unit)
+ax.set_ylabel('NN Estimate')
+ax.set_xlabel('EC Observation')
+ax.set_title('')
+radom_code_to_mask_text=0
+
+```
+
+
+:::
+
+::::
+
+
+## Next Steps
+
+* Custom NN architecture: Separating input layers may allow us partition fluxes.
+  * e.g., FCO<sub>2</sub> into GPP and ER
+* Flux footprints: map response to spatial heterogenity
+* Upscaling: in space and time
+* u* filtering: partial derivatives could identify u* thresholds
+* Compare to process based models (e.g., CLASSIC)
+
+# Thank You
+
+Questions?
