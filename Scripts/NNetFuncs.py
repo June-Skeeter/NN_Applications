@@ -74,8 +74,9 @@ def train_model(config,Data):
             keras.callbacks.CSVLogger(f"Models/{config['Base']}/{config['Name']}/training{i}.log")
         ]
         model.compile(optimizer="adam",loss="mean_squared_error")
-        X,X_test,Y,Y_test = train_test_split(Data['X'],Data['Y'],random_state=42)
-        X,Y = shuffle(Data['X'],Data['Y'],random_state=i)
+        X,X_test,Y,Y_test = train_test_split(Data['X'],Data['Y'],test_size=config['validation_split'],random_state=i)
+        # X,Y = shuffle(Data['X'],Data['Y'],random_state=i)
+        # print(Y.shape,np.isnan(Y).sum(axis=-1))
         model.fit(X,Y,callbacks=callbacks,verbose=0,validation_split=config['validation_split'],
                   batch_size=config['batch_size'],epochs=config['epochs'])
         Test_Data={
@@ -85,7 +86,7 @@ def train_model(config,Data):
         tf.keras.backend.clear_session()
         
     T2 = time.time()
-    print('Training Time:\n', np.round(T2 - T1,2),' Seconds')
+    print('Training Time: ', np.round(T2 - T1,2),' Seconds')
     
     if config['RF_comp']==True:
         Train_RF(config,X,Y)
@@ -154,17 +155,22 @@ def run_Model(config,Data):
 
     for key in full_out.keys():
         full_out[key]=np.array(full_out[key])
-
-    Mean_Output = pd.DataFrame(data = {
+    # Mean_Output = pd.DataFrame(data = {
+    #         'target':Data['Y'],
+    #         'y_bar':full_out['y_pred'].mean(axis=0).flatten(),
+    #         'y_CI95':full_out['y_pred'].std(axis=0).flatten()/(N)**.5*t_score
+    #     })
+    Mean_Output = {#pd.DataFrame(data = {
             'target':Data['Y'],
             'y_bar':full_out['y_pred'].mean(axis=0).flatten(),
             'y_CI95':full_out['y_pred'].std(axis=0).flatten()/(N)**.5*t_score
 
-        })
+        }#)
 
     for i,xi in enumerate(config['inputs']):
         Mean_Output[f'{xi}']=Data['X'][:,i]
         Mean_Output[f'dy_d{xi}']=full_out['dy_dx'].mean(axis=0)[:,i]
+        Mean_Output[f'dy_d{xi}_Var']=((full_out['dy_dx'].mean(axis=0)-full_out['dy_dx'])**2).sum(axis=0)[:,i]/(full_out['dy_dx'].shape[0]-1)
         Mean_Output[f'dy_d{xi}_CI95']=full_out['dy_dx'].std(axis=0)[:,i]/(N)**.5*t_score
 
     SSD,SSD_CI = get_SSD(full_out['dy_dx'])
@@ -174,12 +180,13 @@ def run_Model(config,Data):
         for i,xi in enumerate(config['inputs']):
             Mean_Output[f'dy_d{xi}_norm']=full_out['dy_dx_norm'].mean(axis=0)[:,i]
             Mean_Output[f'{xi}_norm']=full_out['X_norm'].mean(axis=0)[:,i]
+            Mean_Output[f'dy_d{xi}_norm_Var']=((full_out['dy_dx_norm'].mean(axis=0)-full_out['dy_dx_norm'])**2).sum(axis=0)[:,i]/(full_out['dy_dx_norm'].shape[0]-1)
             Mean_Output[f'dy_d{xi}_norm_CI95']=full_out['dy_dx_norm'].std(axis=0)[:,i]/(N)**.5*t_score
         SSD,SSD_CI = get_SSD(full_out['dy_dx_norm'])
         RI['RI_bar']=SSD/SSD.sum()*100
         RI['RI_CI95']=SSD_CI/SSD.sum()*100
 
-    
+    Mean_Output = pd.DataFrame(data=Mean_Output)
     Mean_Output.to_csv(f"Models/{config['Base']}/{config['Name']}/model_output.csv")
         
     RI.to_csv(f"Models/{config['Base']}/{config['Name']}/model_RI.csv")
@@ -189,7 +196,7 @@ def run_Model(config,Data):
     print('NN Model\n Validation metrics (ensemble mean): \nr2 = ',
             np.round(R2,5),'\nRMSE = ',np.round(RMSE,5))
     T2 = time.time()
-    print('Run Time:\n', np.round(T2 - T1,2),' Seconds')
+    print('Run Time: ', np.round(T2 - T1,2),' Seconds')
     print(f'{N} models')
     print('Mean epochs/model: ', Stopped_Training.mean())
         
@@ -207,14 +214,14 @@ def Prune(config,Verbose=False):
     RI = pd.read_csv(f"Models/{config['Base']}/{config['Name']}/model_RI.csv",index_col=[0])
     RI = RI.sort_values(by=f'RI_bar',ascending=True)
     RI['lower_bound'] = RI['RI_bar']-RI['RI_CI95']
-    # RI['upper_bound'] = RI['RI_bar']+RI['RI_CI95']
+    RI['upper_bound'] = RI['RI_bar']+RI['RI_CI95']
     RI['Drop']=0
 
-
-    Drop_Thresh = RI.loc[RI.index.isin(config['Rand_Scalars']),'RI_bar'].sum()*config['Prune_scale'][0]+config['Prune_scale'][1]
+    Drop_Thresh = RI.loc[RI.index.isin(config['Rand_Scalars']),'upper_bound'].sum()*config['Prune_scale'][0]+config['Prune_scale'][1]
     RI.loc[RI['lower_bound']<Drop_Thresh,'Drop']=Drop_Thresh
     if Verbose == True:
-        print(RI[['RI_bar','lower_bound','Drop']].round(2).T)
+        show_cols = RI.T.columns[RI.T.columns.str.contains('Rand_')==False]
+        print(RI[['upper_bound','RI_bar','lower_bound','Drop']].round(2).T[show_cols])
         
     RI.to_csv(f"Models/{config['Base']}/{config['Name']}/model_RI.csv")
     return(RI)
@@ -229,7 +236,7 @@ def Train_RF(config,X,Y):
     RF.fit(X,Y)
     joblib.dump(RF, f"Models/{config['Base']}/{config['Name']}/random_forest.joblib")
     T2 = time.time()
-    print('Training Time:\n', np.round(T2 - T1,2),' Seconds')
+    print('Training Time: ', np.round(T2 - T1,2),' Seconds')
     print('\n\n')
 
 def Run_RF(config,Data):
@@ -268,5 +275,5 @@ def Run_RF(config,Data):
     RI.to_csv(f"Models/{config['Base']}/{config['Name']}/random_forest_RI.csv")
 
     T2 = time.time()
-    print('Run Time:\n', np.round(T2 - T1,2),' Seconds')
+    print('Run Time: ', np.round(T2 - T1,2),' Seconds')
     # return (Mean_Output,RI)

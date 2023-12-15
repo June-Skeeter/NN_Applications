@@ -16,7 +16,7 @@ def makeRI_plot(ax,RI,Title=None,linecolor='r',facecolor='#1356c240',edgecolor='
 def make1_1_Plot(ax,df,x,y,unit='',linecolor='r',facecolor='#1356c240',edgecolor='#1356c2'):
     ax.axhspan(0,0,edgecolor='k',linewidth=1.5,)
     ax.axvspan(0,0,edgecolor='k',linewidth=1.5,)
-    ax.scatter(df[x],df[y],color=facecolor,edgecolor=edgecolor)
+    ax.scatter(df[x],df[y],color=facecolor,edgecolor=edgecolor,s=10)
     ax.plot(df[x],df[x],color=linecolor,label='1:1')
     r2 = np.round(metrics.r2_score(df[x],df[y]),2)
     RMSE = np.round(metrics.mean_squared_error(df[x],df[y])**.5,3)
@@ -25,16 +25,20 @@ def make1_1_Plot(ax,df,x,y,unit='',linecolor='r',facecolor='#1356c240',edgecolor
     ax.legend()
     return(ax)
 
+
 def CI_Plot(ax,df,y,ci='Auto',linecolor='r',facecolor='#1356c240',edgecolor='#1356c2'):
     # Plot a line and shade its 95% Confidence interval
     ax.axhspan(0,0,edgecolor='k',linewidth=1.5)
     if ci == 'Auto':
         ci = y+'_CI95'
     ax.fill_between(df.index,df[y]-df[ci],df[y]+df[ci],facecolor=facecolor,edgecolor=edgecolor,label = '95% CI')
-    ax.plot(df.index,df[y],color=linecolor,label = y)
+    p1 = ax.plot(df.index,df[y],color=linecolor,label = y)
+    p2 = ax.fill(np.NaN, np.NaN,facecolor=facecolor,edgecolor=edgecolor)
     ax.grid(zorder=-1)
     ax.set_ylabel(y)
-    return(ax)
+    Legend_patch = [(p2[0], p1[0]), ]
+    Legend_label = ['Mean & 95% CI']
+    return(ax,Legend_patch,Legend_label)
 
 def Contour_Plot(fig,ax,grid_x1,grid_x2,grid_y,cmap='bwr',norm=None,unit='',bins=None):
     # Plot a colormesh grid with contours

@@ -9,9 +9,9 @@
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.335">
 
-  <meta name="author" content="Dr.&nbsp;June Skeeter">
+  <meta name="author" content="June Skeeter">
   <meta name="keywords" content="Eddy Covariance, Micrometeorology, Neural Networks, Modelling">
-  <title>Neural Networks for Eddy Covariance - A Framework for Applying Neural Networks to Eddy Covariance Data</title>
+  <title>Neural Networks for Eddy Covariance - Tools and Guidance for Applying Neural Networks to Eddy Covariance Data</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -325,12 +325,12 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">A Framework for Applying Neural Networks to Eddy Covariance Data</h1>
+  <h1 class="title">Tools and Guidance for Applying Neural Networks to Eddy Covariance Data</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-<a href="https://github.com/June-Skeeter">Dr.&nbsp;June Skeeter</a> 
+<a href="https://github.com/June-Skeeter">June Skeeter</a> 
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:june.skeeter@ubc.ca">june.skeeter@ubc.ca</a>
@@ -346,7 +346,7 @@
 <h2>Eddy Covariance</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>Semi-continuous, ecosystem-scale measurements of energy, water, and trace gas fluxes.</p>
+<p>Semi-continuous, ecosystem-scale energy, water, and trace gas fluxes.</p>
 <ul>
 <li>Noisy, voluminous data sets
 <ul>
@@ -357,9 +357,9 @@
 </ul>
 </div><div class="column" style="width:50%;">
 <p><img src="images/BB1_System.jpg" alt="your-image-description" style="border: 2px solid  black;"></p>
-<h3>
+<h4>
 Burns Bog EC Station<br>Delta, BC
-</h3>
+</h4>
 </div>
 </div>
 </section>
@@ -370,18 +370,18 @@ Burns Bog EC Station<br>Delta, BC
 <li>With enough hidden nodes, will fit <strong>any</strong> pattern in a dataset
 <ul>
 <li>Care must be taken to ensure the patterns are real</li>
-<li>Early stopping allows</li>
+<li>Early stopping can help prevent over-fitting</li>
 </ul></li>
 <li>Well suited for non-linear, multi-variate response functions
 <ul>
-<li>Capable <strong>interpolation</strong> and <em>extrapolation</em></li>
+<li>Capable of <strong>interpolation</strong> and <em>extrapolation</em></li>
 </ul></li>
 </ul>
 </section>
 <section id="commonly-cited-limitations" class="slide level2">
 <h2>Commonly Cited Limitations</h2>
 <div class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="56">
 <table>
 <colgroup>
 <col style="width: 40%">
@@ -411,16 +411,18 @@ Burns Bog EC Station<br>Delta, BC
 </div>
 </div>
 </section>
-<section>
-<section id="objective" class="title-slide slide level1 center">
-<h1>Objective</h1>
+<section id="objective" class="slide level2">
+<h2>Objective</h2>
 <p>Provide a framework for applying NN models to EC data for descriptive analysis and inferential modelling.</p>
 <ul>
-<li>The <a href="https://github.com/June-Skeeter/NN_Applications">github repository</a> linked to this presentation has functional examples that can be used to apply NN models.
+<li>The <a href="https://github.com/June-Skeeter/NN_Applications">github repository</a> linked here has functional examples that can be used to setup NN models.
 <ul>
 <li>Runs in Python and Tensorflow
 <ul>
-<li><em>GPU support not required</em></li>
+<li>GPU support <em>not required</em>
+<ul>
+<li>But will decrease processing times</li>
+</ul></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -432,7 +434,7 @@ Burns Bog EC Station<br>Delta, BC
 <p>Burns Bog EC station</p>
 <ul>
 <li>Harvested peatland undergoing active restoration</li>
-<li>8+ years of meteorological &amp; flux (CO<sub>2</sub> and CH<sub>4</sub>) data</li>
+<li>8+ years of flux data</li>
 </ul>
 </div><div class="column" style="width:55%;">
 <p><img src="images/BB1.jpg" alt="your-image-description" style="border: 2px solid  black; width: 100%"></p>
@@ -446,7 +448,7 @@ Burns Bog EC Station<br>Delta, BC
 <ul>
 <li>Larger ensemble = more robust model
 <ul>
-<li>N &lt;= 10 for data exploration/pruning</li>
+<li>N <span class="math inline">\(\leq\)</span> 10 for data exploration/pruning</li>
 </ul></li>
 <li>Three way cross-validation
 <ul>
@@ -472,9 +474,9 @@ Burns Bog EC Station<br>Delta, BC
 </ul></li>
 <li>Iteratively remove inputs with RI below a threshold
 <ul>
-<li>Use set of random scalars inputs to determine threshold
+<li>Use random noise to determine threshold
 <ul>
-<li>e.g., a float [0-1], a skewed float [0-1]<sup>.25</sup>, and a binary integer (0/1)</li>
+<li>e.g., randomly shuffled copy of each input</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -484,7 +486,7 @@ Burns Bog EC Station<br>Delta, BC
 <div class="cell quarto-layout-panel" data-execution_count="2">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/ri-of-fco2-models-output-1.png" id="ri-of-fco2-models" width="2969"></p>
+<p><img data-src="about_files/figure-revealjs/ri-of-fco2-models-output-1.png" id="ri-of-fco2-models" width="2970"></p>
 </div>
 </div>
 </div>
@@ -493,10 +495,12 @@ Burns Bog EC Station<br>Delta, BC
 <h2>The Final Model</h2>
 <p>Once pruning is complete, re-train the final production level model, excluding the random scalars</p>
 <ul>
-<li>Increase the ensemble size (e.g., N =30)
+<li>Increase the ensemble size (e.g., N <span class="math inline">\(\geq\)</span> 30)
 <ul>
-<li>Could increase early stopping criteria (e.g., e = 10)</li>
-<li>Larger e drastically increases training</li>
+<li>Increase early stopping (e) criteria (e.g., e = 10)
+<ul>
+<li>Larger e <strong>drastically</strong> increases training time</li>
+</ul></li>
 </ul></li>
 <li>Plot the model derivatives as a final check
 <ul>
@@ -512,13 +516,12 @@ Burns Bog EC Station<br>Delta, BC
 <p>Helps ensure model responses are physically plausible</p>
 <ul>
 <li>An <strong>essential step</strong> and <strong>key advantage</strong> of NN models</li>
-<li>Raw derivatives show true feature responses</li>
+<li>Raw derivatives show response in natural units</li>
 <li>Normalized derivatives scaled by input variance
 <ul>
 <li>Relative input effects on common scale</li>
 <li>What the model “sees”</li>
 </ul></li>
-<li>95% confidence intervals around derivatives indicate modeled confidence in relationships</li>
 </ul>
 </section>
 <section id="partial-derivatives-of-fco2" class="slide level2">
@@ -549,7 +552,7 @@ Burns Bog EC Station<br>Delta, BC
 <div style="font-size: 80%;">
 <div class="cell quarto-layout-panel" data-execution_count="5">
 <div class="quarto-layout-row quarto-layout-valign-top">
-<div id="validation-fco2" class="cell-output cell-output-display quarto-layout-cell" data-execution_count="5" style="flex-basis: 100.0%;justify-content: center;">
+<div id="validation-fco2" class="cell-output cell-output-display quarto-layout-cell" data-execution_count="60" style="flex-basis: 100.0%;justify-content: center;">
 <table>
 <colgroup>
 <col style="width: 25%">
@@ -564,7 +567,83 @@ Burns Bog EC Station<br>Delta, BC
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">RMSE</td>
-<td style="text-align: left;">0.45 <span class="math inline">\(\mu mol\)</span> <span class="math inline">\(m^{-2}s^{-1}\)</span></td>
+<td style="text-align: left;">0.64 <span class="math inline">\(\mu mol\)</span> <span class="math inline">\(m^{-2}s^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">r<sup>2</sup></td>
+<td style="text-align: left;">0.88</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell quarto-layout-panel" data-execution_count="6">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/performance-of-final-fch4-model-output-1.png" id="performance-of-final-fch4-model" width="1453"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="before-and-after-pruning-fch4" class="slide level2">
+<h2>Before and After Pruning FCH<sub>4</sub></h2>
+<div class="cell quarto-layout-panel" data-execution_count="7">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/ri-of-fch4-models-output-1.png" id="ri-of-fch4-models" width="2970"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="partial-derivatives-of-fch4" class="slide level2">
+<h2>Partial Derivatives of FCH<sub>4</sub></h2>
+<div class="cell quarto-layout-panel" data-execution_count="8">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/derivatives-of-final-fch4-model-output-1.png" id="derivatives-of-final-fch4-model" width="2968"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="normalized-derivatives-of-fch4" class="slide level2">
+<h2>Normalized Derivatives of FCH<sub>4</sub></h2>
+<div class="cell quarto-layout-panel" data-execution_count="9">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><img data-src="about_files/figure-revealjs/normalized-derivatives-of-final-fch4-model-output-1.png" id="normalized-derivatives-of-final-fch4-model" width="2967"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="model-performance-fch4" class="slide level2">
+<h2>Model Performance FCH<sub>4</sub></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Plot the model outputs and validation metrics calculated with the test data.</p>
+<div style="font-size: 80%;">
+<div class="cell quarto-layout-panel" data-execution_count="10">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div id="validation-fch4" class="cell-output cell-output-display quarto-layout-cell" data-execution_count="65" style="flex-basis: 100.0%;justify-content: center;">
+<table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Metric</th>
+<th style="text-align: left;">Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">RMSE</td>
+<td style="text-align: left;">17.17 <span class="math inline">\(nmol\)</span> <span class="math inline">\(m^{-2}s^{-1}\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">r<sup>2</sup></td>
@@ -577,80 +656,10 @@ Burns Bog EC Station<br>Delta, BC
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell quarto-layout-panel" data-execution_count="6">
+<div class="cell quarto-layout-panel" data-execution_count="11">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/performance-of-final-fch4-model-output-1.png" id="performance-of-final-fch4-model" width="1370"></p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="before-and-after-pruning-fch4" class="slide level2">
-<h2>Before and After Pruning FCH<sub>4</sub></h2>
-<div class="cell quarto-layout-panel" data-execution_count="7">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/ri-of-fch4-models-output-1.png" id="ri-of-fch4-models" width="2967"></p>
-</div>
-</div>
-</div>
-</section>
-<section id="normalized-derivatives-of-fch4" class="slide level2">
-<h2>Normalized Derivatives of FCH<sub>4</sub></h2>
-<div class="cell quarto-layout-panel" data-execution_count="8">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/derivatives-of-final-fch4-model-output-1.png" id="derivatives-of-final-fch4-model" width="2968"></p>
-</div>
-</div>
-</div>
-</section>
-<section id="model-performance-fch4" class="slide level2">
-<h2>Model Performance FCH<sub>4</sub></h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Plot the model outputs and validation metrics calculated with the test data.</p>
-<div style="font-size: 80%;">
-<div class="cell quarto-layout-panel" data-execution_count="9">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div id="validation-fch4" class="cell-output cell-output-display quarto-layout-cell" data-execution_count="9" style="flex-basis: 100.0%;justify-content: center;">
-<table>
-<colgroup>
-<col style="width: 25%">
-<col style="width: 75%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Metric</th>
-<th style="text-align: left;">Score</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">RMSE</td>
-<td style="text-align: left;">8.58 $</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">mol$ <span class="math inline">\(m^{-2}s^{-1}\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">r<sup>2</sup></td>
-<td style="text-align: left;">0.63</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cell quarto-layout-panel" data-execution_count="10">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="about_files/figure-revealjs/performance-of-final-fco2-model-output-1.png" id="performance-of-final-fco2-model" width="1397"></p>
+<p><img data-src="about_files/figure-revealjs/performance-of-final-fco2-model-output-1.png" id="performance-of-final-fco2-model" width="1423"></p>
 </div>
 </div>
 </div>
@@ -669,7 +678,7 @@ Burns Bog EC Station<br>Delta, BC
 <li>u* filtering: partial derivatives could identify u* thresholds</li>
 <li>Compare to process based models (e.g., CLASSIC)</li>
 </ul>
-</section></section>
+</section>
 <section id="thank-you" class="title-slide slide level1 center">
 <h1>Thank You</h1>
 <p>Questions?</p>

@@ -37,12 +37,23 @@ def Create_Grid(x1,x2,func=None):
         grid_y = None
     return(flat_X,grid_x1,grid_x2,grid_y)
 
+def rolling(df,X,MVars,SVars,n=10):
+    nr = int(df.shape[0]/n)
+    # print(nr)
+    Srt = df.sort_values(by=X)#[Vars].rolling(nr).mean()
+    Srt = Srt.set_index(X)
+    Srt_m = Srt[MVars].rolling(nr,center=True).mean()
+    Srt_m[SVars] = Srt[SVars].rolling(nr,center=True).mean()
+    Srt_m[SVars] = Srt_m[SVars]**.5*stats.t.ppf(0.95,nr)
+    return(Srt_m)
+    # Srt_m = Srt_m.set_index(f'{xi}{mod}')
+    
 
 def byInterval(df,x,Vars,bins=None,method='quantile',agg='mean'):
     # Aggregates data by an interval and returns a 95% CI
     # If dataframe has a datetime index, use resample
     # Handles all other data types by groubpby
-    # Will group by continuous data by intervals if fed bins
+    # Will group continuous data by intervals if fed bins
     # Otherwise groupby will treat index as discrete data points
     STD = [var+'_std' for var in Vars]
     c = [var+'_c' for var in Vars]
@@ -58,7 +69,6 @@ def byInterval(df,x,Vars,bins=None,method='quantile',agg='mean'):
             if method != 'quantile':
                 df['bins'] = pd.cut(df[x],bins=bins)
             else:
-                
                 df['bins'] = pd.cut(df[x],bins=df[x].quantile(np.linspace(0,1,bins)).unique())
             df[f"{x}_grp"] = df['bins'].apply(lambda x: x.mid)
             df = df.drop('bins',axis=1)        

@@ -13,5 +13,11 @@
   },
   "PPTX.qmd": {
     "PPTX.pptx": "490a6256"
+  },
+  "Manuscript.qmd": {
+    "Manuscript.tex": "73b7c926"
+  },
+  "LSTM_example.ipynb": {
+    "LSTM_example.html": "3eb01ea2"
   }
 }

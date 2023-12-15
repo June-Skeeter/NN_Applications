@@ -47,10 +47,14 @@ class filterFlux():
 
     def rain(self,P,thresh=0):
         self.df.loc[self.df[P]>thresh,self.F]=np.nan
+    
+    def clip(self,thresh=5):
+        for f in self.F:
+            self.df.loc[((self.df[f]-self.df[f].mean())/self.df[f].std()).abs()>thresh,f]=np.nan
 
     def MAD(self,z=5):
         for f in self.F:
-            di = self.df[f].diff()-self.df[f].diff(-1)
+            di = self.df[f].diff()+self.df[f].diff(-1)
             md = di.median()
             MAD = ((di-md).abs()).median()
             range = [md-((z*MAD)/0.675),md+((z*MAD)/0.675)]
@@ -58,5 +62,5 @@ class filterFlux():
 
     def uStar(self,u_star,u_thresh=.1):
         for f in self.F:
-            self.df.loc[self.df[u_star]<u_thresh]=np.nan
+            self.df.loc[self.df[u_star]<u_thresh,f]=np.nan
 

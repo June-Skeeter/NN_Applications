@@ -1,5 +1,5 @@
 ---
-title: "A Framework for Applying Neural Networks to Eddy Covariance Data"
+title: "Tools and Guidance for Applying Neural Networks to Eddy Covariance Data"
 # format:
 #   html:
 jupyter: python3
@@ -22,7 +22,7 @@ format:
   #   code-fold: true
   
 author:
-  - name: Dr. June Skeeter
+  - name: June Skeeter
     # orcid: 0000-0002-7051-343X
     email: june.skeeter@ubc.ca
     url: https://github.com/June-Skeeter
@@ -50,7 +50,7 @@ keywords: [Eddy Covariance, Micrometeorology, Neural Networks, Modelling]
 
 ::: {.column width="50%"}
 
-Semi-continuous, ecosystem-scale measurements of energy, water, and trace gas fluxes.
+Semi-continuous, ecosystem-scale energy, water, and trace gas fluxes.
 
 * Noisy, voluminous data sets
   * Frequent gaps
@@ -63,7 +63,7 @@ Semi-continuous, ecosystem-scale measurements of energy, water, and trace gas fl
 
 <img src="images/BB1_System.jpg" alt="your-image-description" style="border: 2px solid  black;">
 
-<h3>Burns Bog EC Station<br>Delta, BC</h3>
+<h4>Burns Bog EC Station<br>Delta, BC</h4>
 
 :::
 
@@ -76,10 +76,10 @@ Semi-continuous, ecosystem-scale measurements of energy, water, and trace gas fl
 
 * With enough hidden nodes, will fit **any** pattern in a dataset
   * Care must be taken to ensure the patterns are real
-  * Early stopping allows 
+  * Early stopping can help prevent over-fitting
 
 * Well suited for non-linear, multi-variate response functions
-  * Capable **interpolation** and *extrapolation*
+  * Capable of **interpolation** and *extrapolation*
 
 
 ## Commonly Cited Limitations
@@ -101,13 +101,14 @@ Markdown(tabulate(
 
 ```
 
-# Objective
+## Objective
 
 Provide a framework for applying NN models to EC data for descriptive analysis and inferential modelling. 
  
-* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked to this presentation has functional examples that can be used to apply NN models.
+* The [github repository](https://github.com/June-Skeeter/NN_Applications) linked here has functional examples that can be used to setup NN models.
   * Runs in Python and Tensorflow
-    * *GPU support not required*
+    * GPU support *not required* 
+      - But will decrease processing times
 
 ## Example Data
 
@@ -118,7 +119,7 @@ Provide a framework for applying NN models to EC data for descriptive analysis a
 Burns Bog EC station
 
 * Harvested peatland undergoing active restoration
-* 8+ years of meteorological & flux (CO<sub>2</sub> and CH<sub>4</sub>) data
+* 8+ years of flux data
 
 :::
 
@@ -139,7 +140,7 @@ Burns Bog EC station
 ::: {.column width="70%"}
 
 * Larger ensemble = more robust model
-  * N <= 10 for data exploration/pruning
+  * N $\leq$ 10 for data exploration/pruning
 * Three way cross-validation
   * Train/validate/test
 * Early Stopping: after **e** epochs
@@ -164,8 +165,8 @@ Calculate partial first derivative of the output with respect to each input over
   * Normalized sum of squared derivatives (SSD)
 
 * Iteratively remove inputs with RI below a threshold
-  * Use set of random scalars inputs to determine threshold
-    * e.g., a float [0-1], a skewed float [0-1]<sup>.25</sup>, and a binary integer (0/1)
+  * Use random noise to determine threshold
+    * e.g., randomly shuffled copy of each input
 
 ## Before and After Pruning FCO<sub>2</sub>
 
@@ -200,29 +201,26 @@ plt.tight_layout()
 
 Once pruning is complete, re-train the final production level model, excluding the random scalars
 
-* Increase the ensemble size (e.g., N =30)
-  * Could increase early stopping criteria (e.g., e = 10)
-  * Larger e drastically increases training
+* Increase the ensemble size (e.g., N $\geq$ 30)
+  * Increase early stopping (e) criteria (e.g., e = 10)
+    * Larger e **drastically** increases training time
 * Plot the model derivatives as a final check
   * If derivatives look implausible 
     * Adjust inputs/parameters and try again
-
 
 ## Plotting Derivatives
     
 Helps ensure model responses are physically plausible
 
 * An **essential step** and **key advantage** of NN models
-* Raw derivatives show true feature responses
+* Raw derivatives show response in natural units
 * Normalized derivatives scaled by input variance
   * Relative input effects on common scale
   * What the model "sees"
-* 95% confidence intervals around derivatives indicate modeled confidence in relationships
 
 
 ## Partial Derivatives of FCO<sub>2</sub>
- 
- 
+  
 ```{python}
 #| label: Derivatives of final FCO2 model
 #| layout-ncol: 1
@@ -239,7 +237,7 @@ df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
 # Max=4
 #RI.sort_values(by=f'RI_bar',ascending=False).index[:Max]
 
-Show = ['PPFD','T air']
+Show = ['PPFD In','T soil 5cm']
 
 cols = 2
 npi=len(RI.index)
@@ -252,9 +250,21 @@ axes = axes.flatten()
 mod = ''
 
 for i,xi in enumerate(Show):
-    df_int = MiscFuncs.byInterval(df,f'{xi}',[f'dy_d{xi}{mod}'],bins=50)
-    PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    # df_int = MiscFuncs.byInterval(df,f'{xi}',[f'dy_d{xi}{mod}'],bins=50)
+    # PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    
+
+    df_int = MiscFuncs.rolling(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],[f'dy_d{xi}{mod}_Var'],n=20)
+    pt = axes[i].scatter(df[f'{xi}{mod}'],df[f'dy_d{xi}{mod}'],facecolor='#5e5d5d40',edgecolor='#858585',s=5)
+    _,patch,label = PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}',ci=f'dy_d{xi}{mod}_Var')
+    label.append('Instantaneous Derivative')
+    patch.append(pt)
+    axes[i].legend(patch,label)
     axes[i].set_title(xi)
+
+    # df_int = MiscFuncs.rolling(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],[f'dy_d{xi}{mod}_Var'],n=20)
+    # axes[i].scatter(df[f'{xi}{mod}'],df[f'dy_d{xi}{mod}'],facecolor='#5e5d5d40',edgecolor='#858585',s=5)
+    # PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}',ci=f'dy_d{xi}{mod}_Var')
 
 plt.tight_layout()
 
@@ -289,10 +299,17 @@ axes = axes.flatten()
 mod = '_norm'
 
 for i,xi in enumerate(Show):
-    axes[i].axvspan(0,0,edgecolor='k',linewidth=1.5)
-    df_int = MiscFuncs.byInterval(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],bins=50)
-    PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    df_int = MiscFuncs.rolling(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],[f'dy_d{xi}{mod}_Var'],n=20)
+    pt = axes[i].scatter(df[f'{xi}{mod}'],df[f'dy_d{xi}{mod}'],facecolor='#5e5d5d40',edgecolor='#858585',s=5)
+    _,patch,label = PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}',ci=f'dy_d{xi}{mod}_Var')
+    label.append('Instantaneous Derivative')
+    patch.append(pt)
+    axes[i].legend(patch,label)
     axes[i].set_title(xi)
+    # axes[i].axvspan(0,0,edgecolor='k',linewidth=1.5)
+    # df_int = MiscFuncs.byInterval(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],bins=50)
+    # PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    # axes[i].set_title(xi)
 plt.tight_layout()
 axes[i].get_ylabel()
 for ax in axes:
@@ -394,8 +411,7 @@ plt.tight_layout()
 ```
 
 
-
-## Normalized Derivatives of FCH<sub>4</sub>
+## Partial Derivatives of FCH<sub>4</sub>
  
  
 ```{python}
@@ -415,6 +431,8 @@ df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
 #RI.sort_values(by=f'RI_bar',ascending=False).index[:Max]
 
 Show = ['T soil 50cm','Water table']
+# Show = ['T soil 50cm']
+
 
 cols = 2
 npi=len(RI.index)
@@ -424,12 +442,19 @@ fig,axes=plt.subplots(rows,cols)
 
 axes = axes.flatten()
 
-mod = '_norm'
+mod = ''
 
 for i,xi in enumerate(Show):
-    df_int = MiscFuncs.byInterval(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],bins=50)
-    PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    df_int = MiscFuncs.rolling(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],[f'dy_d{xi}{mod}_Var'],n=20)
+    pt = axes[i].scatter(df[f'{xi}{mod}'],df[f'dy_d{xi}{mod}'],facecolor='#5e5d5d40',edgecolor='#858585',s=5)
+    _,patch,label = PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}',ci=f'dy_d{xi}{mod}_Var')
+    label.append('Instantaneous Derivative')
+    patch.append(pt)
+    axes[i].legend(patch,label)
     axes[i].set_title(xi)
+    # df_int = MiscFuncs.byInterval(df,f'{xi}',[f'dy_d{xi}{mod}'],bins=50)
+    # PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    # axes[i].set_title(xi)
 
 plt.tight_layout()
 
@@ -437,7 +462,66 @@ axes[i].get_ylabel()
 
 for ax in axes:
     l = ax.get_ylabel()
-    ax.set_ylabel(l.split('_norm')[0].replace('_',' / ').replace('y','FCO2'))
+    ax.set_ylabel(l.split('_norm')[0].replace('_',' / ').replace('y','FCH4'))
+
+
+radom_code_to_mask_text=0
+
+```
+
+
+## Normalized Derivatives of FCH<sub>4</sub>
+ 
+ 
+```{python}
+#| label: Normalized Derivatives of final FCH4 model
+#| layout-ncol: 1
+#| warning: False
+
+# Base = 'FCH4'
+
+# Name = f'{Final}_Model_{Base}'
+
+# RI = pd.read_csv(f'Models/{Base}/{Name}/model_RI.csv',index_col=[0])
+# RI = RI.sort_values(by=f'RI_bar',ascending=True)
+# df = pd.read_csv(f'Models/{Base}/{Name}/model_output.csv',index_col=[0])
+
+# # Max=4
+# #RI.sort_values(by=f'RI_bar',ascending=False).index[:Max]
+
+# Show = ['T soil 50cm','Water table','DOY']
+# # Show = ['T soil 50cm']
+
+cols = 2
+npi=len(RI.index)
+rows = int(np.ceil(len(Show)/cols))
+
+fig,axes=plt.subplots(rows,cols,sharey=True,sharex=True)
+
+axes = axes.flatten()
+
+mod = '_norm'
+
+for i,xi in enumerate(Show):
+    df_int = MiscFuncs.rolling(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],[f'dy_d{xi}{mod}_Var'],n=20)
+    pt = axes[i].scatter(df[f'{xi}{mod}'],df[f'dy_d{xi}{mod}'],facecolor='#5e5d5d40',edgecolor='#858585',s=5)
+    _,patch,label = PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}',ci=f'dy_d{xi}{mod}_Var')
+    label.append('Instantaneous Derivative')
+    patch.append(pt)
+    axes[i].legend(patch,label)
+    axes[i].set_title(xi)
+    # df_int = MiscFuncs.byInterval(df,f'{xi}{mod}',[f'dy_d{xi}{mod}'],bins=50)
+    # PlotHelpers.CI_Plot(axes[i],df_int,f'dy_d{xi}{mod}')
+    # axes[i].set_title(xi)
+
+plt.tight_layout()
+
+axes[i].get_ylabel()
+
+for ax in axes:
+    l = ax.get_ylabel()
+    # ax.set_ylabel(l.split('_norm')[0].replace('_',' / ').replace('y','FCO2'))
+    ax.set_ylabel(l.split('_')[0]+'/dx')
 
 
 radom_code_to_mask_text=0
@@ -462,7 +546,7 @@ Plot the model outputs and validation metrics calculated with the test data.
 #| tbl-colwidths: [25,75]
 
 
-unit = '$\nmol$ $m^{-2}s^{-1}$'
+unit = '$nmol$ $m^{-2}s^{-1}$'
 
 x,y='target','y_bar'
 r2 = str(np.round(metrics.r2_score(df[x],df[y]),2))
